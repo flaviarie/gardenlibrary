@@ -319,6 +319,7 @@ main {
     margin: 0 auto;
     padding: 0;
     position: relative;
+
 }
 
 /* Add grid overlay for development (can be toggled with JavaScript) */
@@ -329,6 +330,7 @@ main {
     left: 0;
     right: 0;
     bottom: 0;
+    height: 100vh;
     background: repeating-linear-gradient(
         90deg,
         rgba(255, 0, 0, 0.1),
