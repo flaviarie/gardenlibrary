@@ -1,0 +1,280 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #356d41;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+main {
+    padding: 20px;
+}
+
+/* LOGIN AND SIGNUP BUTTON DESIGN */
+
+.auth-links {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-button {
+    text-decoration: none;
+    background-color: #3498db;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+    background-color: #2980b9;
+}
+
+.auth-button.signup {
+    background-color: #2ecc71;
+}
+
+.auth-button.signup:hover {
+    background-color: #27ae60;
+}
+
+/* lOGIN AND SIGNUP PAGES DESIGN */
+
+.auth-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #f0f5e7;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-container h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.auth-container form input[type="text"],
+.auth-container form input[type="email"],
+.auth-container form input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.auth-container form input[type="submit"] {
+    background-color: #5b885f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.auth-container form input[type="submit"]:hover {
+    background-color: #a6dba4;
+}
+
+.auth-container p {
+    margin-top: 15px;
+}
+
+.auth-container a {
+    color: #205740;
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+.home-link {
+    display: block;
+    margin-top: 20px;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+/* INDEX - LIBRARY DESIGN */
+.welcome-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.caption {
+    flex: 1;
+    min-width: 280px;
+}
+
+.caption h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.caption p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.image-container {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+/* INDEX - LEND DESIGN */
+.lend-section {
+    text-align: center;
+    margin: 60px auto;
+    padding: 40px 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    max-width: 800px;
+}
+
+.lend-section h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.lend-section p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.lend-button {
+    background-color: #27ae60;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.lend-button:hover {
+    background-color: #219150;
+}
+
+/* LEND PAGE */
+.lend-page {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.lend-page h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.lend-page p {
+    font-size: 1.1em;
+    color: #666;
+}
+
+.book-table {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.book-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
+.book-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.book-card h3 {
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+
+.borrow-button {
+    display: inline-block;
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.borrow-button:hover {
+    background-color: #219150;
+}
+
+/* RESPONSIVENESS ADJUSTMENTS */
+@media (max-width: 768px) {
+    .welcome-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .caption h2 {
+        font-size: 1.5em;
+    }
+
+    .caption p {
+        font-size: 1em;
+    }
+}
