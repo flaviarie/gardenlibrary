@@ -15,33 +15,33 @@ gardenlibrary/
 │  │  └─ logo.jpg
 │  └─ js/
 │     └─ script.js
-├─ includes/             # Shared PHP components
+├─ includes/            
 │  ├─ db.php
 │  ├─ db_connection.php
 │  ├─ footer.php
 │  └─ header.php
-├─ pages/                # Individual pages
+├─ pages/                
 │  ├─ bookborrow/
-│  │  ├─ assets/         # Page-specific assets
+│  │  ├─ assets/       
 │  │  │  ├─ css/
 │  │  │  ├─ img/
 │  │  │  └─ js/
 │  │  └─ index.php
 │  ├─ login/
-│  │  ├─ assets/         # Page-specific assets
+│  │  ├─ assets/         
 │  │  │  ├─ css/
 │  │  │  ├─ img/
 │  │  │  └─ js/
 │  │  └─ index.php
 │  └─ signup/
-│     ├─ assets/         # Page-specific assets
+│     ├─ assets/        
 │     │  ├─ css/
 │     │  ├─ img/
 │     │  └─ js/
 │     └─ index.php
-├─ index.php             # Main entry point
-├─ readme.md             # Documentation
-└─ sql_of_library_system.sql # Database schema
+├─ index.php             
+├─ readme.md             
+└─ sql_of_library_system.sql 
 ```
 
 ## File Description
