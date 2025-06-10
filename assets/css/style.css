@@ -1,13 +1,13 @@
-body {
-    font-family: Arial, sans-serif;
+body, header {
+    font-family: 'Raleway';
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #356d41;
-    color: white;
-    padding: 10px 20px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 9px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -51,6 +51,7 @@ header .col-6:last-child .auth-links {
     align-items: center;
     height: 100%;
     padding: 5px 0;
+    margin-left: -15px; 
 }
 
 .logo img {
@@ -63,10 +64,11 @@ header .col-6:last-child .auth-links {
 }
 
 .logo h1 {
-    font-size: 1.5rem;
+    font-size: 30px;
     margin: 0;
     line-height: 1;
     vertical-align: middle;
+    margin-left: -10px;
 }
 
 main {
@@ -83,8 +85,8 @@ main {
 }
 
 .auth-button {
+    font-family: 'Raleway', sans-serif;
     text-decoration: none;
-    background-color: #3498db;
     color: white;
     padding: 8px 16px;
     border-radius: 4px;
@@ -94,6 +96,7 @@ main {
     text-align: center;
     line-height: 1.2;
     white-space: nowrap;
+    margin-right: 10px; /* Added margin-left for spacing */
 }
 
 .auth-button:hover {
@@ -101,11 +104,11 @@ main {
 }
 
 .auth-button.signup {
-    background-color: #2ecc71;
+    background-color: #53933D;
 }
 
 .auth-button.signup:hover {
-    background-color: #27ae60;
+    background-color: #E1AA74;
 }
 
 /* lOGIN AND SIGNUP PAGES DESIGN */
@@ -169,22 +172,30 @@ main {
     font-weight: bold;
 }
 
-/* INDEX - LIBRARY DESIGN */
+/* Hero Section */
 .welcome-section {
+    background-color:   #F5FBF3;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 40px 20px;
-    margin-bottom: 40px;
+    gap: 40px;
+    width:100vw;
+    margin: 0 -20px;
+    padding: 100px 20px; 
+    margin-bottom: 100px; 
+    box-sizing:border-box;
+    position:relative;
+    left:50%;
+    right:50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
 
 .caption {
     flex: 1;
     min-width: 280px;
+    margin-left: 220px;
 }
 
 .caption h2 {
@@ -202,12 +213,87 @@ main {
     flex: 1;
     min-width: 280px;
     text-align: center;
+    overflow: visible;
+}
+
+
+.highlight_heading{
+        color: #E1AA74;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 800;
+}
+
+.caption h1 {
+    font-size: 60px;
+    margin-bottom:15px;
+    color: #000000;
+    font-family: 'Raleway', sans-serif;
+}
+
+.caption p {
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    color: #4F4F4F;
+    margin-bottom: 25px; /* Increased bottom margin */
+    line-height: 1.3; /* Improved line height for better readability */
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+/* Hero CTA Buttons */
+.hero-cta {
+    display: flex;
+    gap: 15px;
+    margin-top: 45px; /* Increased margin-top for better spacing */
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.hero-button.signup-btn {
+    background-color: #53933D;
+    color: white;
+    border: 2px solid #53933D;
+}
+
+.hero-button.signup-btn:hover {
+    background-color: #d49b61;
+    border-color: #d49b61;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(225, 170, 116, 0.3);
+}
+
+.hero-button.login-btn {
+    background-color: transparent;
+    color: #53933D;
+    border: 2px solid #53933D;
+}
+
+.hero-button.login-btn:hover {
+    background-color: #d49b61;
+    color: white;
+    border: 2px solid #d49b61;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .image-container img {
-    max-width: 100%;
+    max-width: 150%;
     height: auto;
     border-radius: 8px;
+    margin-left: -250px;
+    transform: scale(1.2);
+    transform-origin: center right;
+    box-shadow: none; /* Remove the existing box-shadow */
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2)); /* Add a drop-shadow filter instead */
 }
 
 .lend-section {
@@ -451,4 +537,123 @@ footer .container {
 
 footer p {
     margin: 0;
+}
+
+/* Main Menu Navigation */
+.main-menu {
+    display: flex;
+    gap: 20px;
+    margin-right: 25px;
+}
+
+.main-menu a {
+    font-family: 'Raleway', sans-serif;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.3s;
+    padding: 5px 0;
+}
+
+.main-menu a:hover {
+    color: #53933D;
+    border-bottom: 2px solid #53933D;
+}
+
+/* Features Section */
+.features-section {
+    padding: 60px 0;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin: 40px 0;
+}
+
+.features-section h2 {
+    margin-bottom: 40px;
+    color: #333;
+    font-size: 2em;
+}
+
+.features-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    margin-bottom: 10px;
+    color: #2ecc71;
+}
+
+.feature-card p {
+    color: #666;
+}
+
+/* About Section */
+.about-section {
+    padding: 60px 0;
+    background-color: #ffffff;
+    margin: 40px 0;
+}
+
+.about-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+    font-size: 2em;
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.about-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.about-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-text h3 {
+    color: #2ecc71;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.about-text p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
