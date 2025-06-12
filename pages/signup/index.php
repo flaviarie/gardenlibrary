@@ -1,9 +1,9 @@
 <?php
-// Define the base path for all includes and assets
-$base_path = '../../';
+// Include the configuration file
+require_once('../../config/config.php');
 
 // Include the header
-include($base_path . 'includes/header.php');
+include($include_path . 'includes/header.php');
 ?>
 
 <main>
@@ -25,5 +25,5 @@ include($base_path . 'includes/header.php');
 
 <?php
 // Include the footer
-include($base_path . 'includes/footer.php');
+include($include_path . 'includes/footer.php');
 ?>

@@ -1,10 +1,10 @@
 <?php
-// Define the base path for all includes and assets
-$base_path = '../../';
+// Include the configuration file
+require_once('../../config.php');
 
 // Include the header and database
-include($base_path . 'includes/header.php');
-include($base_path . 'includes/db.php');
+include($include_path . 'includes/header.php');
+include($include_path . 'includes/db.php');
 
 // Borrow request
 if (isset($_GET['borrow'])) {
@@ -59,5 +59,5 @@ if (isset($_GET['borrow'])) {
 
 <?php
 // Include the footer
-include($base_path . 'includes/footer.php');
+include($include_path . 'includes/footer.php');
 ?>

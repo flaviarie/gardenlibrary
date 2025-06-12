@@ -1,0 +1,73 @@
+/* Special fixes for visibility issues */
+
+/* Make sure paragraph text is visible in about section */
+#about-us p {
+    position: relative;
+    z-index: 5;
+    color: #333 !important; /* Enforce dark text color */
+    opacity: 1 !important; /* Ensure full opacity */
+    text-shadow: 0 0 1px rgba(255,255,255,0.5); /* Add subtle text shadow to improve contrast */
+}
+
+/* Make text slightly bigger for better readability */
+#about-us p.text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+/* Enhanced background for About Us section */
+section#about-us {
+    background: linear-gradient(to bottom right, #F9FCF6, #E8F4E2) !important;
+    position: relative;
+    z-index: 1;
+    box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Add subtle pattern overlay for visual interest */
+section#about-us::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2353933D' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Adjustments for smaller hero section */
+.hero-library-bg {
+    min-height: 60vh !important;
+}
+
+/* Improve heading styling in about section */
+#about-us h2 {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+#about-us h2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background-color: var(--color-secondary, #E1AA74);
+    border-radius: 1.5px;
+}
+
+/* Create a softer lighting effect */
+section#about-us::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 60%),
+                radial-gradient(circle at bottom left, rgba(225, 170, 116, 0.1) 0%, rgba(225, 170, 116, 0) 60%);
+    z-index: -1;
+}

@@ -1,9 +1,15 @@
+/* Base Styles */
 body, header {
     font-family: 'Raleway';
     margin: 0;
     padding: 0;
 }
 
+main {
+    padding: 0;
+}
+
+/* Header Section */
 header {
     background-color: #ffffff;
     color: rgb(0, 0, 0);
@@ -46,6 +52,7 @@ header .col-6:last-child .auth-links {
     justify-content: flex-end;
 }
 
+/* Logo Styles */
 .logo {
     display: flex;
     align-items: center;
@@ -71,12 +78,7 @@ header .col-6:last-child .auth-links {
     margin-left: -10px;
 }
 
-main {
-    padding: 0;
-}
-
-/* LOGIN AND SIGNUP BUTTON DESIGN */
-
+/* Auth Links Section */
 .auth-links {
     display: flex;
     gap: 15px;
@@ -111,8 +113,7 @@ main {
     background-color: #E1AA74;
 }
 
-/* lOGIN AND SIGNUP PAGES DESIGN */
-
+/* Authentication Pages */
 .auth-container {
     max-width: 400px;
     margin: 80px auto;
@@ -174,20 +175,20 @@ main {
 
 /* Hero Section */
 .welcome-section {
-    background-color:   #F5FBF3;
+    background-color: #F5FBF3;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 40px;
-    width:100vw;
+    width: 100vw;
     margin: 0 -20px;
     padding: 100px 20px; 
     margin-bottom: 100px; 
-    box-sizing:border-box;
-    position:relative;
-    left:50%;
-    right:50%;
+    box-sizing: border-box;
+    position: relative;
+    left: 50%;
+    right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
 }
@@ -198,6 +199,13 @@ main {
     margin-left: 220px;
 }
 
+.caption h1 {
+    font-size: 60px;
+    margin-bottom: 15px;
+    color: #000000;
+    font-family: 'Raleway', sans-serif;
+}
+
 .caption h2 {
     font-size: 2em;
     margin-bottom: 10px;
@@ -205,8 +213,19 @@ main {
 }
 
 .caption p {
-    font-size: 1.1em;
-    color: #555;
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    color: #4F4F4F;
+    margin-bottom: 25px;
+    line-height: 1.3; 
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+.highlight_heading {
+    color: #E1AA74;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
 }
 
 .image-container {
@@ -216,35 +235,22 @@ main {
     overflow: visible;
 }
 
-
-.highlight_heading{
-        color: #E1AA74;
-        font-family: 'Raleway', sans-serif;
-        font-weight: 800;
-}
-
-.caption h1 {
-    font-size: 60px;
-    margin-bottom:15px;
-    color: #000000;
-    font-family: 'Raleway', sans-serif;
-}
-
-.caption p {
-    font-family: 'Raleway', sans-serif;
-    font-size: 24px;
-    color: #4F4F4F;
-    margin-bottom: 25px; /* Increased bottom margin */
-    line-height: 1.3; /* Improved line height for better readability */
-    letter-spacing: 2px;
-    font-weight: 500;
+.image-container img {
+    max-width: 150%;
+    height: auto;
+    border-radius: 8px;
+    margin-left: -250px;
+    transform: scale(1.2);
+    transform-origin: center right;
+    box-shadow: none; 
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2)); 
 }
 
 /* Hero CTA Buttons */
 .hero-cta {
     display: flex;
     gap: 15px;
-    margin-top: 45px; /* Increased margin-top for better spacing */
+    margin-top: 45px;
 }
 
 .hero-button {
@@ -285,17 +291,7 @@ main {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.image-container img {
-    max-width: 150%;
-    height: auto;
-    border-radius: 8px;
-    margin-left: -250px;
-    transform: scale(1.2);
-    transform-origin: center right;
-    box-shadow: none; /* Remove the existing box-shadow */
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2)); /* Add a drop-shadow filter instead */
-}
-
+/* Lend Section */
 .lend-section {
     text-align: center;
     background-color: #f0f5e7;
@@ -331,7 +327,7 @@ main {
     background-color: #a6dba4;
 }
 
-/* LEND PAGE */
+/* Lend Page */
 .lend-page {
     text-align: center;
     padding: 60px 20px;
@@ -348,6 +344,7 @@ main {
     color: #666;
 }
 
+/* Book Display Section */
 .book-table {
     display: flex;
     flex-wrap: wrap;
@@ -398,17 +395,16 @@ main {
     background-color: #219150;
 }
 
-/* 12-COLUMN GRID SYSTEM */
+
+/* Layout/Grid System */
 .container {
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
     padding: 0;
     position: relative;
-
 }
 
-/* Add grid overlay for development (can be toggled with JavaScript) */
 .container.show-grid:before {
     content: "";
     position: absolute;
@@ -440,7 +436,7 @@ main {
     padding-right: 10px;
 }
 
-/* Column classes */
+/* Column Classes */
 .col-1 { width: 8.333333%; }
 .col-2 { width: 16.666667%; }
 .col-3 { width: 25%; }
@@ -454,7 +450,7 @@ main {
 .col-11 { width: 91.666667%; }
 .col-12 { width: 100%; }
 
-/* Offset classes */
+/* Offset Classes */
 .offset-1 { margin-left: 8.333333%; }
 .offset-2 { margin-left: 16.666667%; }
 .offset-3 { margin-left: 25%; }
@@ -467,58 +463,13 @@ main {
 .offset-10 { margin-left: 83.333333%; }
 .offset-11 { margin-left: 91.666667%; }
 
-/* Center alignment helper */
 .center-col {
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Responsive breakpoints */
-@media (max-width: 768px) {
-    [class*="col-"] {
-        width: 100%;
-    }
-    [class*="offset-"] {
-        margin-left: 0;
-    }
-    header {
-        padding: 10px 0;
-    }
-    header .container {
-        padding: 0 15px;
-    }
-    header .row {
-        flex-direction: column;
-        gap: 15px;
-    }
-    header .col-6 {
-        width: 100%;
-        justify-content: center;
-    }
-    header .col-6:last-child .auth-links {
-        justify-content: center;
-    }
-    .logo {
-        justify-content: center;
-    }
-    .logo h1 {
-        font-size: 1.3rem;
-    }
-    .welcome-section {
-        flex-direction: column;
-        text-align: center;
-    }
 
-    .caption h2 {
-        font-size: 1.5em;
-    }
-
-    .caption p {
-        font-size: 1em;
-    }
-}
-
-/* Footer styling */
+/* Footer Section */
 footer {
     background-color: rgb(49, 78, 55);
     color: white;
@@ -560,100 +511,193 @@ footer p {
     border-bottom: 2px solid #53933D;
 }
 
-/* Features Section */
-.features-section {
-    padding: 60px 0;
-    text-align: center;
-    background-color: #f9f9f9;
-    margin: 40px 0;
+/* Additional styles to ensure full-width sections work properly */
+body {
+    overflow-x: hidden;
 }
 
-.features-section h2 {
-    margin-bottom: 40px;
-    color: #333;
-    font-size: 2em;
+/* Hero section with responsive library background and animations */
+@keyframes bgFade {
+    0%, 33% { background-image: url('../img/hero/new-library-hero.jpg'); }
+    33.01%, 66% { background-image: url('../img/library-background-alt.jpg'); }
+    66.01%, 100% { background-image: url('../img/library-background-2.jpg'); }
 }
 
-.features-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-
-.feature-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 25px;
-    width: 250px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-}
-
-.feature-card:hover {
-    transform: translateY(-10px);
-}
-
-.feature-card img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 20px;
-}
-
-.feature-card h3 {
-    margin-bottom: 10px;
-    color: #2ecc71;
-}
-
-.feature-card p {
-    color: #666;
-}
-
-/* About Section */
-.about-section {
-    padding: 60px 0;
-    background-color: #ffffff;
-    margin: 40px 0;
-}
-
-.about-section h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #333;
-    font-size: 2em;
-}
-
-.about-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    align-items: flex-start;
-}
-
-.about-image {
-    flex: 1;
-    min-width: 300px;
-}
-
-.about-image img {
+.hero-library-bg {
+    position: relative;
+    background-image: url('../img/library-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    z-index: 0;
+    animation: bgFade 30s ease-in-out infinite;
+    animation-delay: 5s;
 }
 
-.about-text {
-    flex: 1;
-    min-width: 300px;
+/* Different background image for mobile devices */
+@media (max-width: 768px) {
+    .hero-library-bg {
+        background-image: url('../img/library-background-alt.jpg');
+        background-position: center center;
+        min-height: 100vh;
+    }
 }
 
-.about-text h3 {
-    color: #2ecc71;
-    margin-top: 25px;
-    margin-bottom: 10px;
+/* Typography improvements with animations */
+.lg\:col-span-7 h1 {
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.about-text p {
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 20px;
+.lg\:col-span-7 p {
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-cta {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    margin-top: 45px;
+}
+
+#book-showcase {
+    opacity: 0;
+    transform: translateX(20px) rotate(1deg);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.hero-library-bg .inline-block {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-library-bg .flex-space-x-2 {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.text-secondary {
+    color: #E1AA74;
+    position: relative;
+    text-shadow: 0 0 10px rgba(225, 170, 116, 0.7);
+    animation: glow 3s ease-in-out infinite alternate;
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 10px rgba(225, 170, 116, 0.7);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(225, 170, 116, 0.9), 0 0 30px rgba(225, 170, 116, 0.5), 0 0 45px rgba(225, 170, 116, 0.3);
+    }
+}
+
+/* Animations for floating elements */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Particles styling */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Book tilting animation */
+@keyframes tilt {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.animate-tilt {
+    animation: tilt 6s ease-in-out infinite;
+}
+
+/* 3D perspective effects */
+.perspective-3d {
+    perspective: 1000px;
+}
+
+.transform-3d {
+    transform-style: preserve-3d;
+}
+
+/* Enhance glass effect */
+.glass-effect {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    [class*="col-"] {
+        width: 100%;
+    }
+    [class*="offset-"] {
+        margin-left: 0;
+    }
+    header {
+        padding: 10px 0;
+    }
+    header .container {
+        padding: 0 15px;
+    }
+    header .row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    header .col-6 {
+        width: 100%;
+        justify-content: center;
+    }
+    header .col-6:last-child .auth-links {
+        justify-content: center;
+    }
+    .logo {
+        justify-content: center;
+    }
+    .logo h1 {
+        font-size: 1.3rem;
+    }
+    .welcome-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    .caption h2 {
+        font-size: 1.5em;
+    }
+    .caption p {
+        font-size: 1em;
+    }
 }

@@ -1,11 +1,13 @@
 <?php
-// Define the base path for all includes and assets
-$base_path = '../../';
+// Include the configuration file
+require_once('../../config/config.php');
 
 // Include the header
-include($base_path . 'includes/header.php');
+include($include_path . 'includes/header.php');
 ?>
 
+<!-- Add login-specific CSS -->
+<link rel="stylesheet" href="<?php echo $site_url; ?>pages/login/assets/css/style.css?v=<?php echo time(); ?>">
 <main>
     <div class="container">
         <div class="auth-container">
@@ -16,12 +18,12 @@ include($base_path . 'includes/header.php');
                 <input type="submit" value="Login">
             </form>
             <p>Don't have an account? <a href="../signup/index.php">Sign up here</a></p>
-            <a href="../../index.php" class="home-link">Back to Home</a>
+            <a href="<?php echo $site_url; ?>index.php" class="home-link">Back to Home</a>
         </div>
     </div>
 </main>
 
 <?php
 // Include the footer
-include($base_path . 'includes/footer.php');
+include($include_path . 'includes/footer.php');
 ?>

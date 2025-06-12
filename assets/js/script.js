@@ -1,6 +1,27 @@
 // Smooth scrolling for anchor links
 document.addEventListener('DOMContentLoaded', function() {
-    const menuLinks = document.querySelectorAll('.main-menu a[href*="#"]');
+    // Mobile menu functionality
+    const mobileMenuButton = document.querySelector('button.md\\:hidden');
+    const mobileMenu = document.createElement('div');
+    mobileMenu.className = 'mobile-menu hidden fixed top-16 left-0 right-0 bg-white shadow-md py-4 z-50';
+    mobileMenu.innerHTML = `        <div class="container mx-auto px-4 flex flex-col space-y-3">
+            <a href="${window.location.pathname}" class="block py-2 px-4 hover:bg-light rounded transition-colors">Home</a>
+            <a href="${window.location.pathname}#features" class="block py-2 px-4 hover:bg-light rounded transition-colors">Features</a>
+            <a href="${window.location.pathname}#how-it-works" class="block py-2 px-4 hover:bg-light rounded transition-colors">How It Works</a>
+            <a href="${window.location.pathname}#about-us" class="block py-2 px-4 hover:bg-light rounded transition-colors">About</a>
+        </div>
+    `;
+    
+    document.body.appendChild(mobileMenu);
+    
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+    
+    // Smooth scroll
+    const menuLinks = document.querySelectorAll('a[href*="#"]');
     
     for (const link of menuLinks) {
         link.addEventListener('click', function(e) {
@@ -17,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         top: targetElement.offsetTop - 80, // Offset for header
                         behavior: 'smooth'
                     });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
                 }
             }
         });
