@@ -1,0 +1,28 @@
+/* Sticky footer */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-content {
+    flex: 1 0 auto;
+    margin-bottom: 0; /* Clear any bottom margin */
+    padding-bottom: 0; /* Clear any bottom padding */
+}
+
+main {
+    position: relative;
+    z-index: 2;
+}
+
+footer {
+    flex-shrink: 0;
+    margin-top: 0; /* Remove auto margin */
+    position: relative;
+    z-index: 1;
+}

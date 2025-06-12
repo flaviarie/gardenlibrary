@@ -4,7 +4,7 @@
 // Detect whether we're on a development or production server
 if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
     // Local development environment
-    $site_url = '/TB21/Final Project/2/gardenlibrary/'; // For URLs in the browser
+    $site_url = '/TB21/Final Project/4/gardenlibrary/'; // For URLs in the browser
     $base_path = $_SERVER['DOCUMENT_ROOT'] . $site_url; // Absolute file system path for includes
     
     // Define a relative path for includes from subdirectories

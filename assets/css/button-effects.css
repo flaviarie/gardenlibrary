@@ -1,0 +1,36 @@
+/* Button gradient hover effects */
+.hover-gradient:hover {
+    background: linear-gradient(135deg, #53933D 0%, #E1AA74 100%) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-transition {
+    transition: all 0.3s ease !important;
+}
+
+/* Force header styles to be consistent across all pages */
+header {
+    background-color: #fff !important;
+    padding: 1rem 0 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+header nav a {
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+    color: #1f2937 !important;
+}
+
+header nav a:hover {
+    color: #53933D !important;
+}
+
+/* Force signup button styles */
+header a.bg-primary {
+    background-color: #53933D !important;
+    color: white !important;
+    padding: 0.625rem 1.25rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}

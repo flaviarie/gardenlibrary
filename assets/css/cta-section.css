@@ -1,0 +1,55 @@
+/* CTA section styling - matched to About section */
+#cta-section {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+    background-color: #fcfcfc; /* Light background like the About section */
+    overflow: hidden;
+}
+
+#cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('../img/books.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.03; /* Very subtle texture */
+    z-index: -1;
+}
+
+#cta-section .container {
+    position: relative;
+    z-index: 5;
+    padding: 2.5rem 0; /* Slightly more padding like the About section */
+}
+
+/* Add some depth like the About section */
+#cta-section {
+    box-shadow: none; /* Remove shadow to match About section */
+}
+
+/* Make the CTA button more prominent */
+#cta-section a {
+    box-shadow: 0 10px 25px rgba(83, 147, 61, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add shine effect to the button */
+#cta-section a::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    transition: all 0.6s;
+}
+
+#cta-section a:hover::after {
+    left: 120%;
+}

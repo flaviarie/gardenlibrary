@@ -28,8 +28,12 @@
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/hero-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/visibility-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/about-section-enhancements.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-section.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-animations.css?v=<?php echo time(); ?>"><script src="<?php echo $site_url; ?>assets/js/particles.min.js"></script>
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-section.css?v=<?php echo time(); ?>">    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-animations.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/button-effects.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/about-section-size.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/sticky-footer.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/cta-section.css?v=<?php echo time(); ?>">
+    <script src="<?php echo $site_url; ?>assets/js/particles.min.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/script.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/hero-animation.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/visibility-fix.js"></script>
@@ -43,14 +47,15 @@
                         <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Library Logo" class="w-12 h-12 object-cover rounded">
                         <h1 class="text-2xl font-bold">Garden Library</h1>
                     </div>
-                </div>
-                <div class="flex items-center space-x-6">                    <nav class="hidden md:flex items-center space-x-6">
-                        <a href="<?php echo $site_url; ?>index.php" class="text-gray-800 hover:text-primary transition-colors">Home</a>
-                        <a href="<?php echo $site_url; ?>index.php#features" class="text-gray-800 hover:text-primary transition-colors">Features</a>
-                        <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors">How It Works</a>
-                        <a href="<?php echo $site_url; ?>index.php#about-us" class="text-gray-800 hover:text-primary transition-colors">About</a>
+                </div>                <div class="flex items-center space-x-6">                    
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="<?php echo $site_url; ?>index.php" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Home</a>
+                        <a href="<?php echo $site_url; ?>index.php#features" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Features</a>
+                        <a href="<?php echo $site_url; ?>index.php#about-us" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">About</a>
+                        <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">How It Works</a>
+                        
                     </nav>
-                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold hover:bg-secondary transition-colors duration-300">SIGN UP NOW</a>
+                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold btn-transition hover-gradient">SIGN UP NOW</a>
                     
                     <!-- Mobile menu button -->
                     <button class="md:hidden text-gray-800 focus:outline-none">

@@ -4,6 +4,8 @@ body {
     padding: 0;
 }
 
+/* Use global header styles */
+/*
 header {
     background-color: #356d41;
     color: white;
@@ -12,6 +14,7 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+*/
 
 header .container {
     width: 100%;

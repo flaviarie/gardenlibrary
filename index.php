@@ -6,7 +6,8 @@ require_once('./config/config.php');
 include($include_path . 'includes/header.php');
 ?>
 
-<main>    <!-- Hero section with library background image -->     
+<div class="site-content">
+<main><!-- Hero section with library background image -->     
     <div class="row">
         <div class="col-12">                
             <section class="hero-library-bg relative py-16 md:py-20 lg:py-24 overflow-hidden min-h-[60vh]">                   
@@ -222,7 +223,8 @@ include($include_path . 'includes/header.php');
     </div>
 
 <div class="row">
-    <div class="col-12">          <section id="about-us" class="py-20 md:py-28 lg:py-32 relative">
+    <div class="col-12">          
+        <section id="about-us" class="py-20 md:py-28 lg:py-32 relative">
             <!-- Enhanced decorative elements for the section -->
             <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full translate-y-1/4 -translate-x-1/4 blur-2xl"></div>
@@ -245,29 +247,18 @@ include($include_path . 'includes/header.php');
                         <p class="text-gray-700 leading-relaxed mb-4 text-lg font-medium">Welcome to the <span class="font-semibold text-primary">Garden Library</span>, your digital gateway to a world of knowledge and imagination. Our library is designed to provide students with easy access to a vast collection of books, journals, and resources that cater to diverse interests and academic needs.</p>
                         
                         <p class="text-gray-700 leading-relaxed mb-4 text-lg font-medium">Our mission is to foster a love for reading and learning by providing a user-friendly platform that makes accessing educational materials simple and enjoyable. With our intuitive interface, finding and borrowing books has never been easier.</p>
-                        
-                        <p class="text-gray-700 leading-relaxed mb-6 text-lg font-medium">We believe that knowledge should bloom freely, just like plants in a garden. That's why we've created this digital space where ideas can flourish and minds can grow.</p>
-                        
-                        <div class="flex flex-wrap gap-4 pt-4">
-                            <a href="./pages/signup/index.php" class="inline-flex items-center px-6 py-3 bg-primary text-white font-semibold rounded-lg transition-all duration-300 hover:bg-secondary transform hover:-translate-y-1 hover:shadow-xl">
-                                <span>Join Our Community</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </a>
-                            <a href="#features" class="inline-flex items-center px-6 py-3 bg-white text-primary font-semibold rounded-lg border border-primary transition-all duration-300 hover:bg-light hover:shadow-md">
-                                Explore Features
-                            </a>
-                        </div>
+                          <p class="text-gray-700 leading-relaxed mb-6 text-lg font-medium">We believe that knowledge should bloom freely, just like plants in a garden. That's why we've created this digital space where ideas can flourish and minds can grow.</p>
                     </div>
                 </div>
             </div>
-        </section>    </div>
+        </section>    
+    </div>
 </div>
 
 <!-- How It Works Section with Timeline -->
 <div class="row">
-    <div class="col-12">        <section id="how-it-works" class="py-16 md:py-24 bg-white relative overflow-hidden timeline-bg-pattern">
+    <div class="col-12">        
+        <section id="how-it-works" class="py-16 md:py-24 bg-white relative overflow-hidden timeline-bg-pattern">
             <!-- Decorative elements -->
             <div class="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-y-1/2 translate-x-1/2 blur-3xl"></div>
@@ -277,7 +268,7 @@ include($include_path . 'includes/header.php');
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 relative">
                     <span class="relative z-10">How It <span class="relative text-primary">Works</span></span>
-                    <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-secondary rounded-full"></span>
+                    
                 </h2>
                 
                 <!-- Timeline Container -->
@@ -396,26 +387,75 @@ include($include_path . 'includes/header.php');
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Track & Return</h3>
                                 </div>
                             </div>
+                        </div>                    </div>
+                </div>
+            </div>          </section>        
+        <div class="row">
+    <div class="col-12">            <section id="cta-section" class="py-20 md:py-28 lg:py-32 relative overflow-hidden bg-gradient-to-br from-primary/5 via-white to-secondary/5">
+            <!-- Enhanced decorative elements for the section -->
+            <div class="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-[25rem] h-[25rem] bg-secondary/10 rounded-full translate-y-1/4 -translate-x-1/4 blur-3xl"></div>
+            <div class="absolute top-1/2 right-1/4 w-[15rem] h-[15rem] bg-yellow-400/5 rounded-full -translate-y-1/2 blur-2xl"></div>
+            
+            <!-- Book decorations -->
+            <div class="hidden lg:block absolute top-20 left-20 w-16 h-24 bg-primary/30 rounded-r-lg rounded-l-sm transform -rotate-12 border-l-4 border-primary shadow-xl"></div>
+            <div class="hidden lg:block absolute top-24 left-24 w-16 h-20 bg-secondary/30 rounded-r-lg rounded-l-sm transform -rotate-6 border-l-4 border-secondary shadow-xl"></div>
+            <div class="hidden lg:block absolute bottom-20 right-20 w-16 h-24 bg-primary/30 rounded-r-lg rounded-l-sm transform rotate-12 border-l-4 border-primary shadow-xl"></div>
+            <div class="hidden lg:block absolute bottom-24 right-24 w-16 h-20 bg-secondary/30 rounded-r-lg rounded-l-sm transform rotate-6 border-l-4 border-secondary shadow-xl"></div>
+            
+            <div class="container mx-auto px-4 relative">
+                <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12 lg:p-16 max-w-4xl mx-auto border border-white/40 relative overflow-hidden">
+                    <!-- Inner decorative accents -->
+                    <div class="absolute top-0 left-0 w-24 h-24 border-t-8 border-l-8 border-primary/30 rounded-tl-3xl"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 border-b-8 border-r-8 border-secondary/30 rounded-br-3xl"></div>
+                
+                    <div class="text-center relative z-10">
+                        <span class="inline-block px-6 py-2 bg-primary/10 text-primary font-semibold mb-6 rounded-full transform hover:scale-105 transition-transform duration-300">Ready to make borrowing books easier?</span>
+                        
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+                            Sign up and get <span class="relative inline-block text-primary">
+                                INSTANT
+                                <span class="absolute -bottom-1 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-primary rounded-full"></span>
+                            </span> access to your library.
+                        </h2>
+                        
+                        <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">Join thousands of students already enjoying our vast collection of books, journals, and educational resources.</p>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                            <a href="./pages/signup/index.php" class="relative overflow-hidden group px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white text-lg font-bold rounded-xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                                <span class="relative z-10 flex items-center">
+                                    Sign Up Now
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </span>
+                                <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-500"></span>
+                            </a>
+                            
+                            <a href="#features" class="px-8 py-4 border-2 border-primary/30 text-primary font-semibold rounded-xl hover:bg-primary/5 transition-colors duration-300">
+                                Learn More
+                            </a>
+                        </div>
+                        
+                        <!-- Indicators of community -->
+                        <div class="mt-8 flex justify-center items-center">
+                            <div class="flex -space-x-2 mr-4">
+                                <div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center text-white text-xs">JD</div>
+                                <div class="w-8 h-8 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-xs">SM</div>
+                                <div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center text-white text-xs">AK</div>
+                                <div class="w-8 h-8 rounded-full bg-yellow-500 border-2 border-white flex items-center justify-center text-white text-xs">+</div>
+                            </div>
+                            <span class="text-sm text-gray-600">Join <span class="font-medium text-primary">5,000+ students</span> already using Garden Library</span>
                         </div>
                     </div>
-                </div>
-                
-                <!-- CTA button -->
-                <div class="flex justify-center mt-16">
-                    <a href="./pages/signup/index.php" class="inline-flex items-center px-8 py-4 bg-primary text-white font-bold rounded-lg shadow-xl transition-all duration-300 hover:bg-secondary transform hover:-translate-y-1 hover:scale-105 group">
-                        <span>Start Your Journey Today</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
+                </div>            </div>        </section>    
     </div>
 </div>
-
+    </div>
+</div>
 </main>
-
+</div>
+<!-- Removed white space between CTA and footer -->
 <?php
 // Include the footer
 include($include_path . 'includes/footer.php');
