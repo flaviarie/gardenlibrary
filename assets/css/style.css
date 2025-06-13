@@ -651,7 +651,7 @@ body {
     transform-style: preserve-3d;
 }
 
-/* Enhance glass effect */
+/*  glass effect */
 .glass-effect {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -722,4 +722,17 @@ body {
 .btn-cta:focus .btn-hover-effect {
   opacity: 0.8;
   
+}
+
+.bg-primary {
+    background-color: #53933D !important; 
+}
+
+.hover\:bg-secondary:hover {
+    background-color: #f59e0b !important;
+}
+
+
+.transition-all {
+    transition: all 0.3s ease-in-out !important;
 }

@@ -57,7 +57,7 @@
                         <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">How It Works</a>
                         
                     </nav>
-                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold btn-transition hover-gradient">SIGN UP NOW</a>
+                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">SIGN UP NOW</a>
                     
                     <!-- Mobile menu button -->
                     <button class="md:hidden text-gray-800 focus:outline-none">
