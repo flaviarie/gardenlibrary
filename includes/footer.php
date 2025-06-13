@@ -3,10 +3,10 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-6 md:mb-0">
                     <div class="flex items-center justify-center md:justify-start">
-                        <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Library Logo" class="w-12 h-12 object-cover rounded mr-3">
+                        <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Library Logo" class="w-12 h-12 object-cover rounded ">
                         <span class="font-bold text-xl text-gray-800">Garden Library</span>
                     </div>
-                    <p class="mt-3 text-gray-600 text-sm max-w-xs hidden md:block">Your digital gateway to a world of knowledge and imagination.</p>
+                    <p class="mt-3 text-gray-600 text-sm max-w-xs hidden md:block text-left">Your digital gateway to a world of knowledge and imagination.</p>
                 </div>
                 
                 <div class="flex flex-col items-center md:items-end">

@@ -701,3 +701,25 @@ body {
         font-size: 1em;
     }
 }
+
+/* CTA Button Hover Effect - Reusable */
+.btn-cta {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.btn-cta .btn-hover-effect {
+  position: absolute;
+  inset: 0;
+  background-color:#f59e42;
+  opacity: 0;
+  transition: opacity 0.5s;
+  border-radius: inherit;
+  pointer-events: none;
+  filter: blur(2px);
+}
+.btn-cta:hover .btn-hover-effect,
+.btn-cta:focus .btn-hover-effect {
+  opacity: 0.8;
+  
+}

@@ -7,7 +7,7 @@ include($include_path . 'includes/header.php');
 ?>
 
 <div class="site-content">
-<main><!-- Hero section with library background image -->     
+<main> 
     <div class="row">
         <div class="col-12">                
             <section class="hero-library-bg relative py-16 md:py-20 lg:py-24 overflow-hidden min-h-[60vh]">                   
@@ -18,11 +18,14 @@ include($include_path . 'includes/header.php');
                     <!-- Particles container will be injected here by JS -->
                     
                     <div class="container mx-auto px-4 relative z-10">
-                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">                            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">                                <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full mb-3 text-sm border border-white/20">Welcome to the Garden Library</span>                                <h1 class="font-raleway font-bold text-4xl md:text-5xl lg:text-6xl tracking-normal text-white">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">                            
+                            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">                                <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full mb-3 text-sm border border-white/20">Welcome to the Garden Library</span>                                
+                            <h1 class="font-raleway font-bold text-4xl md:text-5xl lg:text-6xl tracking-normal text-white">
                                     Discover New Worlds <br> Through <span class="text-secondary drop-shadow-lg animate-pulse font-extrabold">Literature</span>
-                                </h1>                                <div class="mt-4">
-                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-2">Where books bloom and ideas flourish. Our digital library connects you to a world of resources.</p>
-                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider">From ancient classics to modern bestsellers, academic journals to leisure reading all in one beautiful interface.</p>
+                                </h1>                                
+                                <div class="mt-4">
+                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-2">Where books bloom and ideas flourish. Our digital library connects you to a <br> world of resources.</p>
+                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider">From ancient classics to modern bestsellers, academic journals to leisure reading <br>all in one beautiful interface.</p>
                                 </div>
                                 <div class="flex items-center mt-6 space-x-2">
                                     <div class="flex -space-x-2">
@@ -32,18 +35,18 @@ include($include_path . 'includes/header.php');
                                     </div>
                                     <span class="text-sm text-white/80">Join <span class="text-white font-medium">5,000+ students</span> already using Garden Library</span>
                                 </div>
-                                  <!-- Enhanced CTA Button with pulse effect -->                                <div class="mt-6">
-                                    <a href="./pages/login/index.php" class="relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 z-10">
+                                  <!-- Enhanced CTA Button with pulse effect -->                                
+                                   <div class="mt-6">
+                                    <a href="./pages/login/index.php" class="btn-cta relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 z-10">
+                                        <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Begin Your Journey</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 relative z-10 transform group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
-                                        <span class="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                                        <span class="absolute -inset-px bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 rounded-lg animate-pulse transition-opacity duration-500"></span>
                                     </a>
-                                    <a href="./pages/signup/index.php" class="relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-white/20 transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
+                                    <a href="./pages/signup/index.php" class="btn-cta relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-white/20 transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
+                                        <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Discover More</span>
-                                        <span class="absolute inset-0 bg-white/5 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                                     </a>
                                 </div>
 
@@ -103,8 +106,9 @@ include($include_path . 'includes/header.php');
                                             </div>
                                             
                                             <!-- Interactive button with animated arrow -->
-                                            <a href="#features" class="group inline-flex items-center px-6 py-3 mt-2 bg-primary text-white font-semibold rounded-lg shadow-xl hover:bg-secondary transform hover:-translate-y-1 transition-all duration-300 border border-white/10">
-                                                <span>Discover Our Features</span>
+                                            <a href="#features" class="btn-cta group inline-flex items-center px-6 py-3 mt-2 bg-primary text-white font-semibold rounded-lg shadow-xl hover:bg-secondary transform hover:-translate-y-1 transition-all duration-300 border border-white/10">
+                                                <span class="btn-hover-effect"></span>
+                                                <span class="relative z-10">Discover Our Features</span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                                 </svg>
@@ -415,25 +419,25 @@ include($include_path . 'includes/header.php');
                         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
                             Sign up and get <span class="relative inline-block text-primary">
                                 INSTANT
-                                <span class="absolute -bottom-1 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-primary rounded-full"></span>
+                                <span class="absolute -bottom-1 left-0 w-full h-2 bg-secondary via-secondary to-primary rounded-full"></span>
                             </span> access to your library.
                         </h2>
                         
                         <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">Join thousands of students already enjoying our vast collection of books, journals, and educational resources.</p>
                         
                         <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                            <a href="./pages/signup/index.php" class="relative overflow-hidden group px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white text-lg font-bold rounded-xl shadow-xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                            <a href="./pages/signup/index.php" class="btn-cta relative overflow-hidden group px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/30">
+                                <span class="btn-hover-effect"></span>
                                 <span class="relative z-10 flex items-center">
                                     Sign Up Now
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
                                 </span>
-                                <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-500"></span>
                             </a>
-                            
-                            <a href="#features" class="px-8 py-4 border-2 border-primary/30 text-primary font-semibold rounded-xl hover:bg-primary/5 transition-colors duration-300">
-                                Learn More
+                            <a href="#features" class="btn-cta px-8 py-4 border-2 border-primary/30 text-primary font-semibold rounded-xl hover:bg-primary/5 hover:text-white transition-colors duration-300">
+                                <span class="btn-hover-effect"></span>
+                                <span class="relative z-10">Learn More</span>
                             </a>
                         </div>
                         
@@ -448,14 +452,16 @@ include($include_path . 'includes/header.php');
                             <span class="text-sm text-gray-600">Join <span class="font-medium text-primary">5,000+ students</span> already using Garden Library</span>
                         </div>
                     </div>
-                </div>            </div>        </section>    
+                </div>            
+            </div>        
+        </section>    
     </div>
 </div>
     </div>
 </div>
 </main>
 </div>
-<!-- Removed white space between CTA and footer -->
+
 <?php
 // Include the footer
 include($include_path . 'includes/footer.php');
