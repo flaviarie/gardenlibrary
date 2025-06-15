@@ -239,7 +239,8 @@ include($include_path . 'includes/header.php');
                                         <img src="assets/img/number-1.png" alt="Sign Up" class="timeline-icon w-16 h-16 object-contain">
                                     </div>
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Sign Up</h3>
-                                </div>                            </div>
+                                </div>                            
+                            </div>
                             
                             <div class="md:col-span-5 md:col-start-8">
                                 <p class="text-gray-700 leading-relaxed text-lg">
@@ -253,7 +254,8 @@ include($include_path . 'includes/header.php');
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
-                                </div>                            </div>
+                                </div>                            
+                            </div>
                             
                             <div class="md:col-span-5 md:text-right mb-6 md:mb-0">
                                 <p class="text-gray-700 leading-relaxed text-lg md:text-right">
