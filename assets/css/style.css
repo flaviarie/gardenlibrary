@@ -113,66 +113,6 @@ header .col-6:last-child .auth-links {
     background-color: #E1AA74;
 }
 
-/* Authentication Pages */
-.auth-container {
-    max-width: 400px;
-    margin: 80px auto;
-    padding: 30px;
-    background-color: #f0f5e7;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-.auth-container h2 {
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
-
-.auth-container form input[type="text"],
-.auth-container form input[type="email"],
-.auth-container form input[type="password"] {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.auth-container form input[type="submit"] {
-    background-color: #5b885f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.auth-container form input[type="submit"]:hover {
-    background-color: #a6dba4;
-}
-
-.auth-container p {
-    margin-top: 15px;
-}
-
-.auth-container a {
-    color: #205740;
-    text-decoration: none;
-}
-
-.auth-container a:hover {
-    text-decoration: underline;
-}
-
-.home-link {
-    display: block;
-    margin-top: 20px;
-    color: #2c3e50;
-    font-weight: bold;
-}
-
 /* Hero Section */
 .welcome-section {
     background-color: #F5FBF3;

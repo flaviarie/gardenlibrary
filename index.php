@@ -173,13 +173,10 @@ include($include_path . 'includes/header.php');
                             </div>                            <div class="hidden md:block md:col-span-2"></div>
                         </div>
                     </div>
-                </section>
-            <!-- ===== FEATURE SECTION END ===== -->
+                </section>            <!-- ===== FEATURE SECTION END ===== -->
             </div>
         </div>
-    </div>
-
-<div class="row">
+    </div><div class="row">
     <div class="col-12">          
         <section id="about-us" class="py-20 md:py-28 lg:py-32 relative">
             <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
@@ -200,13 +197,113 @@ include($include_path . 'includes/header.php');
                         <p class="text-gray-700 leading-relaxed mb-6 text-lg font-medium">We believe that knowledge should bloom freely, just like plants in a garden. That's why we've created this digital space where ideas can flourish and minds can grow.</p>
                     </div>
                 </div>
-            </div>
-        </section>      </div>
+            </div>        </section>      </div>
 </div>
+
+        <!-- ===== TEAM SECTION START ===== -->
+        <div class="row">
+            <div class="col-12">
+                <section class="py-16 md:py-20 bg-white relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2353933D" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+                    
+                    <div class="container mx-auto px-4 relative z-10">
+                        <!-- Section Header -->
+                        <div class="text-center mb-16">
+                            <span class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4 text-sm font-medium">Meet Our Leadership</span>
+                            <h2 class="font-raleway font-bold text-3xl md:text-4xl lg:text-5xl text-dark mb-6">
+                                Meet Our <span class="text-primary">Leadership</span>
+                            </h2>
+                            <p class="font-raleway text-lg text-dark/70 max-w-3xl mx-auto leading-relaxed">
+                                We're a dynamic group of individuals who are passionate about what we do<br>
+                                and dedicated to delivering the best results for our library community.
+                            </p>
+                        </div>
+
+                        <!-- Team Grid - 2x2 Layout -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                            
+                            <!-- Team Member 1 - Top Left -->
+                            <div class="flex items-start space-x-6">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=300&fit=crop&crop=face" 
+                                         alt="Leonard Krasner" 
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Leonard Krasner</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Senior Designer</p>
+                                    <p class="text-dark/70 leading-relaxed text-base">
+                                        Leading innovative design solutions that enhance the digital library experience. 
+                                        Passionate about creating intuitive interfaces that connect readers with knowledge effectively.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Team Member 2 - Top Right -->
+                            <div class="flex items-start space-x-6">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=200&h=300&fit=crop&crop=face" 
+                                         alt="Floyd Miles" 
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Floyd Miles</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Principal Designer</p>
+                                    <p class="text-dark/70 leading-relaxed text-base">
+                                        Architect of our visual identity and user experience strategy. 
+                                        Dedicated to making literature accessible and engaging for all community members worldwide.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Team Member 3 - Bottom Left -->
+                            <div class="flex items-start space-x-6">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=300&fit=crop&crop=face" 
+                                         alt="Emily Selman" 
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Emily Selman</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">VP, User Experience</p>
+                                    <p class="text-dark/70 leading-relaxed text-base">
+                                        Champion of user-centered design principles. 
+                                        Ensures our platform delivers seamless experiences that inspire learning and discovery for everyone.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Team Member 4 - Bottom Right -->
+                            <div class="flex items-start space-x-6">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=300&fit=crop&crop=face" 
+                                         alt="Kristin Watson" 
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Kristin Watson</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">VP, Human Resources</p>
+                                    <p class="text-dark/70 leading-relaxed text-base">
+                                        Building and nurturing our talented team culture. 
+                                        Committed to fostering an environment where innovation and collaboration thrive daily.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                       
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- ===== TEAM SECTION END ===== -->
+
 <!-- ===== HOW IT WORKS SECTION START ===== -->
 <div class="row">
     <div class="col-12">        
-        <section id="how-it-works" class="py-16 md:py-24 bg-white relative overflow-hidden timeline-bg-pattern">
+        <section id="how-it-works" class="py-16 md:py-24 bg-gradient-to-br from-light to-white relative overflow-hidden timeline-bg-pattern">
             <div class="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-y-1/2 translate-x-1/2 blur-3xl"></div>
             <div class="absolute top-1/2 right-0 w-32 h-32 bg-secondary/5 rounded-full translate-x-1/2 blur-xl"></div>
@@ -370,8 +467,7 @@ include($include_path . 'includes/header.php');
                             </div>
                             <span class="text-sm text-gray-600">Join <span class="font-medium text-primary">5,000+ students</span> already using Garden Library</span>                        </div>
                     </div>
-                </div>            
-            </div>
+                </div>              </div>
         <!-- ===== CTA SECTION END ===== -->        
         </section>    
     </div>

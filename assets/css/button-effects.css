@@ -1,13 +1,3 @@
-/* Button gradient hover effects */
-.hover-gradient:hover {
-    background: linear-gradient(135deg, #53933D 0%, #E1AA74 100%) !important;
-    transition: all 0.3s ease !important;
-}
-
-.btn-transition {
-    transition: all 0.3s ease !important;
-}
-
 /* Force header styles to be consistent across all pages */
 header {
     background-color: #fff !important;

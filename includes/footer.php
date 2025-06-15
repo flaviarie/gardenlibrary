@@ -6,7 +6,7 @@
                         <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Library Logo" class="w-12 h-12 object-cover rounded ">
                         <span class="font-bold text-xl text-gray-800">Garden Library</span>
                     </div>
-                    <p class="mt-3 text-gray-600 text-sm max-w-xs hidden md:block text-left">Your digital gateway to a world of knowledge and imagination.</p>
+                    <p class="mt-3 text-gray-600 text-sm max-w-xs hidden md:block text-left">Your digital gateway to a world of <br> knowledge and imagination.</p>
                 </div>
                 
                 <div class="flex flex-col items-center md:items-end">
