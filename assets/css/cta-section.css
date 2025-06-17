@@ -22,7 +22,7 @@
 #cta-section .container {
     position: relative;
     z-index: 5;
-    padding: 2.5rem 0; /* Slightly more padding like the About section */
+    padding: 80px 0; /* 80px top and bottom padding for balance */
 }
 
 /* Add some depth like the About section */
