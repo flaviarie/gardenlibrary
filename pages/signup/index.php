@@ -11,7 +11,7 @@ require_once('../../config/config.php');
     <title>Sign Up - Garden Library</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../../assets/img/LogoCat.png">
+    <link rel="icon" type="image/png" href="<?php echo asset_url('assets/img/LogoCat.png'); ?>">
     
     <!-- Google Fonts - Raleway -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,7 +65,7 @@ require_once('../../config/config.php');
     <div class="absolute inset-0 bg-gradient-to-br from-garden-900/60 via-garden-800/50 to-garden-900/70"></div>
       <div class="relative z-10 w-full max-w-md">        <!-- Logo and Title -->
         <div class="flex items-center justify-center mb-8 space-x-3">
-            <img src="../../assets/img/LogoCat.png" alt="Garden Library Logo" class="w-16 h-16 drop-shadow-lg">
+            <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Garden Library Logo" class="w-16 h-16 drop-shadow-lg">
             <h1 class="text-2xl font-bold text-white drop-shadow-lg">ELibrary</h1>
         </div>
         

@@ -1,20 +1,25 @@
 <?php
 
 
-// Detect whether we're on a development or production server
-if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
-    // Local development environment
-    $site_url = '/TB21/Final Project/4/gardenlibrary/'; // For URLs in the browser
-    $base_path = $_SERVER['DOCUMENT_ROOT'] . $site_url; // Absolute file system path for includes
-    
-    // Define a relative path for includes from subdirectories
-    $include_path = dirname(dirname(__FILE__)) . '/'; // This gets the directory of the current file (config.php)
+//Auto detect base path
+$script_path = str_replace('\\', '/',dirname($_SERVER['SCRIPT_NAME']));
+
+$path_parts = explode('/', trim($script_path, '/'));
+$project_index = array_search('gardenlibrary', $path_parts);
+if ($project_index !== false){
+    $project_path = '/' . implode('/', array_slice($path_parts, 0, $project_index + 1)) . '/';
 } else {
-    // Production environment
-    // Update these values when you deploy to your production server
-    $site_url = '/'; // This would be the URL path on your production server, e.g. '/gardenlibrary/'
-    $base_path = $_SERVER['DOCUMENT_ROOT'] . $site_url; // Absolute file system path
-    $include_path = dirname(__FILE__) . '/'; // This gets the directory of the current file
+    $project_path = '/TB21/Final Project/garden-library/';
+}
+
+
+$site_url = $project_path;
+$base_path = $_SERVER['DOCUMENT_ROOT'] . $site_url;
+$include_path = dirname(dirname(__FILE__)) . '/';
+
+function asset_url($path) {
+    global $site_url;
+    return $site_url . ltrim($path, '/');
 }
 
 // Database connection settings

@@ -108,7 +108,7 @@ require_once('../../config/config.php');
                 <!-- Logo section -->
                 <div class="mb-8">
                     <h1 class="text-5xl font-extrabold text-primary mb-2 tracking-tight whitespace-nowrap flex items-center justify-center gap-3">
-                        <img src="../../assets/img/LogoCat.png" alt="Library Cat" class="w-12 h-12">
+                        <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Library Cat" class="w-12 h-12">
                         ELibrary
                     </h1>
                     <p class="text-dark/70 text-2xl font-medium">
