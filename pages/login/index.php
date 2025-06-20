@@ -6,7 +6,12 @@ require_once('../../config/config.php');
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Login - Garden Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Login - Garden Library</title>
+    <!-- Google Fonts - Raleway -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
     <link rel="shortcut icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
@@ -18,7 +23,7 @@ require_once('../../config/config.php');
                 extend: {
 
                     fontFamily: {
-                        'raleway': ['Raleway'],
+                        'raleway': ['Raleway', 'sans-serif'],
                     },
                     
                     colors: {
@@ -118,7 +123,7 @@ require_once('../../config/config.php');
                 
                 <!-- Sign in form -->
                 <div class="space-y-6">
-                    <h2 class="text-3xl font-semibold text-primary mb-8">
+                    <h2 class="text-2xl font-raleway font-semibold text-primary mb-8 ">
                         Sign In
                     </h2>
                     
@@ -156,7 +161,7 @@ require_once('../../config/config.php');
                     
                     <!-- Auth links -->
                     <div class="mt-8 space-y-4">
-                        <p class="text-dark/70 text-sm">
+                        <p class="text-dark/70 text-xl;">
                             Don't have an account? 
                             <a href="../signup/index.php" class="text-primary font-medium hover:text-secondary transition-colors duration-300 hover:underline">
                                 Sign up here
@@ -165,7 +170,7 @@ require_once('../../config/config.php');
                         
                         <a 
                             href="<?php echo $site_url; ?>index.php" 
-                            class="inline-block text-secondary text-sm mt-3 opacity-80 hover:opacity-100 transition-opacity duration-300"
+                            class="inline-block text-secondary text-xl mt-3 opacity-80 hover:opacity-100 transition-opacity duration-300"
                         >
                             ← Back to Home
                         </a>

@@ -63,7 +63,8 @@ require_once('../../config/config.php');
     
     <!-- Overlay for better text readability -->
     <div class="absolute inset-0 bg-gradient-to-br from-garden-900/60 via-garden-800/50 to-garden-900/70"></div>
-      <div class="relative z-10 w-full max-w-md">        <!-- Logo and Title -->
+      <div class="relative z-10 w-full max-w-md">        
+        <!-- Logo and Title -->
         <div class="flex items-center justify-center mb-8 space-x-3">
             <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Garden Library Logo" class="w-16 h-16 drop-shadow-lg">
             <h1 class="text-2xl font-bold text-white drop-shadow-lg">ELibrary</h1>

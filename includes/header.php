@@ -7,7 +7,8 @@
 
     <link rel="icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
     <link rel="shortcut icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>      <script>
+    <script src="https://cdn.tailwindcss.com"></script>      
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -25,11 +26,15 @@
                     }
                 }
             }
-        }    </script>    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/style.css?v=<?php echo time(); ?>">
+        }    
+        </script>    
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/hero-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/visibility-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/about-section-enhancements.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-section.css?v=<?php echo time(); ?>">    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-animations.css?v=<?php echo time(); ?>">    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/button-effects.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-section.css?v=<?php echo time(); ?>">    
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/timeline-animations.css?v=<?php echo time(); ?>">    
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/button-effects.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/sticky-footer.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/cta-section.css?v=<?php echo time(); ?>">
     <script src="<?php echo $site_url; ?>assets/js/particles.min.js"></script>
@@ -41,20 +46,24 @@
 <body class="font-raleway bg-white">
     <header class="py-4 shadow-sm bg-white">
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center">                    <div class="flex items-center">
+            <div class="flex justify-between items-center">                    
+                <div class="flex items-center">
                     <div class="flex items-center space-x-3">
                         <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Garden Library Logo" class="w-10 h-10 object-cover rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
                         <h1 class="text-2xl font-bold text-primary">Garden Library</h1>
                     </div>
                 </div>
-                <div class="flex items-center space-x-6">                      <nav class="hidden md:flex items-center space-x-6">
+                <div class="flex items-center space-x-6">                      
+                    <nav class="hidden md:flex items-center space-x-6">
                         <a href="<?php echo $site_url; ?>index.php" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Home</a>
                         <a href="<?php echo $site_url; ?>index.php#features" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Explore Library</a>
                         <a href="<?php echo $site_url; ?>index.php#about-us" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Our Vision</a>
                         <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Begin Journey</a>
                         
                     </nav>
-                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">SIGN UP NOW</a>
+                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">SIGN UP NOW
+
+                    </a>
                     
                     
                     <button class="md:hidden text-gray-800 focus:outline-none">
