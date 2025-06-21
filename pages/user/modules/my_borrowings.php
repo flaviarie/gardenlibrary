@@ -1,16 +1,20 @@
 <?php
-// User Module: My Borrowings
-// Displays user's borrowed books, due dates, and borrowing history
+// Page name
+$page_title = 'My Borrowings';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/user_header.php';
+?>
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">My Borrowings</h2>
 
-// Borrowing management functions will be implemented here
+        <!-- Add your borrowing management content here -->
+        <p class="text-gray-600">This is the borrowing management page. Add your borrowing management functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/user_footer.php';
 ?>

@@ -1,16 +1,20 @@
 <?php
-// Admin Module: Reports and Analytics
-// Generates system reports, user statistics, and analytics
+// Set the page title 
+$page_title = 'Reports';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/admin_header.php';
+?>
 
-// Check if user is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Reports</h2>
 
-// Reports and analytics functions will be implemented here
+        <!-- Add your reports content here -->
+        <p class="text-gray-600">This is the reports page. Add your reports functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/admin_footer.php';
 ?>

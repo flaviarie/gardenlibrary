@@ -1,16 +1,20 @@
 <?php
-// Admin Module: Database Management
-// Handles database operations, backups, and maintenance
+// Set the page title 
+$page_title = 'Database Management';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/admin_header.php';
+?>
 
-// Check if user is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Database Management</h2>
 
-// Database management functions will be implemented here
+        <!-- Add your database management content here -->
+        <p class="text-gray-600">This is the database management page. Add your database management functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/admin_footer.php';
 ?>

@@ -1,37 +1,40 @@
 <?php
-// Enable error reporting for debugging
+// Show errors on test
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $page_title = 'Dashboard';
 include_once 'includes/librarian_header.php';
 
-// Include database connection
+// Connect to DB
 include_once '../../includes/db_connection.php';
 
-// Add debugging information
-$debug_mode = false; // Set to true for debugging
+// Debug only when needed
+$debug_mode = false; // toggle for tests
 
 if ($debug_mode) {
     echo "<!-- Debug: Page loaded at " . date('Y-m-d H:i:s') . " -->";
 }
 
-// Get statistics from database
+// Get dashboard stats
 try {
-    // Total Books
+    // Count book inventory
     $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE is_deleted = FALSE");
     $total_books = $stmt->fetchColumn();
     
-    // Books Borrowed (currently checked out)
+    // Active loans count
     $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL");
     $books_borrowed = $stmt->fetchColumn();
-      // Overdue Books
+    
+    // Late returns count
     $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL AND due_date < CURDATE()");
     $overdue_books = $stmt->fetchColumn();
     
-    // Reserved Books
+    // Holds count
     $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE status = 'reserved' AND is_deleted = FALSE");
-    $reserved_books = $stmt->fetchColumn();// Get recent books for the table (limit to 5 for dashboard)
+    $reserved_books = $stmt->fetchColumn();
+    
+    // Recent activity list
     $stmt = $pdo->prepare("
         SELECT b.*, 
                CASE 
@@ -306,16 +309,15 @@ try {
 </div>
 
 <script>
-// Additional JavaScript to ensure proper loading
+// Fix loading issues
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Librarian dashboard loaded');
     
-    // Verify FontAwesome is working
+    // Check icons loaded
     setTimeout(function() {
         const icons = document.querySelectorAll('i[class*="fa-"]');
         console.log('Found ' + icons.length + ' FontAwesome icons');
-        
-        // Check if any icon is not displaying properly
+          // Find broken icons
         let missingIcons = 0;
         icons.forEach(function(icon) {
             const computedStyle = window.getComputedStyle(icon, ':before');
@@ -327,13 +329,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (missingIcons > 0) {
             console.warn(missingIcons + ' icons not displaying properly');
-            // Apply additional fallbacks if needed
+            // Try backup icons
         } else {
             console.log('All icons loaded successfully');
         }
     }, 1000);
-    
-    // Verify fonts are loaded
+      // Check fonts loaded
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(function() {
             console.log('Fonts loaded successfully');
@@ -341,11 +342,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Handle resource loading errors
+// Catch missing files
 window.addEventListener('error', function(e) {
     if (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT') {
         console.error('Failed to load resource:', e.target.src || e.target.href);
-          // Show user-friendly message
+        // Show nice message
         const notification = document.createElement('div');
         notification.className = 'resource-error-notification';
         notification.innerHTML = `
@@ -355,7 +356,7 @@ window.addEventListener('error', function(e) {
         `;
         document.body.appendChild(notification);
         
-        // Auto-remove after 10 seconds
+        // Remove after timeout
         setTimeout(function() {
             if (notification.parentElement) {
                 notification.remove();

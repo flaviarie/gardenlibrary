@@ -1,16 +1,20 @@
 <?php
-// Admin Module: System Settings
-// Manages library configuration, borrowing rules, and system settings
+// Set the page title 
+$page_title = 'System Settings';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/admin_header.php';
+?>
 
-// Check if user is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">System Settings</h2>
 
-// System settings functions will be implemented here
+        <!-- Add your system settings content here -->
+        <p class="text-gray-600">This is the system settings page. Add your system settings functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/admin_footer.php';
 ?>

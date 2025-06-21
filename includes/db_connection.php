@@ -13,7 +13,7 @@ try {
     if (empty($tables)) {
         die("Error: Database is empty. Did you import library_system.sql?");
     }
-    echo "Connected successfully. Tables found: " . implode(', ', $tables);
+ 
     
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());

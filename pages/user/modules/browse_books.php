@@ -1,16 +1,20 @@
 <?php
-// User Module: Book Search and Browse
-// Handles book catalog browsing and search functionality
+// Page name
+$page_title = 'Browse Books';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/user_header.php';
+?>
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Browse Books</h2>
 
-// Book search and browse functions will be implemented here
+        <!-- Add your book browsing content here -->
+        <p class="text-gray-600">This is the book browsing page. Add your book browsing functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/user_footer.php';
 ?>

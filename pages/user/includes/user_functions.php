@@ -1,28 +1,27 @@
 <?php
-// User Helper Functions
-// Common functions used across user modules
+// User helpers
+// Core user functions
 
-// Function to check user login status
+// Check login status
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
-// Function to get user information
+// Get user data
 function getUserInfo($user_id) {
-    // Implementation for getting user information
-}
+    // Gets user profile
 
-// Function to calculate fine amount
+// Calculate late fees
 function calculateFine($due_date) {
-    // Implementation for fine calculation
+    // Fee math logic
 }
 
-// Function to check borrowing limits
+// Check book limit
 function canBorrowMore($user_id) {
-    // Implementation for borrowing limit check
+    // Borrowing limit check
 }
 
-// Function to validate user access
+// Force login check
 function requireUserAccess() {
     if (!isLoggedIn()) {
         header('Location: ../../login/');

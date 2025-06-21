@@ -1,16 +1,20 @@
 <?php
-// Admin Module: User Management
-// Handles user creation, modification, deletion, and role assignment
+// Set the page title 
+$page_title = 'Manage Users';
 
-session_start();
-require_once '../../../includes/db_connection.php';
+include_once '../includes/admin_header.php';
+?>
 
-// Check if user is admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../../login/');
-    exit();
-}
+<!-- Page Content Goes Here -->
+<div class="container mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Manage Users</h2>
 
-// User management functions will be implemented here
+        <!-- Add your user management content here -->
+        <p class="text-gray-600">This is the manage users page. Add your user management functionality here.</p>
+    </div>
+</div>
 
+<?php
+include_once '../includes/admin_footer.php';
 ?>

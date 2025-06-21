@@ -1,5 +1,5 @@
 <?php
-// Include the configuration file
+// Config setup
 require_once('../../config/config.php');
 ?>
 
