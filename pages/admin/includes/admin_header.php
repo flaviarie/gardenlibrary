@@ -205,19 +205,16 @@ if ($current_dir == 'modules') {
                     <a href="<?php echo $base_path; ?>modules/manage_users.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'manage_users') ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200 text-green-800' : 'hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 border-transparent hover:border-green-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-users <?php echo ($current_page == 'manage_users') ? 'text-green-800' : 'text-green-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-green-800 text-sm sm:text-base">Manage Users</span>
+                    </a>                    
+                    <a href="<?php echo $base_path; ?>modules/manage_librarians.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'manage_librarians') ? 'bg-gradient-to-r from-purple-100 to-violet-100 border-purple-200 text-purple-800' : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-violet-100 border-transparent hover:border-purple-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                        <i class="fas fa-user-tie <?php echo ($current_page == 'manage_librarians') ? 'text-purple-800' : 'text-purple-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                        <span class="font-medium group-hover:text-purple-800 text-sm sm:text-base">Manage Librarians</span>
                     </a>
-                    <a href="<?php echo $base_path; ?>modules/database_management.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'database_management') ? 'bg-gradient-to-r from-purple-100 to-violet-100 border-purple-200 text-purple-800' : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-violet-100 border-transparent hover:border-purple-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-database <?php echo ($current_page == 'database_management') ? 'text-purple-800' : 'text-purple-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-purple-800 text-sm sm:text-base">Database Management</span>
+                    <a href="<?php echo $base_path; ?>modules/generate_reports.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'generate_reports') ? 'bg-gradient-to-r from-orange-100 to-amber-100 border-orange-200 text-orange-800' : 'hover:bg-gradient-to-r hover:from-orange-100 hover:to-amber-100 border-transparent hover:border-orange-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                        <i class="fas fa-chart-bar <?php echo ($current_page == 'generate_reports') ? 'text-orange-800' : 'text-orange-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                        <span class="font-medium group-hover:text-orange-800 text-sm sm:text-base">Generate Reports</span>
                     </a>
-                    <a href="<?php echo $base_path; ?>modules/reports.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'reports') ? 'bg-gradient-to-r from-orange-100 to-amber-100 border-orange-200 text-orange-800' : 'hover:bg-gradient-to-r hover:from-orange-100 hover:to-amber-100 border-transparent hover:border-orange-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-chart-bar <?php echo ($current_page == 'reports') ? 'text-orange-800' : 'text-orange-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-orange-800 text-sm sm:text-base">System Reports</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>modules/system_settings.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'system_settings') ? 'bg-gradient-to-r from-teal-100 to-cyan-100 border-teal-200 text-teal-800' : 'hover:bg-gradient-to-r hover:from-teal-100 hover:to-cyan-100 border-transparent hover:border-teal-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-cog <?php echo ($current_page == 'system_settings') ? 'text-teal-800' : 'text-teal-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-teal-800 text-sm sm:text-base">System Settings</span>
-                    </a>
+
 
                 </nav>
             </div>
