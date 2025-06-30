@@ -1,4 +1,4 @@
-<?php
+<!-- User Footer -->
 <footer>
     <div class="footer-content">
         <p>&copy; <?php echo date('Y'); ?> GrowAGarden Library. All rights reserved.</p>
