@@ -336,34 +336,6 @@ header .col-6:last-child .auth-links {
 }
 
 
-/* Layout/Grid System */
-.container {
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0;
-    position: relative;
-}
-
-.container.show-grid:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100vh;
-    background: repeating-linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.1),
-        rgba(255, 0, 0, 0.1) 100px,
-        transparent 100px,
-        transparent 120px
-    );
-    z-index: 1000;
-    pointer-events: none;
-}
-
 .row {
     display: flex;
     flex-wrap: wrap;
