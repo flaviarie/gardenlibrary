@@ -66,7 +66,8 @@ include($include_path . 'includes/header.php');
                                                         <p class="text-gray-800 font-bold">Digital Collection</p>
                                                     </div>
                                                     <p class="text-gray-700 text-sm pl-7">Access anywhere, anytime</p>
-                                                </div>                                            </div>
+                                                </div>                                            
+                                            </div>
                                             
                                             <div class="flex justify-between w-full mb-6">
                                                 <div class="text-center text-white">
@@ -111,11 +112,13 @@ include($include_path . 'includes/header.php');
     <div class="row">
         <div class="col-12">
             <!-- ===== FEATURE SECTION START ===== -->
-            <section id="features" class="py-16 md:py-24">                    <div class="container mx-auto px-4">
+            <section id="features" class="py-16 md:py-24">                    
+                <div class="container mx-auto px-4">
                         <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 relative">
                             <span class="relative z-10">Why <span class= "choose-word relative">Choose</span> eLibrary?</span>
                             <span class="absolute bottom-0 w-24 h-1 bg-secondary rounded-full" style="left: calc(47% - 40px);"></span>                        </h2>
-                        <div class="grid grid-cols-12 gap-6 md:gap-8">                            <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
+                        <div class="grid grid-cols-12 gap-6 md:gap-8">                            
+                            <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
                                         <img src="assets/img/find.png" alt="Book Catalog" class="w-10 h-10 object-contain">
@@ -322,7 +325,8 @@ include($include_path . 'includes/header.php');
                         <div class="timeline-progress-marker absolute left-1/2 transform -translate-x-1/2 top-1/2 w-2 h-2 bg-secondary rounded-full shadow-lg shadow-secondary/40"></div>
                         <div class="timeline-progress-marker absolute left-1/2 transform -translate-x-1/2 top-3/4 w-2 h-2 bg-secondary rounded-full shadow-lg shadow-secondary/40"></div>                    </div>
                     
-                    <div class="space-y-24 md:space-y-0 relative">                        <div class="timeline-item-1 md:grid md:grid-cols-12 md:gap-8 md:items-center relative md:mb-24">
+                    <div class="space-y-24 md:space-y-0 relative">                        
+                        <div class="timeline-item-1 md:grid md:grid-cols-12 md:gap-8 md:items-center relative md:mb-24">
                             <div class="hidden md:block absolute left-1/2 top-24 transform -translate-x-1/2 -translate-y-1/2">
                                 <div class="marker-circle w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg border-2 border-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,0 +1,283 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 03, 2025 at 01:24 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `library_system`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `books`
+--
+
+CREATE TABLE `books` (
+  `book_id` varchar(25) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `publish_date` date DEFAULT NULL,
+  `category` varchar(3) NOT NULL,
+  `book_cover` varchar(255) DEFAULT NULL,
+  `added_date` date NOT NULL,
+  `status` enum('available','borrowed','archived','reserved') DEFAULT 'available',
+  `is_deleted` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `books`
+--
+
+INSERT INTO `books` (`book_id`, `title`, `author`, `publish_date`, `category`, `book_cover`, `added_date`, `status`, `is_deleted`) VALUES
+('ABAPR101988-SCI00009', 'A Brief History of Time', 'Stephen Hawking', '1988-04-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('ANJUN112025-SCI00026', 'Anthony langgam', 'Unknown Author', '2025-06-20', 'SCI', 'default_book_cover.svg', '2025-06-11', 'reserved', 0),
+('APJAN101980-HIS00016', 'A People\'s History of the United States', 'Howard Zinn', '1980-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('BUJAN032015-FIC00025', 'buhay ng Aso', 'Unknown Author', '2015-01-31', 'FIC', 'default_book_cover.svg', '2025-06-03', 'available', 0),
+('CLAUG102008-TEC00018', 'Clean Code', 'Robert C. Martin', '2008-08-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('COSEP101980-SCI00011', 'Cosmos', 'Carl Sagan', '1980-09-28', 'SCI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('DEOCT101994-TEC00020', 'Design Patterns', 'Gang of Four', '1994-10-21', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('HAJUN101997-FIC00008', 'Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', '1997-06-26', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('INJAN101990-TEC00021', 'Introduction to Algorithms', 'Thomas H. Cormen', '1990-01-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('JUN101949-FIC00002', '1984', 'George Orwell', '1949-06-08', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('LOSEP101954-FIC00006', 'Lord of the Flies', 'William Golding', '1954-09-17', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('MEJAN10180-PHI00023', 'Meditations', 'Marcus Aurelius', '0180-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('PRJAN101813-FIC00003', 'Pride and Prejudice', 'Jane Austen', '1813-01-28', 'FIC', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
+('SAJAN102011-HIS00014', 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', '2011-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('SISEP101962-SCI00013', 'Silent Spring', 'Rachel Carson', '1962-09-27', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THAPR101925-FIC00004', 'The Great Gatsby', 'F. Scott Fitzgerald', '1925-04-10', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN101962-HIS00015', 'The Guns of August', 'Barbara Tuchman', '1962-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN101976-SCI00012', 'The Selfish Gene', 'Richard Dawkins', '1976-01-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN10380-PHI00022', 'The Republic', 'Plato', '0380-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN10500-PHI00024', 'The Art of War', 'Sun Tzu', '0500-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THJUL101951-FIC00005', 'The Catcher in the Rye', 'J.D. Salinger', '1951-07-16', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THJUN101947-HIS00017', 'The Diary of a Young Girl', 'Anne Frank', '1947-06-25', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THNOV101859-SCI00010', 'The Origin of Species', 'Charles Darwin', '1859-11-24', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THOCT101999-TEC00019', 'The Pragmatic Programmer', 'David Thomas', '1999-10-20', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THSEP101937-FIC00007', 'The Hobbit', 'J.R.R. Tolkien', '1937-09-21', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('TOJUL101960-FIC00001', 'To Kill a Mockingbird', 'Harper Lee', '1960-07-11', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0);
+
+--
+-- Triggers `books`
+--
+DELIMITER $$
+CREATE TRIGGER `generate_book_id` BEFORE INSERT ON `books` FOR EACH ROW BEGIN
+    DECLARE title_prefix VARCHAR(2);
+    DECLARE publish_month VARCHAR(3);
+    DECLARE added_day VARCHAR(2);
+    DECLARE publish_year VARCHAR(4);
+    DECLARE book_count INT;
+    DECLARE formatted_count VARCHAR(5);
+    
+    -- 1. Get first 2 letters from title (letters only, uppercase)
+    SET title_prefix = UPPER(LEFT(REGEXP_REPLACE(NEW.title, '[^A-Za-z]', ''), 2));
+    
+    -- 2. Get month from publish date (3 letters, uppercase)
+    SET publish_month = UPPER(DATE_FORMAT(NEW.publish_date, '%b'));
+    
+    -- 3. Get day when added to system 
+    SET added_day = LPAD(DAY(NEW.added_date), 2, '0');
+    
+    -- 4. Get year from publish date
+    SET publish_year = YEAR(NEW.publish_date);
+    
+    -- 5. Get count of existing books + 1
+    SELECT COUNT(*) + 1 INTO book_count FROM books WHERE is_deleted = FALSE;
+    
+    -- 6. Format count as 5-digit number
+    SET formatted_count = LPAD(book_count, 5, '0');
+    
+    -- 7. Generate the Book ID: THFEB102022-FIC00001
+    SET NEW.book_id = CONCAT(title_prefix, publish_month, added_day, publish_year, '-', UPPER(NEW.category), formatted_count);
+    
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `borrowings`
+--
+
+CREATE TABLE `borrowings` (
+  `borrowing_id` int(11) NOT NULL,
+  `book_id` varchar(25) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `borrow_date` date NOT NULL,
+  `due_date` date NOT NULL,
+  `return_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `borrowings`
+--
+
+INSERT INTO `borrowings` (`borrowing_id`, `book_id`, `user_id`, `borrow_date`, `due_date`, `return_date`) VALUES
+(1, 'JUN101949-FIC00002', 3, '2024-12-01', '2024-12-15', NULL),
+(2, 'THJUL101951-FIC00005', 4, '2024-12-05', '2024-12-19', NULL),
+(3, 'HAJUN101997-FIC00008', 5, '2024-12-10', '2024-12-24', NULL),
+(4, 'COSEP101980-SCI00011', 6, '2024-12-08', '2024-12-22', NULL),
+(5, 'APJAN101980-HIS00016', 7, '2024-12-12', '2024-12-26', NULL),
+(6, 'THOCT101999-TEC00019', 8, '2024-12-03', '2024-12-17', NULL),
+(7, 'THJAN10500-PHI00024', 9, '2024-12-07', '2024-12-21', NULL),
+(8, 'TOJUL101960-FIC00001', 3, '2024-11-01', '2024-11-15', '2024-11-14'),
+(9, 'PRJAN101813-FIC00003', 4, '2024-11-05', '2024-11-19', '2024-11-18'),
+(10, 'ABAPR101988-SCI00009', 5, '2024-11-10', '2024-11-24', '2024-11-22'),
+(11, 'SAJAN102011-HIS00014', 6, '2024-11-15', '2024-11-29', '2024-11-28'),
+(12, 'CLAUG102008-TEC00018', 7, '2024-11-20', '2024-12-04', '2024-12-03'),
+(13, 'THAPR101925-FIC00004', 8, '2024-10-01', '2024-10-15', '2024-10-20'),
+(14, 'THNOV101859-SCI00010', 9, '2024-10-05', '2024-10-19', '2024-10-25'),
+(15, 'THJAN101962-HIS00015', 10, '2024-10-10', '2024-10-24', '2024-10-30'),
+(16, 'LOSEP101954-FIC00006', 11, '2024-11-01', '2024-11-15', NULL),
+(17, 'THJAN101976-SCI00012', 12, '2024-11-05', '2024-11-19', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fines`
+--
+
+CREATE TABLE `fines` (
+  `fine_id` int(11) NOT NULL,
+  `borrowing_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `status` enum('unpaid','paid') DEFAULT 'unpaid',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `paid_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `fines`
+--
+
+INSERT INTO `fines` (`fine_id`, `borrowing_id`, `amount`, `status`, `created_at`, `paid_at`) VALUES
+(1, 13, 5.00, 'paid', '2025-06-20 08:35:19', '2024-10-20 16:00:00'),
+(2, 14, 7.50, 'paid', '2025-06-20 08:35:19', '2024-10-25 16:00:00'),
+(3, 15, 10.00, 'unpaid', '2025-06-20 08:35:19', NULL),
+(4, 16, 12.50, 'unpaid', '2025-06-20 08:35:19', NULL),
+(5, 17, 8.75, 'unpaid', '2025-06-20 08:35:19', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','student') NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `password`, `role`, `email`, `created_at`) VALUES
+(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'admin@gardenlibrary.com', '2025-06-20 08:35:19'),
+(2, 'librarian1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'librarian@gardenlibrary.com', '2025-06-20 08:35:19'),
+(3, 'john_doe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'john.doe@student.edu', '2025-06-20 08:35:19'),
+(4, 'jane_smith', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'jane.smith@student.edu', '2025-06-20 08:35:19'),
+(5, 'mike_johnson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'mike.johnson@student.edu', '2025-06-20 08:35:19'),
+(6, 'sarah_wilson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'sarah.wilson@student.edu', '2025-06-20 08:35:19'),
+(7, 'david_brown', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'david.brown@student.edu', '2025-06-20 08:35:19'),
+(8, 'lisa_garcia', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'lisa.garcia@student.edu', '2025-06-20 08:35:19'),
+(9, 'tom_davis', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'tom.davis@student.edu', '2025-06-20 08:35:19'),
+(10, 'emma_miller', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'emma.miller@student.edu', '2025-06-20 08:35:19'),
+(11, 'alex_taylor', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'alex.taylor@student.edu', '2025-06-20 08:35:19'),
+(12, 'maria_rodriguez', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'maria.rodriguez@student.edu', '2025-06-20 08:35:19');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`book_id`);
+
+--
+-- Indexes for table `borrowings`
+--
+ALTER TABLE `borrowings`
+  ADD PRIMARY KEY (`borrowing_id`),
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `fines`
+--
+ALTER TABLE `fines`
+  ADD PRIMARY KEY (`fine_id`),
+  ADD KEY `borrowing_id` (`borrowing_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `borrowings`
+--
+ALTER TABLE `borrowings`
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `fines`
+--
+ALTER TABLE `fines`
+  MODIFY `fine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `borrowings`
+--
+ALTER TABLE `borrowings`
+  ADD CONSTRAINT `borrowings_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  ADD CONSTRAINT `borrowings_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `fines`
+--
+ALTER TABLE `fines`
+  ADD CONSTRAINT `fines_ibfk_1` FOREIGN KEY (`borrowing_id`) REFERENCES `borrowings` (`borrowing_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

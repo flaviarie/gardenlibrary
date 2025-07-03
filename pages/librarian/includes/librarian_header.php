@@ -93,6 +93,7 @@ if ($current_dir == 'modules') {
       <!-- Librarian specific styles and scripts -->
     <?php if ($current_dir == 'librarian' || $current_dir == 'modules'): ?>
         <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css">
+        <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/dashboard.css">
         <script src="<?php echo $base_path; ?>assets/js/dashboard.js"></script>
     <?php endif; ?>
 

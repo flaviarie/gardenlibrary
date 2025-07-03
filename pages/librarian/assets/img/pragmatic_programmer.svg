@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pragmaticGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e67e22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d35400;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#pragmaticGrad)"/>
+  <path d="M70 70 L130 70 L130 110 L70 110 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M80 80 L120 80 L120 100 L80 100 Z" fill="#2c3e50" opacity="0.6"/>
+  <text x="100" y="140" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">THE</tspan>
+    <tspan x="100" dy="20">PRAGMATIC</tspan>
+    <tspan x="100" dy="20">PROGRAMMER</tspan>
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#ecf0f1" font-size="14" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">DAVID</tspan>
+    <tspan x="100" dy="18">THOMAS</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>
