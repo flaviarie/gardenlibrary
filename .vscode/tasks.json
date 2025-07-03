@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start XAMPP and Test Admin System",
+			"type": "shell",
+			"command": "cd \"C:\\xampp\" && start xampp-control.exe",
+			"group": "test",
+			"isBackground": true
+		}
+	]
+}

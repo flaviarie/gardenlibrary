@@ -1,19 +1,29 @@
-/* Enhanced Librarian Dashboard Styles */
+/* Admin Dashboard CSS with 60/30/10 Color Scheme */
+/* 60% Primary Blue (#3B82F6), 30% Secondary Gray (#6B7280), 10% Accent Red (#EF4444) */
 
-/* Font Loading and Fallbacks */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap');
 
-/* FontAwesome Fallback */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
-/* Base Styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root {
+    --primary-color: #3B82F6;      /* 60% - Primary Blue */
+    --primary-dark: #2563EB;
+    --primary-light: #93C5FD;
+    --secondary-color: #6B7280;    /* 30% - Secondary Gray */
+    --secondary-dark: #4B5563;
+    --secondary-light: #D1D5DB;
+    --accent-color: #EF4444;       /* 10% - Accent Red */
+    --accent-dark: #DC2626;
+    --accent-light: #FCA5A5;
+    --bg-color: #F8FAFC;
+    --white: #FFFFFF;
+    --black: #1F2937;
 }
 
-/* Ensure consistent font usage across all pages */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body, html, * {
     font-family: 'Raleway', sans-serif !important;
 }
@@ -24,9 +34,9 @@ body, html, * {
 
 body {
     font-family: 'Raleway', Arial, sans-serif !important;
+    background-color: var(--bg-color);
+    color: var(--black);
     line-height: 1.6;
-    color: #333;
-    background-color: #f8fafc;
 }
 
 /* Ensure icons display properly */

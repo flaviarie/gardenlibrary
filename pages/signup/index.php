@@ -1,6 +1,7 @@
 <?php
 // Config setup
 require_once('../../config/config.php');
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -73,6 +74,12 @@ require_once('../../config/config.php');
         <!-- Signup Form -->
         <div class="backdrop-blur-md bg-white/80 rounded-2xl shadow-2xl border border-white/50 p-8">
             <h2 class="text-2xl font-semibold text-garden-800 text-center mb-6">Create an Account</h2>
+            
+            <?php if (isset($_SESSION['signup_error'])): ?>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    <?php echo $_SESSION['signup_error']; unset($_SESSION['signup_error']); ?>
+                </div>
+            <?php endif; ?>
             
             <form action="signup_process.php" method="post" class="space-y-4">
                 <!-- Username Field -->

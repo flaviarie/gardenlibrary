@@ -11,7 +11,8 @@ include($include_path . 'includes/header.php');
             <section class="hero-library-bg relative py-16 md:py-20 lg:py-24 overflow-hidden min-h-[60vh]">                    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-0"></div>
                     <div class="absolute inset-0 bg-radial-gradient z-0"></div>
                     
-                    <div class="container mx-auto px-4 relative z-10">                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">                            
+                    <div class="container mx-auto px-4 relative z-10">                        
+                        <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">                            
                             <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                                 <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full mb-3 text-sm border border-white/20">Welcome to the Garden Library</span>                            <h1 class="font-raleway font-bold text-4xl md:text-5xl lg:text-6xl tracking-normal text-white">
                                     Discover New Worlds <br> Through <span class="text-secondary drop-shadow-lg animate-pulse font-extrabold">Literature</span>

@@ -1,4 +1,9 @@
 <?php
+// Start session before any output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Set default page title if not provided
 if (!isset($page_title)) {
     $page_title = 'Dashboard';
@@ -236,7 +241,7 @@ if ($current_dir == 'modules') {
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="hidden sm:block text-gray-600 text-sm">Logged in as</div>                    <div class="px-2 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-red-100 to-pink-100 text-red-800 font-medium rounded-full border border-red-200 flex items-center space-x-1 sm:space-x-2">
                         <i class="fas fa-shield-alt text-xs sm:text-sm"></i>
-                        <span class="text-xs sm:text-sm">Administrator</span>
+                        <span class="text-xs sm:text-sm"><?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Administrator'; ?></span>
                     </div>
                     <!-- Quick Logout Button -->
                     <button onclick="confirmLogout()" class="px-2 sm:px-3 py-1 sm:py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 hover:text-red-700 transition-all duration-300 flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">

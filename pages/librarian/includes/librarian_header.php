@@ -1,4 +1,16 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is logged in and is a librarian (admin role but not super admin)
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin' || $_SESSION['username'] === 'admin') {
+    // Redirect to login if not properly authenticated as librarian
+    header("Location: ../../login/index.php");
+    exit();
+}
+
 // Set default page title if not provided
 if (!isset($page_title)) {
     $page_title = 'Dashboard';

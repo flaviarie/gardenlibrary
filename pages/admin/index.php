@@ -1,249 +1,273 @@
 <?php
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
+// Set page title
 $page_title = 'Admin Dashboard';
-include_once 'includes/admin_header.php';
 
-// Include database connection
+// Include header and functions first
+include_once 'includes/admin_header.php';
+include_once 'includes/admin_functions.php';
 include_once '../../includes/db_connection.php';
 
-// Add debugging information
-$debug_mode = false; // Set to true for debugging
+// Check admin access
+requireAdminAccess();
 
-if ($debug_mode) {
-    echo "<!-- Debug: Admin page loaded at " . date('Y-m-d H:i:s') . " -->";
-}
+// Get system statistics
+$stats = getSystemStats($pdo);
 
-// Get admin statistics from database
+// Extract variables for backward compatibility
+$total_users = $stats['total_users'];
+$total_librarians = $stats['total_librarians'];
+
+// Get additional dashboard data
 try {
-    // Total Users
-    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE is_deleted = FALSE");
-    $total_users = $stmt->fetchColumn();
+    // Today's new registrations
+    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()");
+    $today_registrations = $stmt->fetchColumn();
     
-    // Total Librarians
-    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'librarian' AND is_deleted = FALSE");
-    $total_librarians = $stmt->fetchColumn();
+    // Overdue books
+    $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL AND due_date < CURDATE()");
+    $overdue_books = $stmt->fetchColumn();
     
-    // Total Active Borrowings
-    $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL");
-    $active_borrowings = $stmt->fetchColumn();
-    
-    // Total Books in System
-    $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE is_deleted = FALSE");
-    $total_books = $stmt->fetchColumn();
-    
-    // Get recent system activities (recent user registrations)
+    // Recent user registrations for activity feed
     $stmt = $pdo->prepare("
         SELECT u.*, 
-               DATE_FORMAT(u.created_at, '%M %d, %Y at %h:%i %p') as formatted_date
+               DATE_FORMAT(u.created_at, '%M %d, %Y at %h:%i %p') as formatted_date,
+               0 as is_deleted
         FROM users u 
-        WHERE u.is_deleted = FALSE 
         ORDER BY u.created_at DESC 
         LIMIT 5
     ");
     $stmt->execute();
     $recent_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    // Recent borrowing activity
+    $stmt = $pdo->prepare("
+        SELECT b.*, u.username, bk.title,
+               DATE_FORMAT(b.borrow_date, '%M %d, %Y') as formatted_date
+        FROM borrowings b
+        JOIN users u ON b.user_id = u.user_id
+        JOIN books bk ON b.book_id = bk.book_id
+        ORDER BY b.borrow_date DESC 
+        LIMIT 5
+    ");
+    $stmt->execute();
+    $recent_borrowings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
 } catch (PDOException $e) {
-    $total_users = 0;
-    $total_librarians = 0;
-    $active_borrowings = 0;
-    $total_books = 0;
+    $today_registrations = 0;
+    $overdue_books = 0;
     $recent_users = [];
+    $recent_borrowings = [];
     $error_message = "Database error: " . $e->getMessage();
 }
 ?>
 
-<!-- Admin Statistics Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
-    <!-- Total Users -->
-    <a href="./modules/manage_users.php" class="block">
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
-            <div class="flex items-center justify-between">
+<!-- Main Content -->
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Welcome Header -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
-                    <p class="text-xs sm:text-sm font-medium text-blue-600 mb-2 uppercase tracking-wide">Total Users</p>
-                    <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-800 group-hover:text-blue-900"><?php echo number_format($total_users); ?></p>
-                </div>            
-                <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-blue-600 transition-colors duration-300">
-                    <i class="fas fa-users text-white text-lg sm:text-xl lg:text-2xl"></i>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+                    <p class="text-gray-600">Welcome to the Garden Library Admin Panel</p>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <p class="text-sm text-blue-600 mt-1">Logged in as: <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                    <?php endif; ?>
                 </div>
-            </div>
-            <div class="mt-3 lg:mt-4 flex items-center text-blue-600">
-                <i class="fas fa-arrow-right text-xs mr-2"></i>
-                <span class="text-xs font-medium">Manage users</span>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span><?php echo date('l, F j, Y'); ?></span>
+                    </div>
+                </div>
             </div>
         </div>
-    </a>
-    
-    <!-- Total Librarians -->
-    <a href="modules/manage_users.php?role=librarian" class="block">
-        <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-green-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs sm:text-sm font-medium text-green-600 mb-2 uppercase tracking-wide">Librarians</p>
-                    <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 group-hover:text-green-900"><?php echo number_format($total_librarians); ?></p>
-                </div>
-                <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-green-600 transition-colors duration-300">
-                    <i class="fas fa-user-tie text-white text-lg sm:text-xl lg:text-2xl"></i>
-                </div>
-            </div>
-            <div class="mt-3 lg:mt-4 flex items-center text-green-600">
-                <i class="fas fa-arrow-right text-xs mr-2"></i>
-                <span class="text-xs font-medium">Staff management</span>
-            </div>
-        </div>
-    </a>
-    
 
-</div>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Users -->
+            <a href="modules/manage_users.php" class="block group">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Users</p>
+                            <p class="text-3xl font-bold text-blue-600"><?php echo number_format($stats['total_users']); ?></p>
+                            <p class="text-xs text-green-600 mt-1">
+                                <i class="fas fa-plus mr-1"></i>
+                                <?php echo $today_registrations; ?> today
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                            <i class="fas fa-users text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
 
-<!-- System Overview Section -->
-<div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-gray-100 overflow-hidden font-raleway mx-2 sm:mx-0">
-    <div class="bg-gradient-to-r from-red-600 to-red-700 p-3 sm:p-6 lg:p-8">
-        <div class="flex flex-col space-y-3 sm:space-y-4 lg:flex-row lg:justify-between lg:items-center lg:space-y-0">
-            <div class="text-center sm:text-left">
-                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 font-raleway">System Overview</h2>
-                <p class="text-xs sm:text-sm text-red-100 font-raleway">Monitor and manage system users and activities</p>
-            </div>            
-            <button class="bg-white text-red-700 px-3 sm:px-4 lg:px-6 py-2 sm:py-2 lg:py-3 rounded-lg sm:rounded-xl hover:bg-red-50 hover:scale-105 transform transition-all duration-300 font-semibold shadow-lg flex items-center justify-center space-x-2 group font-raleway w-full sm:w-full lg:w-auto text-sm sm:text-base min-h-[44px] sm:min-h-[48px]">
-                <i class="fas fa-plus text-sm sm:text-base lg:text-lg group-hover:rotate-90 transition-transform duration-300"></i>
-                <span class="text-sm sm:text-base">Add New User</span>
-            </button>
+            <!-- Total Librarians -->
+            <a href="modules/manage_librarians.php" class="block group">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Librarians</p>
+                            <p class="text-3xl font-bold text-green-600"><?php echo number_format($stats['total_librarians']); ?></p>
+                            <p class="text-xs text-gray-500 mt-1">Staff members</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                            <i class="fas fa-user-tie text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Total Books -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Books</p>
+                        <p class="text-3xl font-bold text-purple-600"><?php echo number_format($stats['total_books']); ?></p>
+                        <p class="text-xs text-gray-500 mt-1">In collection</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Borrowings -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Active Borrowings</p>
+                        <p class="text-3xl font-bold text-red-600"><?php echo number_format($stats['active_borrowings']); ?></p>
+                        <p class="text-xs text-orange-600 mt-1">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            <?php echo $overdue_books; ?> overdue
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book-open text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>    
-    <div class="p-3 sm:p-6 lg:p-8">
-        <!-- Table Container with enhanced mobile responsiveness -->
-        <div class="overflow-hidden rounded-lg sm:rounded-xl border border-gray-200">
-            <!-- Mobile Cards View (visible on small screens) -->
-            <div class="block sm:hidden space-y-3">
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="modules/manage_users.php" class="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-plus text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Manage Users</p>
+                        <p class="text-sm text-gray-600">Add, edit, or remove users</p>
+                    </div>
+                </a>
+
+                <a href="modules/manage_librarians.php" class="flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors duration-200">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-tie text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Manage Librarians</p>
+                        <p class="text-sm text-gray-600">Promote users to librarians</p>
+                    </div>
+                </a>
+
+                <a href="modules/generate_reports.php" class="flex items-center gap-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors duration-200">
+                    <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Generate Reports</p>
+                        <p class="text-sm text-gray-600">View system analytics</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Recent User Registrations -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Recent User Registrations</h2>
+                    <a href="modules/manage_users.php" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        View All <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
                 <?php if (!empty($recent_users)): ?>
-                    <?php foreach ($recent_users as $user): ?>
-                        <div class="bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="flex-1 min-w-0">
-                                    <h3 class="font-semibold text-gray-900 mb-1 truncate text-sm"><?php echo htmlspecialchars($user['username']); ?></h3>
-                                    <p class="text-xs text-gray-600 truncate"><?php echo htmlspecialchars($user['email']); ?></p>
+                    <div class="space-y-4">
+                        <?php foreach ($recent_users as $user): ?>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-blue-600"></i>
                                 </div>
-                                <span class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-600 ml-2 flex-shrink-0">
-                                    #<?php echo htmlspecialchars($user['user_id']); ?>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-gray-900"><?php echo htmlspecialchars($user['username']); ?></p>
+                                    <p class="text-sm text-gray-600"><?php echo htmlspecialchars($user['email']); ?></p>
+                                    <p class="text-xs text-gray-500"><?php echo $user['formatted_date']; ?></p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full
+                                    <?php echo $user['role'] === 'admin' ? 'bg-red-100 text-red-800' : 
+                                             ($user['role'] === 'librarian' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                    <?php 
+                                    if ($user['role'] === 'admin') {
+                                        echo ($user['username'] === 'admin') ? 'Administrator' : 'Librarian';
+                                    } else {
+                                        echo ucfirst($user['role']);
+                                    }
+                                    ?>
                                 </span>
                             </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-gray-500">Role:</span>
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
-                                        <?php echo ucfirst(htmlspecialchars($user['role'])); ?>
-                                    </span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-gray-500">Status:</span>
-                                    <?php 
-                                    $status_class = $user['is_deleted'] ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800';
-                                    $status_text = $user['is_deleted'] ? 'Inactive' : 'Active';
-                                    ?>
-                                    <span class="px-2 py-1 <?php echo $status_class; ?> text-xs font-bold rounded-full">
-                                        <?php echo $status_text; ?>
-                                    </span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-gray-500">Joined:</span>
-                                    <span class="text-xs text-gray-700 text-right flex-1 ml-2 truncate"><?php echo htmlspecialchars($user['formatted_date']); ?></span>
-                                </div>
-                                <div class="pt-2 border-t border-gray-100">
-                                    <button class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 text-xs font-medium shadow-md flex items-center justify-center space-x-2 min-h-[40px] transition-all duration-200">
-                                        <i class="fas fa-edit text-xs"></i>
-                                        <span>Manage User</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php else: ?>
-                    <div class="text-center py-6 px-4">
-                        <i class="fas fa-users text-3xl text-gray-300 mb-3"></i>
-                        <p class="text-base font-medium text-gray-500 mb-1">No users found</p>
-                        <p class="text-xs text-gray-400">Start by adding some users</p>
+                    <div class="text-center py-8">
+                        <i class="fas fa-users text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500">No recent registrations</p>
                     </div>
                 <?php endif; ?>
-            </div>            <!-- Desktop Table View (hidden on small screens) -->
-            <div class="hidden sm:block overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway">User ID</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway">Username</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway hidden md:table-cell">Email</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway hidden lg:table-cell">Role</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway">Status</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway hidden lg:table-cell">Joined Date</th>
-                            <th class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider font-raleway">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <?php if (!empty($recent_users)): ?>
-                            <?php foreach ($recent_users as $user): ?>
-                                <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 group">
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6 text-xs font-mono text-gray-600 group-hover:text-blue-800 font-raleway">
-                                        <span class="bg-gray-100 px-2 py-1 rounded-lg border border-gray-200 font-raleway text-xs">
-                                            <?php echo htmlspecialchars($user['user_id']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6 text-sm font-medium text-gray-900 group-hover:text-blue-900 font-raleway">
-                                        <div class="md:hidden text-xs text-gray-500 mb-1 truncate"><?php echo htmlspecialchars($user['email']); ?></div>
-                                        <div class="truncate"><?php echo htmlspecialchars($user['username']); ?></div>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6 text-sm text-gray-600 group-hover:text-blue-800 font-raleway hidden md:table-cell">
-                                        <div class="truncate max-w-[200px]"><?php echo htmlspecialchars($user['email']); ?></div>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6 text-sm text-gray-600 group-hover:text-blue-800 font-raleway hidden lg:table-cell">
-                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded font-raleway"><?php echo ucfirst(htmlspecialchars($user['role'])); ?></span>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6">
-                                        <?php 
-                                        $status_class = $user['is_deleted'] ? 'bg-gradient-to-r from-red-100 to-red-200 text-red-800' : 'bg-gradient-to-r from-green-100 to-green-200 text-green-800';
-                                        $status_text = $user['is_deleted'] ? 'Inactive' : 'Active';
-                                        ?>
-                                        <span class="px-2 sm:px-3 py-1 <?php echo $status_class; ?> text-xs font-bold rounded-full shadow-sm font-raleway whitespace-nowrap">
-                                            <?php echo $status_text; ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6 text-sm text-gray-600 group-hover:text-blue-800 font-raleway hidden lg:table-cell">
-                                        <div class="truncate max-w-[150px]"><?php echo htmlspecialchars($user['formatted_date']); ?></div>
-                                    </td>
-                                    <td class="px-3 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6">
-                                        <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 text-xs font-medium shadow-md flex items-center space-x-1 sm:space-x-2 font-raleway min-h-[32px] sm:min-h-[36px]">
-                                            <i class="fas fa-edit text-xs"></i>
-                                            <span class="hidden sm:inline text-xs sm:text-sm">Manage</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7" class="px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12 text-center text-gray-500">
-                                    <div class="flex flex-col items-center space-y-2">
-                                        <i class="fas fa-users text-2xl sm:text-3xl lg:text-4xl text-gray-300"></i>
-                                        <p class="text-sm sm:text-base lg:text-lg font-medium">No users found</p>
-                                        <p class="text-xs sm:text-sm">Start by adding some users</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+            </div>
+
+            <!-- Recent Borrowing Activity -->
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Recent Borrowing Activity</h2>
+                    <span class="text-sm text-gray-500">Last 5 activities</span>
+                </div>
+
+                <?php if (!empty($recent_borrowings)): ?>
+                    <div class="space-y-4">
+                        <?php foreach ($recent_borrowings as $borrowing): ?>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-book text-green-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-gray-900"><?php echo htmlspecialchars($borrowing['title']); ?></p>
+                                    <p class="text-sm text-gray-600">Borrowed by <?php echo htmlspecialchars($borrowing['username']); ?></p>
+                                    <p class="text-xs text-gray-500"><?php echo $borrowing['formatted_date']; ?></p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">
+                                    Active
+                                </span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="text-center py-8">
+                        <i class="fas fa-book-open text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500">No recent borrowing activity</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
-        
-        <!-- View All Users Link -->
-        <div class="mt-3 sm:mt-4 lg:mt-6 text-center">
-            <a href="./modules/manage_users.php" class="inline-flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium hover:underline transition-colors duration-200 text-sm sm:text-base min-h-[44px] px-3 py-2 rounded-lg hover:bg-red-50">
-                <span>View All Users</span>
-                <i class="fas fa-arrow-right text-xs sm:text-sm"></i>
-            </a>
-        </div>    
     </div>
+</div>
 
 <script>
 // Enhanced JavaScript for improved responsiveness and loading
@@ -468,7 +492,5 @@ style.textContent = `
 document.head.appendChild(style);
 </script>
 
-<?php
-include_once 'includes/admin_footer.php';
-?>
+
 

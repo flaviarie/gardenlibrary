@@ -1,6 +1,7 @@
 <?php
 // Config setup
 require_once('../../config/config.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,6 +127,18 @@ require_once('../../config/config.php');
                     <h2 class="text-2xl font-raleway font-semibold text-primary mb-8 ">
                         Sign In
                     </h2>
+                    
+                    <?php if (isset($_SESSION['login_error'])): ?>
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                            <?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (isset($_SESSION['signup_success'])): ?>
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
+                            <?php echo $_SESSION['signup_success']; unset($_SESSION['signup_success']); ?>
+                        </div>
+                    <?php endif; ?>
                     
                     <form action="login_process.php" method="post" class="space-y-5">
                         <!-- Username input -->

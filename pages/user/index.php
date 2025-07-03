@@ -6,6 +6,10 @@ ini_set('display_errors', 1);
 
 $page_title = 'User Dashboard';
 include_once 'includes/user_header.php';
+include_once 'includes/user_functions.php';
+
+// Check if user is logged in
+requireUserAccess();
 
 // Connect to DB
 include_once '../../includes/db_connection.php';
