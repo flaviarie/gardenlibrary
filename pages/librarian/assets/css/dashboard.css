@@ -1,0 +1,31 @@
+/* Dashboard specific styles */
+.book-id-single-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    line-height: 1.2;
+}
+
+/* Responsive book ID styling */
+@media (max-width: 640px) {
+    .book-id-single-line {
+        font-size: 10px;
+        max-width: 80px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .book-id-single-line {
+        max-width: 150px;
+    }
+}
+
+/* Action button links styling */
+.no-underline {
+    text-decoration: none !important;
+}
+
+.no-underline:hover {
+    text-decoration: none !important;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="peopleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34495e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#peopleGrad)"/>
+  <path d="M50 80 L150 80 L140 100 L60 100 Z" fill="#e74c3c" opacity="0.8"/>
+  <path d="M70 60 L130 60 L120 80 L80 80 Z" fill="#3498db" opacity="0.6"/>
+  <text x="100" y="140" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">A PEOPLE'S</tspan>
+    <tspan x="100" dy="18">HISTORY OF</tspan>
+    <tspan x="100" dy="18">THE UNITED</tspan>
+    <tspan x="100" dy="18">STATES</tspan>
+  </text>
+  <text x="100" y="230" text-anchor="middle" fill="#bdc3c7" font-size="14" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">HOWARD</tspan>
+    <tspan x="100" dy="18">ZINN</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

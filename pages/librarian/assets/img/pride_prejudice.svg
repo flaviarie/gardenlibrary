@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="regencyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#regencyGrad)"/>
+  <ellipse cx="100" cy="100" rx="60" ry="40" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.7"/>
+  <ellipse cx="100" cy="100" rx="40" ry="25" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+  <text x="100" y="150" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="serif">
+    <tspan x="100" dy="0">PRIDE</tspan>
+    <tspan x="100" dy="20">AND</tspan>
+    <tspan x="100" dy="20">PREJUDICE</tspan>
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#ecf0f1" font-size="14" font-family="serif">
+    <tspan x="100" dy="0">JANE</tspan>
+    <tspan x="100" dy="18">AUSTEN</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

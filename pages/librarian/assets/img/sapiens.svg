@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sapiensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d35400;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#sapiensGrad)"/>
+  <path d="M100 50 L120 70 L100 90 L80 70 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M100 60 L110 70 L100 80 L90 70 Z" fill="#2c3e50" opacity="0.6"/>
+  <text x="100" y="130" text-anchor="middle" fill="white" font-size="20" font-weight="bold" font-family="Arial, sans-serif">
+    SAPIENS
+  </text>
+  <text x="100" y="160" text-anchor="middle" fill="#ecf0f1" font-size="12" font-family="Arial, sans-serif">
+    A Brief History of Humankind
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#ecf0f1" font-size="14" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">YUVAL NOAH</tspan>
+    <tspan x="100" dy="18">HARARI</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

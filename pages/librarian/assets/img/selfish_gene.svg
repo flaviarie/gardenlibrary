@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="geneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c0392b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#geneGrad)"/>
+  <path d="M50 80 Q100 50 150 80 Q100 110 50 80" fill="#ffffff" opacity="0.7"/>
+  <path d="M70 80 Q100 65 130 80 Q100 95 70 80" fill="#2c3e50" opacity="0.5"/>
+  <text x="100" y="140" text-anchor="middle" fill="white" font-size="18" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">THE</tspan>
+    <tspan x="100" dy="22">SELFISH</tspan>
+    <tspan x="100" dy="22">GENE</tspan>
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#ecf0f1" font-size="14" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">RICHARD</tspan>
+    <tspan x="100" dy="18">DAWKINS</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ryeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e67e22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d35400;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#ryeGrad)"/>
+  <rect x="60" y="40" width="80" height="120" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.7"/>
+  <rect x="70" y="50" width="60" height="100" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+  <text x="100" y="180" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">THE CATCHER</tspan>
+    <tspan x="100" dy="18">IN THE RYE</tspan>
+  </text>
+  <text x="100" y="230" text-anchor="middle" fill="#ecf0f1" font-size="12" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">J.D. SALINGER</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

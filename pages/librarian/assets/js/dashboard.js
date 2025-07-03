@@ -1,6 +1,8 @@
 // Enhanced Dashboard JavaScript for Icon and Font Management
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Librarian dashboard loaded successfully');
+    
     // Check if FontAwesome is loaded
     checkFontAwesome();
     

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="defaultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7f8c8d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#95a5a6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#defaultGrad)"/>
+  <rect x="60" y="80" width="80" height="100" fill="#ffffff" opacity="0.8"/>
+  <rect x="70" y="90" width="60" height="80" fill="none" stroke="#2c3e50" stroke-width="2" opacity="0.6"/>
+  <text x="100" y="120" text-anchor="middle" fill="#2c3e50" font-size="24" font-weight="bold" font-family="serif">
+    📚
+  </text>
+  <text x="100" y="200" text-anchor="middle" fill="white" font-size="18" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">LIBRARY</tspan>
+    <tspan x="100" dy="22">BOOK</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

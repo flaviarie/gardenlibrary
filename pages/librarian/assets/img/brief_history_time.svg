@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="spaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000428;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004e92;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#spaceGrad)"/>
+  <circle cx="50" cy="50" r="3" fill="#ffff00" opacity="0.8"/>
+  <circle cx="150" cy="80" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="170" cy="40" r="1.5" fill="#ffffff" opacity="0.5"/>
+  <circle cx="30" cy="100" r="1" fill="#ffffff" opacity="0.4"/>
+  <circle cx="180" cy="120" r="2.5" fill="#ffff00" opacity="0.7"/>
+  <text x="100" y="150" text-anchor="middle" fill="white" font-size="18" font-weight="bold" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">A BRIEF</tspan>
+    <tspan x="100" dy="25">HISTORY</tspan>
+    <tspan x="100" dy="25">OF TIME</tspan>
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#cccccc" font-size="14" font-family="Arial, sans-serif">
+    <tspan x="100" dy="0">STEPHEN</tspan>
+    <tspan x="100" dy="20">HAWKING</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+</svg>

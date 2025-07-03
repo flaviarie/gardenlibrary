@@ -9,13 +9,6 @@ include_once 'includes/librarian_header.php';
 // Connect to DB
 include_once '../../includes/db_connection.php';
 
-// Debug only when needed
-$debug_mode = false; // toggle for tests
-
-if ($debug_mode) {
-    echo "<!-- Debug: Page loaded at " . date('Y-m-d H:i:s') . " -->";
-}
-
 // Get dashboard stats
 try {
     // Count book inventory
@@ -40,12 +33,16 @@ try {
                CASE 
                    WHEN br.return_date IS NULL AND br.due_date < CURDATE() THEN 'overdue'
                    WHEN b.status = 'borrowed' THEN 'borrowed'
+                   WHEN b.status = 'reserved' THEN 'reserved'
                    ELSE b.status
                END as display_status,
-               u.username as borrowed_by
+               u.username as borrowed_by,
+               ru.username as reserved_by
         FROM books b 
         LEFT JOIN borrowings br ON b.book_id = br.book_id AND br.return_date IS NULL
         LEFT JOIN users u ON br.user_id = u.user_id
+        LEFT JOIN reservations r ON b.book_id = r.book_id AND r.status = 'active'
+        LEFT JOIN users ru ON r.user_id = ru.user_id
         WHERE b.is_deleted = FALSE 
         ORDER BY b.added_date DESC 
         LIMIT 5
@@ -142,10 +139,10 @@ try {
                 <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 font-raleway">Manage Books</h2>
                 <p class="text-green-100 font-raleway">Track and manage your library collection</p>
             </div>            
-            <button class="bg-white text-green-700 px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-green-50 hover:scale-105 transform transition-all duration-300 font-semibold shadow-lg flex items-center justify-center space-x-2 group font-raleway w-full sm:w-auto">
+            <a href="modules/manage_books.php" class="bg-white text-green-700 px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-green-50 hover:scale-105 transform transition-all duration-300 font-semibold shadow-lg flex items-center justify-center space-x-2 group font-raleway w-full sm:w-auto no-underline">
                 <i class="fas fa-plus text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300"></i>
                 <span>Add New Book</span>
-            </button>
+            </a>
         </div>
     </div>      <div class="p-4 sm:p-6 lg:p-8">
         <!-- Table Container with proper mobile responsiveness -->
@@ -155,14 +152,26 @@ try {
                 <?php if (!empty($recent_books)): ?>
                     <?php foreach ($recent_books as $book): ?>
                         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-gray-900 mb-1"><?php echo htmlspecialchars($book['title']); ?></h3>
-                                    <p class="text-sm text-gray-600">by <?php echo htmlspecialchars($book['author']); ?></p>
+                            <div class="mb-3">
+                                <div class="flex items-start space-x-3 mb-2">
+                                    <!-- Book Cover Image -->
+                                    <div class="flex-shrink-0">
+                                        <img src="assets/img/<?php echo htmlspecialchars($book['book_cover'] ?? 'default_book_cover.svg'); ?>" 
+                                             alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                                             class="w-20 h-24 object-cover rounded-lg shadow-md border border-gray-200"
+                                             onerror="this.src='assets/img/default_book_cover.svg'">
+                                    </div>
+                                    <!-- Book Info -->
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-gray-900 mb-1 truncate"><?php echo htmlspecialchars($book['title']); ?></h3>
+                                        <p class="text-sm text-gray-600 truncate">by <?php echo htmlspecialchars($book['author']); ?></p>
+                                    </div>
                                 </div>
-                                <span class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-600">
-                                    <?php echo htmlspecialchars($book['book_id']); ?>
-                                </span>
+                                <div class="w-full">
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-600 inline-block w-full text-center book-id-single-line" title="<?php echo htmlspecialchars($book['book_id']); ?>">
+                                        <?php echo htmlspecialchars($book['book_id']); ?>
+                                    </span>
+                                </div>
                             </div>
                             <div class="space-y-2">
                                 <div class="flex justify-between items-center">
@@ -178,6 +187,7 @@ try {
                                     $status_classes = [
                                         'available' => 'bg-gradient-to-r from-green-100 to-green-200 text-green-800',
                                         'borrowed' => 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800',
+                                        'reserved' => 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800',
                                         'overdue' => 'bg-gradient-to-r from-red-100 to-red-200 text-red-800 animate-pulse'
                                     ];
                                     $class = $status_classes[$status] ?? 'bg-gray-100 text-gray-800';
@@ -192,22 +202,33 @@ try {
                                     <span class="text-sm text-gray-700"><?php echo htmlspecialchars($book['borrowed_by']); ?></span>
                                 </div>
                                 <?php endif; ?>
+                                <?php if ($book['reserved_by']): ?>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">Reserved by:</span>
+                                    <span class="text-sm text-gray-700"><?php echo htmlspecialchars($book['reserved_by']); ?></span>
+                                </div>
+                                <?php endif; ?>
                                 <div class="pt-2 border-t border-gray-100">
                                     <?php if ($status === 'available'): ?>
-                                        <button class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 text-sm font-medium shadow-md flex items-center justify-center space-x-2">
-                                            <i class="fas fa-hand-point-right text-xs"></i>
-                                            <span>Issue</span>
-                                        </button>
+                                        <a href="modules/issue_returns.php?action=issue&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 text-sm font-medium shadow-md flex items-center justify-center transition-all duration-300 no-underline min-h-[44px]">
+                                            <span>Issue Book</span>
+                                        </a>
                                     <?php elseif ($status === 'borrowed'): ?>
-                                        <button class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 text-sm font-medium shadow-md flex items-center justify-center space-x-2">
-                                            <i class="fas fa-undo text-xs"></i>
-                                            <span>Return</span>
-                                        </button>
+                                        <a href="modules/issue_returns.php?action=return&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 text-sm font-medium shadow-md flex items-center justify-center transition-all duration-300 no-underline min-h-[44px]">
+                                            <span>Return Book</span>
+                                        </a>
+                                    <?php elseif ($status === 'reserved'): ?>
+                                        <a href="modules/reservation.php?action=manage&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 text-sm font-medium shadow-md flex items-center justify-center transition-all duration-300 no-underline min-h-[44px]">
+                                            <span>Manage Reservation</span>
+                                        </a>
                                     <?php elseif ($status === 'overdue'): ?>
-                                        <button class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 text-sm font-medium shadow-md flex items-center justify-center space-x-2">
-                                            <i class="fas fa-exclamation-triangle text-xs"></i>
-                                            <span>Overdue</span>
-                                        </button>
+                                        <a href="modules/issue_returns.php?action=return&book_id=<?php echo urlencode($book['book_id']); ?>&overdue=1" 
+                                           class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-lg hover:from-red-600 hover:to-red-700 text-sm font-medium shadow-md flex items-center justify-center transition-all duration-300 no-underline min-h-[44px]">
+                                            <span>Process Overdue</span>
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -225,7 +246,8 @@ try {
             <!-- Desktop Table View (hidden on small screens) -->
             <table class="w-full hidden sm:table">                <thead>
                     <tr class="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
-                        <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway">Book ID</th>
+                        <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway">Book</th>
+                        <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway w-32 sm:w-40">Book ID</th>
                         <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway">Title</th>
                         <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway hidden md:table-cell">Author</th>
                         <th class="px-4 lg:px-8 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider font-raleway hidden lg:table-cell">Category</th>
@@ -235,10 +257,18 @@ try {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    <?php if (!empty($recent_books)): ?>                        <?php foreach ($recent_books as $book): ?>                            <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 group">
+                    <?php if (!empty($recent_books)): ?>                        
+                        <?php foreach ($recent_books as $book): ?>                            <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 group">
+                                <!-- Book Cover Image -->
+                                <td class="px-4 lg:px-8 py-4 sm:py-6">
+                                    <img src="assets/img/<?php echo htmlspecialchars($book['book_cover'] ?? 'default_book_cover.svg'); ?>" 
+                                         alt="<?php echo htmlspecialchars($book['title']); ?>" 
+                                         class="w-24 h-25 object-cover rounded-lg shadow-md border border-gray-200 group-hover:shadow-lg transition-shadow"
+                                         onerror="this.src='assets/img/default_book_cover.svg'">
+                                </td>
                                 <!-- Clean Book ID Display -->
-                                <td class="px-4 lg:px-8 py-4 sm:py-6 text-xs font-mono text-gray-600 group-hover:text-blue-800 font-raleway">
-                                    <span class="bg-gray-100 px-2 sm:px-3 py-1 sm:py-2 rounded-lg border border-gray-200 font-raleway text-xs">
+                                <td class="px-4 lg:px-8 py-4 sm:py-6 text-xs font-mono text-gray-600 group-hover:text-blue-800 font-raleway min-w-0">
+                                    <span class="bg-gray-100 px-2 sm:px-3 py-1 sm:py-2 rounded-lg border border-gray-200 font-raleway text-xs inline-block book-id-single-line" title="<?php echo htmlspecialchars($book['book_id']); ?>">
                                         <?php echo htmlspecialchars($book['book_id']); ?>
                                     </span>
                                 </td>
@@ -256,37 +286,53 @@ try {
                                     $status_classes = [
                                         'available' => 'bg-gradient-to-r from-green-100 to-green-200 text-green-800',
                                         'borrowed' => 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800',
+                                        'reserved' => 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800',
                                         'overdue' => 'bg-gradient-to-r from-red-100 to-red-200 text-red-800 animate-pulse'
                                     ];
                                     $class = $status_classes[$status] ?? 'bg-gray-100 text-gray-800';
-                                    ?>                                    <span class="px-2 sm:px-4 py-1 sm:py-2 <?php echo $class; ?> text-xs font-bold rounded-full shadow-sm font-raleway">
+                                    ?>
+                                    <span class="px-2 sm:px-4 py-1 sm:py-2 <?php echo $class; ?> text-xs font-bold rounded-full shadow-sm font-raleway">
                                         <?php echo ucfirst($status); ?>
                                     </span>
                                 </td>
                                 <td class="px-4 lg:px-8 py-4 sm:py-6 text-sm text-gray-600 group-hover:text-blue-800 font-raleway hidden lg:table-cell">
-                                    <?php echo $book['borrowed_by'] ? htmlspecialchars($book['borrowed_by']) : '-'; ?>
+                                    <?php 
+                                    if ($book['borrowed_by']) {
+                                        echo htmlspecialchars($book['borrowed_by']);
+                                    } elseif ($book['reserved_by']) {
+                                        echo 'Reserved by ' . htmlspecialchars($book['reserved_by']);
+                                    } else {
+                                        echo '-';
+                                    }
+                                    ?>
                                 </td>
-                                <td class="px-4 lg:px-8 py-4 sm:py-6">                                    <?php if ($status === 'available'): ?>
-                                        <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 text-xs sm:text-sm font-medium shadow-md flex items-center space-x-1 sm:space-x-2 font-raleway">
-                                            <i class="fas fa-hand-point-right text-xs"></i>
-                                            <span class="hidden sm:inline">Issue</span>
-                                        </button>
+                                <td class="px-4 lg:px-8 py-4 sm:py-6">
+                                    <?php if ($status === 'available'): ?>
+                                        <a href="modules/issue_returns.php?action=issue&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md flex items-center justify-center font-raleway no-underline min-h-[40px]">
+                                            <span>Issue</span>
+                                        </a>
                                     <?php elseif ($status === 'borrowed'): ?>
-                                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 text-xs sm:text-sm font-medium shadow-md flex items-center space-x-1 sm:space-x-2 font-raleway">
-                                            <i class="fas fa-undo text-xs"></i>
-                                            <span class="hidden sm:inline">Return</span>
-                                        </button>
+                                        <a href="modules/issue_returns.php?action=return&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md flex items-center justify-center font-raleway no-underline min-h-[40px]">
+                                            <span>Return</span>
+                                        </a>
+                                    <?php elseif ($status === 'reserved'): ?>
+                                        <a href="modules/reservation.php?action=manage&book_id=<?php echo urlencode($book['book_id']); ?>" 
+                                           class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-purple-700 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md flex items-center justify-center font-raleway no-underline min-h-[40px]">
+                                            <span>Manage</span>
+                                        </a>
                                     <?php elseif ($status === 'overdue'): ?>
-                                        <button class="bg-gradient-to-r from-red-500 to-red-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:from-red-600 hover:to-red-700 hover:scale-105 transform transition-all duration-300 text-xs sm:text-sm font-medium shadow-md flex items-center space-x-1 sm:space-x-2">
-                                            <i class="fas fa-exclamation-triangle text-xs"></i>
-                                            <span class="hidden sm:inline">Overdue</span>
-                                        </button>
+                                        <a href="modules/issue_returns.php?action=return&book_id=<?php echo urlencode($book['book_id']); ?>&overdue=1" 
+                                           class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 hover:scale-105 transform transition-all duration-300 text-sm font-medium shadow-md flex items-center justify-center no-underline min-h-[40px]">
+                                            <span>Process</span>
+                                        </a>
                                     <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>                    <?php else: ?>
                         <tr>
-                            <td colspan="7" class="px-4 lg:px-8 py-8 sm:py-12 text-center text-gray-500">
+                            <td colspan="8" class="px-4 lg:px-8 py-8 sm:py-12 text-center text-gray-500">
                                 <div class="flex flex-col items-center space-y-2">
                                     <i class="fas fa-book text-3xl sm:text-4xl text-gray-300"></i>
                                     <p class="text-base sm:text-lg font-medium">No books found</p>
@@ -307,64 +353,6 @@ try {
         </div>    
     </div>
 </div>
-
-<script>
-// Fix loading issues
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Librarian dashboard loaded');
-    
-    // Check icons loaded
-    setTimeout(function() {
-        const icons = document.querySelectorAll('i[class*="fa-"]');
-        console.log('Found ' + icons.length + ' FontAwesome icons');
-          // Find broken icons
-        let missingIcons = 0;
-        icons.forEach(function(icon) {
-            const computedStyle = window.getComputedStyle(icon, ':before');
-            const content = computedStyle.getPropertyValue('content');
-            if (!content || content === 'none' || content === '""') {
-                missingIcons++;
-            }
-        });
-        
-        if (missingIcons > 0) {
-            console.warn(missingIcons + ' icons not displaying properly');
-            // Try backup icons
-        } else {
-            console.log('All icons loaded successfully');
-        }
-    }, 1000);
-      // Check fonts loaded
-    if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(function() {
-            console.log('Fonts loaded successfully');
-        });
-    }
-});
-
-// Catch missing files
-window.addEventListener('error', function(e) {
-    if (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT') {
-        console.error('Failed to load resource:', e.target.src || e.target.href);
-        // Show nice message
-        const notification = document.createElement('div');
-        notification.className = 'resource-error-notification';
-        notification.innerHTML = `
-            <strong>Resource Loading Issue:</strong><br>
-            Some stylesheets or scripts failed to load. The page should still be functional.
-            <button onclick="this.parentElement.remove()" class="error-notification-close">×</button>
-        `;
-        document.body.appendChild(notification);
-        
-        // Remove after timeout
-        setTimeout(function() {
-            if (notification.parentElement) {
-                notification.remove();
-            }
-        }, 10000);
-    }
-});
-</script>
 
 <?php
 include_once 'includes/librarian_footer.php';

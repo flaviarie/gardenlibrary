@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hobbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a0522d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="300" fill="url(#hobbitGrad)"/>
+  <circle cx="100" cy="80" r="40" fill="none" stroke="#ffd700" stroke-width="5" opacity="0.8"/>
+  <circle cx="100" cy="80" r="30" fill="none" stroke="#ffd700" stroke-width="3" opacity="0.6"/>
+  <circle cx="100" cy="80" r="20" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.4"/>
+  <text x="100" y="150" text-anchor="middle" fill="#ffd700" font-size="20" font-weight="bold" font-family="serif">
+    <tspan x="100" dy="0">THE</tspan>
+    <tspan x="100" dy="25">HOBBIT</tspan>
+  </text>
+  <text x="100" y="220" text-anchor="middle" fill="#ecf0f1" font-size="14" font-family="serif">
+    <tspan x="100" dy="0">J.R.R.</tspan>
+    <tspan x="100" dy="18">TOLKIEN</tspan>
+  </text>
+  <rect x="10" y="10" width="180" height="280" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+</svg>
