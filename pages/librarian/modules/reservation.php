@@ -367,34 +367,13 @@ function cancelReservation(reservationId, title) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.innerHTML = '<input type="hidden" name="reservation_id" value="' + reservationId + '"><input type="hidden" name="cancel_reservation" value="1">';
-        document.body.appendChild(form);
+document.body.appendChild(form);
         form.submit();
     }
 }
 </script>
 
 <?php
-include_once '../includes/librarian_footer.php';
-?>
-        // Mark as notified
-        $update = $pdo->prepare("UPDATE reservations SET status = 'notified', notified_at = NOW() WHERE id = ?");
-        $update->execute([$reservation['id']]);
-        return ['notified_user_id' => $reservation['user_id']];
-    }
-    return null;
-}
-?>
-
-<!-- Page Content Goes Here -->
-<div class="container mx-auto">
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Reservations</h2>
-        
-        <!-- Add your reservations content here -->
-        <p class="text-gray-600">This is the reservations page. Add your reservation management functionality here.</p>
-    </div>
-</div>
-
-<?php
+// Only include the footer once at the end
 include_once '../includes/librarian_footer.php';
 ?>
