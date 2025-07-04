@@ -394,9 +394,10 @@ $category_names = [
                         <!-- Book Cover -->
                         <div class="aspect-w-3 aspect-h-4 bg-gradient-to-br from-blue-100 to-green-100 p-4">
                             <?php if ($book['book_cover'] && $book['book_cover'] !== 'default_book_cover.svg'): ?>
-                                <img src="../../../../assets/img/book_covers/<?php echo htmlspecialchars($book['book_cover']); ?>" 
+                                <img src="../../librarian/assets/img/<?php echo htmlspecialchars($book['book_cover']); ?>" 
                                      alt="<?php echo htmlspecialchars($book['title']); ?>"
-                                     class="w-full h-48 object-cover rounded-lg">
+                                     class="w-full h-48 object-cover rounded-lg"
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg\'><i class=\'fas fa-book text-4xl text-gray-400\'></i></div>';">
                             <?php else: ?>
                                 <div class="w-full h-48 flex items-center justify-center bg-gray-200 rounded-lg">
                                     <i class="fas fa-book text-4xl text-gray-400"></i>
