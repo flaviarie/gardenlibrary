@@ -1,4 +1,4 @@
-            </div>
+</div>
         </main>
     </div>
 
@@ -10,9 +10,9 @@
                 let logoutPath;
                 
                 if (currentPath.includes('/modules/')) {
-                    logoutPath = '../../../../includes/logout.php';
-                } else {
                     logoutPath = '../../../includes/logout.php';
+                } else {
+                    logoutPath = '../../includes/logout.php';
                 }
                 
                 window.location.href = logoutPath;

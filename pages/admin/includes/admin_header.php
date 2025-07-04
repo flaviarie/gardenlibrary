@@ -178,7 +178,7 @@ if ($current_dir == 'modules') {
         // Logout confirmation function
         function confirmLogout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '../login/index.php';
+                window.location.href = '<?php echo $base_path; ?>../../includes/logout.php';
             }
         }
     </script>

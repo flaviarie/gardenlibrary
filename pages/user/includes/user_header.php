@@ -242,6 +242,7 @@ if ($current_dir == 'modules') {
                         <i class="fas fa-sign-out-alt"></i>
                         <span class="hidden sm:inline">Logout</span>
                     </button>
-                </div>            </header>            
+                </div>            
+            </header>            
             <!-- Dashboard Content -->
             <div class="flex-1 p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">

@@ -2,6 +2,26 @@
 // Config setup
 require_once('../../config/config.php');
 session_start();
+
+// Check if user is already logged in and redirect accordingly
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    if (isset($_SESSION['role'])) {
+        switch ($_SESSION['role']) {
+            case 'admin':
+                if ($_SESSION['username'] === 'admin') {
+                    header("Location: ../admin/index.php");
+                } else {
+                    header("Location: ../librarian/index.php");
+                }
+                break;
+            case 'student':
+            default:
+                header("Location: ../user/index.php");
+                break;
+        }
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
