@@ -1,14 +1,11 @@
 <?php
-// Show errors for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Set the page title 
 $page_title = 'Manage Users';
 
-// Handle AJAX requests first, before any output
+// AJAX handler
 if (isset($_POST['action'])) {
-    // Start session and include necessary files for AJAX
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -16,7 +13,7 @@ if (isset($_POST['action'])) {
     include_once '../includes/admin_functions.php';
     include_once '../../../includes/db_connection.php';
     
-    // Check admin access for AJAX
+    // Access check
     if (!isAdmin()) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Access denied']);
@@ -44,7 +41,7 @@ if (isset($_POST['action'])) {
                 $_POST['username'],
                 $_POST['email'],
                 $_POST['role'],
-                '', // full_name not used
+                '',
                 $_POST['password']
             );
             echo json_encode($result);
@@ -463,191 +460,5 @@ $current_page = $users_data['current_page'];
 <!-- Alert Messages -->
 <div id="alertContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-<script>
-let editingUserId = null;
-
-function openCreateModal() {
-    editingUserId = null;
-    document.getElementById('modalTitle').textContent = 'Add New User';
-    document.getElementById('userForm').reset();
-    document.getElementById('userId').value = '';
-    document.getElementById('userModal').classList.remove('hidden');
-}
-
-function closeModal() {
-    document.getElementById('userModal').classList.add('hidden');
-    editingUserId = null;
-}
-
-function editUser(userId) {
-    editingUserId = userId;
-    document.getElementById('modalTitle').textContent = 'Edit User';
-    
-    // Fetch user data
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `action=get_user&user_id=${userId}`
-    })
-    .then(response => response.json())
-    .then(user => {
-        document.getElementById('userId').value = user.user_id;
-        document.getElementById('username').value = user.username;
-        document.getElementById('email').value = user.email;
-        document.getElementById('role').value = user.role;
-        document.getElementById('password').value = '';
-        
-        document.getElementById('userModal').classList.remove('hidden');
-    })
-    .catch(error => {
-        showAlert('Error loading user data', 'error');
-    });
-}
-
-function deleteUser(userId) {
-    if (confirm('Are you sure you want to delete this user?')) {
-        fetch(window.location.href, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=delete_user&user_id=${userId}`
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                showAlert(result.message, 'success');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showAlert(result.message, 'error');
-            }
-        })
-        .catch(error => {
-            showAlert('Error deleting user', 'error');
-        });
-    }
-}
-
-function suspendUser(userId) {
-    if (confirm('Are you sure you want to suspend this user account?')) {
-        fetch(window.location.href, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=suspend_user&user_id=${userId}`
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                showAlert(result.message, 'success');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showAlert(result.message, 'error');
-            }
-        })
-        .catch(error => {
-            showAlert('Error suspending user', 'error');
-        });
-    }
-}
-
-function activateUser(userId) {
-    if (confirm('Are you sure you want to activate this user account?')) {
-        fetch(window.location.href, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=activate_user&user_id=${userId}`
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                showAlert(result.message, 'success');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showAlert(result.message, 'error');
-            }
-        })
-        .catch(error => {
-            showAlert('Error activating user', 'error');
-        });
-    }
-}
-
-function applyFilters() {
-    const search = document.getElementById('searchInput').value;
-    const role = document.getElementById('roleFilter').value;
-    const status = document.getElementById('statusFilter').value;
-    const url = new URL(window.location.href);
-    url.searchParams.set('search', search);
-    url.searchParams.set('role', role);
-    url.searchParams.set('status', status);
-    url.searchParams.set('page', '1');
-    window.location.href = url.toString();
-}
-
-function showAlert(message, type) {
-    const alertContainer = document.getElementById('alertContainer');
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} p-4 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
-    
-    const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
-    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-    
-    alertDiv.innerHTML = `
-        <div class="flex items-center text-white ${bgColor} px-4 py-3 rounded-lg">
-            <i class="fas fa-${icon} mr-2"></i>
-            <span>${message}</span>
-        </div>
-    `;
-    
-    alertContainer.appendChild(alertDiv);
-    
-    setTimeout(() => {
-        alertDiv.classList.remove('translate-x-full');
-    }, 100);
-    
-    setTimeout(() => {
-        alertDiv.classList.add('translate-x-full');
-        setTimeout(() => alertDiv.remove(), 300);
-    }, 3000);
-}
-
-// Handle form submission
-document.getElementById('userForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const action = editingUserId ? 'update_user' : 'create_user';
-    formData.append('action', action);
-    
-    fetch(window.location.href, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            showAlert(result.message, 'success');
-            closeModal();
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            showAlert(result.message, 'error');
-        }
-    })
-    .catch(error => {
-        showAlert('Error saving user', 'error');
-    });
-});
-
-// Search on Enter key
-document.getElementById('searchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        applyFilters();
-    }
-});
-</script>
+<!-- External Scripts -->
+<script src="../assets/js/user-management.js"></script>

@@ -1,14 +1,11 @@
 <?php
-// Show errors for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Set the page title 
 $page_title = 'Manage Librarians';
 
-// Handle AJAX requests first, before any output
+// AJAX handler
 if (isset($_POST['action'])) {
-    // Start session and include necessary files for AJAX
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -16,7 +13,7 @@ if (isset($_POST['action'])) {
     include_once '../includes/admin_functions.php';
     include_once '../../../includes/db_connection.php';
     
-    // Check admin access for AJAX
+    // Access check
     if (!isAdmin()) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Access denied']);
@@ -33,7 +30,7 @@ if (isset($_POST['action'])) {
                 $_POST['username'],
                 $_POST['email'],
                 'librarian',
-                '' // full_name not used
+                ''
             );
             echo json_encode($result);
             exit;
@@ -45,7 +42,7 @@ if (isset($_POST['action'])) {
                 $_POST['username'],
                 $_POST['email'],
                 'user',
-                '' // full_name not used
+                ''
             );
             echo json_encode($result);
             exit;
@@ -57,7 +54,7 @@ if (isset($_POST['action'])) {
                 $_POST['email'],
                 $_POST['password'],
                 'librarian',
-                '' // full_name not used
+                ''
             );
             echo json_encode($result);
             exit;
@@ -80,20 +77,20 @@ if (isset($_POST['action'])) {
     }
 }
 
-// Include header and functions for the main page
+// Core includes
 include_once '../includes/admin_header.php';
 include_once '../includes/admin_functions.php';
 include_once '../../../includes/db_connection.php';
 
-// Check admin access for the main page
+// Verify access
 requireAdminAccess();
 
-// Get parameters
+// Parameters
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $per_page = 10;
 
-// Get librarians data
+// Data retrieval
 $librarians_data = getAllUsers($pdo, $page, $per_page, $search, 'librarian');
 $librarians = $librarians_data['users'];
 $total_librarians = $librarians_data['total'];
@@ -114,7 +111,7 @@ try {
             COUNT(DISTINCT CASE WHEN DATE(b.borrow_date) = CURDATE() THEN b.borrowing_id END) as today_issues
         FROM users u
         LEFT JOIN borrowings b ON u.user_id = b.librarian_id
-        WHERE u.role = 'librarian' AND u.is_deleted = FALSE
+        WHERE u.role = 'admin' AND u.username != 'admin'
     ");
     $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -477,199 +474,8 @@ try {
 <!-- Alert Messages -->
 <div id="alertContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-<script>
-function openCreateModal() {
-    document.getElementById('createModal').classList.remove('hidden');
-}
+<!-- External Scripts -->
+<script src="../assets/js/librarian-management.js"></script>
 
-function closeCreateModal() {
-    document.getElementById('createModal').classList.add('hidden');
-    document.getElementById('createForm').reset();
-}
-
-function openPromoteModal() {
-    document.getElementById('promoteModal').classList.remove('hidden');
-}
-
-function closePromoteModal() {
-    document.getElementById('promoteModal').classList.add('hidden');
-    document.getElementById('promoteForm').reset();
-}
-
-function closeStatsModal() {
-    document.getElementById('statsModal').classList.add('hidden');
-}
-
-function demoteLibrarian(userId, username, email) {
-    if (confirm(`Are you sure you want to demote ${username} from librarian to user?`)) {
-        const formData = new FormData();
-        formData.append('action', 'demote_librarian');
-        formData.append('user_id', userId);
-        formData.append('username', username);
-        formData.append('email', email);
-        
-        fetch(window.location.href, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                showAlert(result.message, 'success');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showAlert(result.message, 'error');
-            }
-        })
-        .catch(error => {
-            showAlert('Error demoting librarian', 'error');
-        });
-    }
-}
-
-function viewStats(userId) {
-    document.getElementById('statsModal').classList.remove('hidden');
-    
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `action=get_librarian_stats&user_id=${userId}`
-    })
-    .then(response => response.json())
-    .then(stats => {
-        document.getElementById('statsContent').innerHTML = `
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-blue-50 p-4 rounded-lg">
-                    <p class="text-sm text-blue-600 font-semibold">Total Issues</p>
-                    <p class="text-2xl font-bold text-blue-800">${stats.total_issues || 0}</p>
-                </div>
-                <div class="bg-green-50 p-4 rounded-lg">
-                    <p class="text-sm text-green-600 font-semibold">Total Returns</p>
-                    <p class="text-2xl font-bold text-green-800">${stats.total_returns || 0}</p>
-                </div>
-                <div class="bg-orange-50 p-4 rounded-lg">
-                    <p class="text-sm text-orange-600 font-semibold">Active Issues</p>
-                    <p class="text-2xl font-bold text-orange-800">${stats.active_issues || 0}</p>
-                </div>
-                <div class="bg-purple-50 p-4 rounded-lg">
-                    <p class="text-sm text-purple-600 font-semibold">Success Rate</p>
-                    <p class="text-2xl font-bold text-purple-800">${stats.total_issues > 0 ? Math.round((stats.total_returns / stats.total_issues) * 100) : 0}%</p>
-                </div>
-            </div>
-            <div class="mt-6">
-                <h3 class="font-semibold text-gray-900 mb-2">Performance Summary</h3>
-                <p class="text-sm text-gray-600">${stats.username} has processed ${stats.total_issues || 0} book issues and ${stats.total_returns || 0} returns.</p>
-            </div>
-        `;
-    })
-    .catch(error => {
-        document.getElementById('statsContent').innerHTML = `
-            <div class="text-center py-8">
-                <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
-                <p class="text-red-600">Error loading statistics</p>
-            </div>
-        `;
-    });
-}
-
-function applyFilters() {
-    const search = document.getElementById('searchInput').value;
-    const url = new URL(window.location.href);
-    url.searchParams.set('search', search);
-    url.searchParams.set('page', '1');
-    window.location.href = url.toString();
-}
-
-function showAlert(message, type) {
-    const alertContainer = document.getElementById('alertContainer');
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} p-4 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
-    
-    const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
-    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-    
-    alertDiv.innerHTML = `
-        <div class="flex items-center text-white ${bgColor} px-4 py-3 rounded-lg">
-            <i class="fas fa-${icon} mr-2"></i>
-            <span>${message}</span>
-        </div>
-    `;
-    
-    alertContainer.appendChild(alertDiv);
-    
-    setTimeout(() => {
-        alertDiv.classList.remove('translate-x-full');
-    }, 100);
-    
-    setTimeout(() => {
-        alertDiv.classList.add('translate-x-full');
-        setTimeout(() => alertDiv.remove(), 300);
-    }, 3000);
-}
-
-// Handle create form submission
-document.getElementById('createForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    formData.append('action', 'create_librarian');
-    
-    fetch(window.location.href, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            showAlert(result.message, 'success');
-            closeCreateModal();
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            showAlert(result.message, 'error');
-        }
-    })
-    .catch(error => {
-        showAlert('Error creating librarian', 'error');
-    });
-});
-
-// Handle promote form submission
-document.getElementById('promoteForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const selectedOption = document.getElementById('promoteUser').selectedOptions[0];
-    const formData = new FormData();
-    formData.append('action', 'promote_to_librarian');
-    formData.append('user_id', selectedOption.value);
-    formData.append('username', selectedOption.dataset.username);
-    formData.append('email', selectedOption.dataset.email);
-    
-    fetch(window.location.href, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            showAlert(result.message, 'success');
-            closePromoteModal();
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            showAlert(result.message, 'error');
-        }
-    })
-    .catch(error => {
-        showAlert('Error promoting user', 'error');
-    });
-});
-
-// Search on Enter key
-document.getElementById('searchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        applyFilters();
-    }
-});
-</script>
-
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* Dashboard responsive styles */
+@media (max-width: 640px) {
+    .resource-error-notification {
+        position: fixed !important;
+        top: 1rem !important;
+        left: 1rem !important;
+        right: 1rem !important;
+        max-width: none !important;
+    }
+}
+
+/* Mobile touch targets */
+@media (max-width: 768px) {
+    button, a[class*="hover:"], .cursor-pointer {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    /* Prevent text selection on interactive elements */
+    button, .cursor-pointer {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    /* Improve scroll behavior */
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Desktop hover states */
+@media (min-width: 1024px) {
+    .hover\:scale-105:hover {
+        transform: scale(1.05) !important;
+    }
+}

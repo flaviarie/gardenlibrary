@@ -1,11 +1,10 @@
 <?php
-// Set the page title 
 $page_title = 'Reservations';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php'; // Use PDO connection
+include_once '../../../includes/db_connection.php';
 
-// Create reservations table if it doesn't exist
+// Create reservations table if needed
 try {
     $pdo->exec("CREATE TABLE IF NOT EXISTS reservations (
         reservation_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,13 +21,11 @@ try {
     // Table might already exist
 }
 
-// --- MESSAGE HANDLING ---
 $message = '';
 $message_type = '';
 
-// --- RESERVE BOOK ---
+// Book reservation functions
 function reserve_book($book_id, $user_id, $pdo) {
-    // Check if book exists
     $stmt = $pdo->prepare("SELECT * FROM books WHERE book_id = ? AND is_deleted = 0");
     $stmt->execute([$book_id]);
     $book = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -36,18 +33,15 @@ function reserve_book($book_id, $user_id, $pdo) {
         return ['success' => false, 'message' => 'Book not found.'];
     }
     
-    // Check if user already has a pending reservation for this book
     $stmt = $pdo->prepare("SELECT * FROM reservations WHERE book_id = ? AND user_id = ? AND status = 'pending'");
     $stmt->execute([$book_id, $user_id]);
     if ($stmt->fetch()) {
         return ['success' => false, 'message' => 'User already has a pending reservation for this book.'];
     }
     
-    // Add to reservation queue
     $stmt = $pdo->prepare("INSERT INTO reservations (book_id, user_id, status, reserved_at) VALUES (?, ?, 'pending', NOW())");
     $success = $stmt->execute([$book_id, $user_id]);
     
-    // If book is available, mark it as reserved
     if ($success && $book['status'] === 'available') {
         $pdo->prepare("UPDATE books SET status = 'reserved' WHERE book_id = ?")->execute([$book_id]);
     }
@@ -55,19 +49,16 @@ function reserve_book($book_id, $user_id, $pdo) {
     return ['success' => $success];
 }
 
-// --- FULFILL RESERVATION ---
 function fulfill_reservation($reservation_id, $pdo) {
     $stmt = $pdo->prepare("UPDATE reservations SET status = 'fulfilled' WHERE reservation_id = ?");
     $success = $stmt->execute([$reservation_id]);
     
     if ($success) {
-        // Get reservation details
         $stmt = $pdo->prepare("SELECT * FROM reservations WHERE reservation_id = ?");
         $stmt->execute([$reservation_id]);
         $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($reservation) {
-            // Update book status to borrowed and create borrowing record
             $pdo->prepare("UPDATE books SET status = 'borrowed' WHERE book_id = ?")->execute([$reservation['book_id']]);
             
             $borrow_date = date('Y-m-d');
@@ -80,9 +71,7 @@ function fulfill_reservation($reservation_id, $pdo) {
     return ['success' => $success];
 }
 
-// --- CANCEL RESERVATION ---
 function cancel_reservation($reservation_id, $pdo) {
-    // Get reservation details before canceling
     $stmt = $pdo->prepare("SELECT * FROM reservations WHERE reservation_id = ?");
     $stmt->execute([$reservation_id]);
     $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,12 +80,10 @@ function cancel_reservation($reservation_id, $pdo) {
     $success = $stmt->execute([$reservation_id]);
     
     if ($success && $reservation) {
-        // Check if this book has other pending reservations
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE book_id = ? AND status = 'pending'");
         $stmt->execute([$reservation['book_id']]);
         $pending_count = $stmt->fetchColumn();
         
-        // If no pending reservations, mark book as available
         if ($pending_count == 0) {
             $pdo->prepare("UPDATE books SET status = 'available' WHERE book_id = ?")->execute([$reservation['book_id']]);
         }
@@ -105,7 +92,7 @@ function cancel_reservation($reservation_id, $pdo) {
     return ['success' => $success];
 }
 
-// --- HANDLE FORM SUBMISSIONS ---
+// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['reserve_book'])) {
         $book_id = trim($_POST['book_id']);
@@ -151,18 +138,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// --- FETCH DATA ---
-// Get all users (students)
+// Fetch data for display
 $stmt = $pdo->prepare("SELECT user_id, username, email FROM users WHERE role = 'student' ORDER BY username");
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get all books
 $stmt = $pdo->prepare("SELECT book_id, title, author, status, book_cover FROM books WHERE is_deleted = 0 ORDER BY title");
 $stmt->execute();
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get pending reservations
 $stmt = $pdo->prepare("
     SELECT r.reservation_id, r.book_id, r.user_id, r.status, r.reserved_at,
            b.title, b.author, b.book_cover, u.username, u.email
@@ -175,7 +159,6 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $pending_reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get reservation history
 $stmt = $pdo->prepare("
     SELECT r.reservation_id, r.book_id, r.user_id, r.status, r.reserved_at,
            b.title, b.author, b.book_cover, u.username, u.email
@@ -351,29 +334,8 @@ $reservation_history = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<script>
-function fulfillReservation(reservationId, title) {
-    if (confirm('Are you sure you want to fulfill the reservation for "' + title + '"?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.innerHTML = '<input type="hidden" name="reservation_id" value="' + reservationId + '"><input type="hidden" name="fulfill_reservation" value="1">';
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
-
-function cancelReservation(reservationId, title) {
-    if (confirm('Are you sure you want to cancel the reservation for "' + title + '"?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.innerHTML = '<input type="hidden" name="reservation_id" value="' + reservationId + '"><input type="hidden" name="cancel_reservation" value="1">';
-document.body.appendChild(form);
-        form.submit();
-    }
-}
-</script>
+<script src="../assets/js/reservations.js"></script>
 
 <?php
-// Only include the footer once at the end
 include_once '../includes/librarian_footer.php';
 ?>

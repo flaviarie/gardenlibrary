@@ -332,23 +332,37 @@ function deleteUser($pdo, $user_id) {
 // Function to generate reports
 function generateReports($pdo, $report_type, $date_from = null, $date_to = null) {
     try {
+        error_log("Generating report: $report_type, from: $date_from, to: $date_to");
+        
+        $params = [];
+        
         switch ($report_type) {
             case 'user_registrations':
                 $sql = "SELECT DATE(created_at) as date, COUNT(*) as count 
                         FROM users 
-                        WHERE 1=1"; // Remove is_deleted condition
-                if ($date_from) $sql .= " AND DATE(created_at) >= '$date_from'";
-                if ($date_to) $sql .= " AND DATE(created_at) <= '$date_to'";
+                        WHERE 1=1";
+                if ($date_from) {
+                    $sql .= " AND DATE(created_at) >= ?";
+                    $params[] = $date_from;
+                }
+                if ($date_to) {
+                    $sql .= " AND DATE(created_at) <= ?";
+                    $params[] = $date_to;
+                }
                 $sql .= " GROUP BY DATE(created_at) ORDER BY date DESC";
                 break;
                 
             case 'borrowing_activity':
                 $sql = "SELECT DATE(borrow_date) as date, COUNT(*) as count 
-                        FROM borrowings";
-                if ($date_from) $sql .= " WHERE DATE(borrow_date) >= '$date_from'";
+                        FROM borrowings
+                        WHERE 1=1";
+                if ($date_from) {
+                    $sql .= " AND DATE(borrow_date) >= ?";
+                    $params[] = $date_from;
+                }
                 if ($date_to) {
-                    $sql .= $date_from ? " AND" : " WHERE";
-                    $sql .= " DATE(borrow_date) <= '$date_to'";
+                    $sql .= " AND DATE(borrow_date) <= ?";
+                    $params[] = $date_to;
                 }
                 $sql .= " GROUP BY DATE(borrow_date) ORDER BY date DESC";
                 break;
@@ -358,20 +372,37 @@ function generateReports($pdo, $report_type, $date_from = null, $date_to = null)
                         FROM books b 
                         LEFT JOIN borrowings br ON b.book_id = br.book_id 
                         WHERE b.is_deleted = FALSE";
-                if ($date_from) $sql .= " AND DATE(br.borrow_date) >= '$date_from'";
-                if ($date_to) $sql .= " AND DATE(br.borrow_date) <= '$date_to'";
-                $sql .= " GROUP BY b.book_id ORDER BY borrow_count DESC LIMIT 10";
+                if ($date_from) {
+                    $sql .= " AND DATE(br.borrow_date) >= ?";
+                    $params[] = $date_from;
+                }
+                if ($date_to) {
+                    $sql .= " AND DATE(br.borrow_date) <= ?";
+                    $params[] = $date_to;
+                }
+                $sql .= " GROUP BY b.book_id, b.title, b.author ORDER BY borrow_count DESC LIMIT 10";
                 break;
                 
             default:
+                error_log("Invalid report type: $report_type");
                 return ['success' => false, 'message' => 'Invalid report type'];
         }
         
-        $stmt = $pdo->query($sql);
+        error_log("SQL Query: $sql");
+        error_log("Parameters: " . print_r($params, true));
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        error_log("Query returned " . count($data) . " rows");
         
         return ['success' => true, 'data' => $data];
     } catch (PDOException $e) {
+        error_log("Database error in generateReports: " . $e->getMessage());
+        return ['success' => false, 'message' => 'Error generating report: ' . $e->getMessage()];
+    } catch (Exception $e) {
+        error_log("General error in generateReports: " . $e->getMessage());
         return ['success' => false, 'message' => 'Error generating report: ' . $e->getMessage()];
     }
 }

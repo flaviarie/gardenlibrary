@@ -1,33 +1,30 @@
 <?php
-// Set page title
 $page_title = 'Admin Dashboard';
 
-// Include header and functions first
+// Core includes
 include_once 'includes/admin_header.php';
 include_once 'includes/admin_functions.php';
 include_once '../../includes/db_connection.php';
 
-// Check admin access
+// Verify access
 requireAdminAccess();
 
-// Get system statistics
+// System stats
 $stats = getSystemStats($pdo);
-
-// Extract variables for backward compatibility
 $total_users = $stats['total_users'];
 $total_librarians = $stats['total_librarians'];
 
-// Get additional dashboard data
+// Dashboard data
 try {
-    // Today's new registrations
+    // Today registrations
     $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()");
     $today_registrations = $stmt->fetchColumn();
     
-    // Overdue books
+    // Overdue count
     $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL AND due_date < CURDATE()");
     $overdue_books = $stmt->fetchColumn();
     
-    // Recent user registrations for activity feed
+    // Recent users
     $stmt = $pdo->prepare("
         SELECT u.*, 
                DATE_FORMAT(u.created_at, '%M %d, %Y at %h:%i %p') as formatted_date,
@@ -39,7 +36,7 @@ try {
     $stmt->execute();
     $recent_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Recent borrowing activity
+    // Recent borrowings
     $stmt = $pdo->prepare("
         SELECT b.*, u.username, bk.title,
                DATE_FORMAT(b.borrow_date, '%M %d, %Y') as formatted_date
@@ -61,10 +58,10 @@ try {
 }
 ?>
 
-<!-- Main Content -->
+<!-- Main Dashboard -->
 <div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
     <div class="max-w-7xl mx-auto">
-        <!-- Welcome Header -->
+        <!-- Header Section -->
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
@@ -83,9 +80,9 @@ try {
             </div>
         </div>
 
-        <!-- Statistics Cards -->
+        <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Users -->
+            <!-- Users Count -->
             <a href="modules/manage_users.php" class="block group">
                 <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
                     <div class="flex items-center justify-between">
@@ -104,7 +101,7 @@ try {
                 </div>
             </a>
 
-            <!-- Total Librarians -->
+            <!-- Librarians Count -->
             <a href="modules/manage_librarians.php" class="block group">
                 <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1">
                     <div class="flex items-center justify-between">
@@ -120,7 +117,7 @@ try {
                 </div>
             </a>
 
-            <!-- Total Books -->
+            <!-- Books Count -->
             <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
                 <div class="flex items-center justify-between">
                     <div>
@@ -134,7 +131,7 @@ try {
                 </div>
             </div>
 
-            <!-- Active Borrowings -->
+            <!-- Borrowings Count -->
             <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
                 <div class="flex items-center justify-between">
                     <div>
@@ -152,7 +149,7 @@ try {
             </div>
         </div>
 
-        <!-- Quick Actions -->
+        <!-- Action Menu -->
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -188,9 +185,9 @@ try {
             </div>
         </div>
 
-        <!-- Activity Feed -->
+        <!-- Activity Feeds -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Recent User Registrations -->
+            <!-- User Registrations -->
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-semibold text-gray-900">Recent User Registrations</h2>
@@ -233,7 +230,7 @@ try {
                 <?php endif; ?>
             </div>
 
-            <!-- Recent Borrowing Activity -->
+            <!-- Borrowing Activity -->
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-semibold text-gray-900">Recent Borrowing Activity</h2>
@@ -269,228 +266,9 @@ try {
     </div>
 </div>
 
-<script>
-// Enhanced JavaScript for improved responsiveness and loading
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Admin dashboard loaded');
-    
-    // Enhanced mobile touch interactions
-    function enhanceMobileExperience() {
-        // Add touch feedback for interactive elements
-        const buttons = document.querySelectorAll('button, .cursor-pointer, a[class*="hover:"]');
-        buttons.forEach(button => {
-            // Add minimum touch target size for mobile
-            if (window.innerWidth <= 768) {
-                const rect = button.getBoundingClientRect();
-                if (rect.height < 44) {
-                    button.style.minHeight = '44px';
-                    button.style.display = 'flex';
-                    button.style.alignItems = 'center';
-                    button.style.justifyContent = 'center';
-                }
-            }
-            
-            // Add touch feedback
-            button.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.98)';
-            }, { passive: true });
-            
-            button.addEventListener('touchend', function() {
-                this.style.transform = '';
-            }, { passive: true });
-        });
-        
-        // Enhanced table overflow handling
-        const tableContainer = document.querySelector('.overflow-x-auto');
-        if (tableContainer && window.innerWidth >= 640) {
-            let isScrolling = false;
-            
-            tableContainer.addEventListener('scroll', function() {
-                if (!isScrolling) {
-                    isScrolling = true;
-                    this.style.boxShadow = 'inset -10px 0 10px -10px rgba(0,0,0,0.1)';
-                    
-                    setTimeout(() => {
-                        if (this.scrollLeft === 0) {
-                            this.style.boxShadow = '';
-                        }
-                        isScrolling = false;
-                    }, 150);
-                }
-            }, { passive: true });
-        }
-    }
-    
-    // Responsive layout adjustments
-    function handleResponsiveLayout() {
-        const viewport = window.innerWidth;
-        const systemOverview = document.querySelector('.bg-white.rounded-2xl');
-        
-        if (viewport <= 640) {
-            // Mobile optimizations
-            systemOverview?.classList.add('mx-2');
-            
-            // Ensure proper spacing for mobile cards
-            const mobileCards = document.querySelectorAll('.block.sm\\:hidden .bg-white');
-            mobileCards.forEach(card => {
-                card.style.touchAction = 'manipulation';
-            });
-        } else {
-            // Desktop optimizations
-            systemOverview?.classList.remove('mx-2');
-        }
-    }
-    
-    // Debounced resize handler
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            handleResponsiveLayout();
-            enhanceMobileExperience();
-        }, 150);
-    }, { passive: true });
-    
-    // Initial setup
-    handleResponsiveLayout();
-    enhanceMobileExperience();
-    
-    // Verify FontAwesome is working
-    setTimeout(function() {
-        const icons = document.querySelectorAll('i[class*="fa-"]');
-        console.log('Found ' + icons.length + ' FontAwesome icons');
-        
-        // Check if any icon is not displaying properly
-        let missingIcons = 0;
-        icons.forEach(function(icon) {
-            const computedStyle = window.getComputedStyle(icon, ':before');
-            const content = computedStyle.getPropertyValue('content');
-            if (!content || content === 'none' || content === '""') {
-                missingIcons++;
-            }
-        });
-        
-        if (missingIcons > 0) {
-            console.warn(missingIcons + ' icons not displaying properly');
-            // Apply additional fallbacks if needed
-        } else {
-            console.log('All icons loaded successfully');
-        }
-    }, 1000);
-    
-    // Verify fonts are loaded
-    if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(function() {
-            console.log('Fonts loaded successfully');
-        });
-    }
-    
-    // Add loading states for dynamic content
-    const addUserButton = document.querySelector('button[class*="bg-white"][class*="text-red-700"]');
-    if (addUserButton) {
-        addUserButton.addEventListener('click', function() {
-            const originalHTML = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Processing...</span>';
-            this.disabled = true;
-            
-            // Simulate loading (replace with actual functionality)
-            setTimeout(() => {
-                this.innerHTML = originalHTML;
-                this.disabled = false;
-            }, 2000);
-        });
-    }
-    
-    // Enhanced accessibility
-    document.querySelectorAll('button, a[role="button"]').forEach(element => {
-        if (!element.getAttribute('aria-label') && !element.textContent.trim()) {
-            const icon = element.querySelector('i[class*="fa-"]');
-            if (icon) {
-                const iconClass = Array.from(icon.classList).find(cls => cls.startsWith('fa-'));
-                if (iconClass) {
-                    element.setAttribute('aria-label', iconClass.replace('fa-', '').replace('-', ' '));
-                }
-            }
-        }
-    });
-});
-
-// Handle resource loading errors with improved UX
-window.addEventListener('error', function(e) {
-    if (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT') {
-        console.error('Failed to load resource:', e.target.src || e.target.href);
-        
-        // Create a more user-friendly notification
-        let notification = document.querySelector('.resource-error-notification');
-        if (!notification) {
-            notification = document.createElement('div');
-            notification.className = 'resource-error-notification fixed top-4 right-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow-lg z-50 max-w-sm';
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <div class="flex-1">
-                        <strong class="block">Resource Loading Issue</strong>
-                        <span class="text-sm">Some resources failed to load, but the page should still work.</span>
-                    </div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-yellow-700 hover:text-yellow-900 text-xl leading-none">&times;</button>
-                </div>
-            `;
-            document.body.appendChild(notification);
-            
-            // Auto-remove after 8 seconds
-            setTimeout(function() {
-                if (notification && notification.parentElement) {
-                    notification.remove();
-                }
-            }, 8000);
-        }
-    }
-}, true);
-
-// Add CSS for responsive notifications
-const style = document.createElement('style');
-style.textContent = `
-    @media (max-width: 640px) {
-        .resource-error-notification {
-            position: fixed !important;
-            top: 1rem !important;
-            left: 1rem !important;
-            right: 1rem !important;
-            max-width: none !important;
-        }
-    }
-    
-    /* Improve touch targets on mobile */
-    @media (max-width: 768px) {
-        button, a[class*="hover:"], .cursor-pointer {
-            min-height: 44px !important;
-            min-width: 44px !important;
-        }
-        
-        /* Prevent text selection on interactive elements */
-        button, .cursor-pointer {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        /* Improve scroll behavior */
-        .overflow-x-auto {
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-        }
-    }
-    
-    /* Enhanced hover states for desktop */
-    @media (min-width: 1024px) {
-        .hover\\:scale-105:hover {
-            transform: scale(1.05) !important;
-        }
-    }
-`;
-document.head.appendChild(style);
-</script>
+<!-- External Scripts -->
+<link rel="stylesheet" href="assets/css/dashboard-core.css">
+<script src="assets/js/dashboard-core.js"></script>
 
 
 

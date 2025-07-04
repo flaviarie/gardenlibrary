@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden Library</title>
+    <title>Purring Pages</title>
 
     <link rel="icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
     <link rel="shortcut icon" href="<?php echo $site_url; ?>assets/img/LogoCat.png" type="image/png">
@@ -51,8 +51,8 @@
             <div class="flex justify-between items-center">                    
                 <div class="flex items-center">
                     <div class="flex items-center space-x-3">
-                        <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Garden Library Logo" class="w-10 h-10 object-cover rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-                        <h1 class="text-2xl font-bold text-primary">Garden Library</h1>
+                        <img src="<?php echo $site_url; ?>assets/img/LogoCat.png" alt="Purring Pages Logo" class="w-10 h-10 object-cover rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <h1 class="text-2xl font-bold text-primary">Purring Pages</h1>
                     </div>
                 </div>
                 <div class="flex items-center space-x-6">                      

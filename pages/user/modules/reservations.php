@@ -285,13 +285,10 @@ function getStatusBadgeClass($status) {
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 w-12 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center mr-4">
-                                                <?php if ($reservation['book_cover'] && $reservation['book_cover'] !== 'default_book_cover.svg'): ?>
-                                                    <img src="../../../assets/img/book_covers/<?php echo htmlspecialchars($reservation['book_cover']); ?>" 
-                                                         alt="<?php echo htmlspecialchars($reservation['title']); ?>"
-                                                         class="w-full h-full object-cover rounded-lg">
-                                                <?php else: ?>
-                                                    <div class="text-gray-500">📖</div>
-                                                <?php endif; ?>
+                                                <img src="../../librarian/assets/img/<?php echo htmlspecialchars($reservation['book_cover'] ?? 'default_book_cover.svg'); ?>" 
+                                                     alt="<?php echo htmlspecialchars($reservation['title']); ?>"
+                                                     class="w-full h-full object-cover rounded-lg"
+                                                     onerror="this.src='../../librarian/assets/img/default_book_cover.svg'">
                                             </div>
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($reservation['title']); ?></div>
@@ -386,22 +383,7 @@ function getStatusBadgeClass($status) {
         <?php endif; ?>
 
         <!-- Help Section -->
-        <div class="bg-blue-50 rounded-2xl p-6 mt-8">
-            <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0">
-                    <div class="text-blue-600 text-2xl">ℹ️</div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-900 mb-2">About Reservations</h3>
-                    <div class="text-blue-800 space-y-2">
-                        <p><strong>Pending:</strong> Your reservation is in the queue waiting for the book to become available.</p>
-                        <p><strong>Notified:</strong> The book is now available for you! Please visit the library within the specified time to borrow it.</p>
-                        <p><strong>Fulfilled:</strong> You have successfully borrowed the book through this reservation.</p>
-                        <p><strong>Cancelled:</strong> The reservation has been cancelled either by you or library staff.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 
@@ -446,6 +428,9 @@ setTimeout(function() {
             alert.style.opacity = '0';
             setTimeout(() => alert.remove(), 500);
         }
+    });
+}, 7000);
+</script>
     });
 }, 7000);
 </script>

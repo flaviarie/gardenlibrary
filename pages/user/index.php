@@ -251,7 +251,7 @@ try {
 <?php // --- BORROWING HISTORY TABLE --- ?>
 <!-- Recent Borrowings Section -->
 <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden font-raleway">
-    <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-4 sm:p-6 lg:p-8">
+    <div class="bg-gradient-to-r from-green-700 to-green-600 p-4 sm:p-6 lg:p-8">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 font-raleway">Recent Borrowings</h2>

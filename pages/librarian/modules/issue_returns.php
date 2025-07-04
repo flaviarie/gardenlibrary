@@ -1,31 +1,29 @@
 <?php
-// Set the page title 
 $page_title = 'Issue & Returns';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php'; // Use PDO connection
+include_once '../../../includes/db_connection.php';
 
-// --- MESSAGE HANDLING ---
+// Message handling
 $message = '';
 $message_type = '';
 
-// --- BORROW BOOK ---
+// Process book borrowing
 function borrow_book($book_id, $user_id, $pdo) {
-    // Check if user has reached borrowing limit (2 books)
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = ? AND return_date IS NULL");
     $stmt->execute([$user_id]);
     $active_borrows = $stmt->fetchColumn();
     if ($active_borrows >= 2) {
         return ['success' => false, 'message' => 'Borrowing limit reached (2 books).'];
     }
-    // Check if book is available
+    
     $stmt = $pdo->prepare("SELECT status FROM books WHERE book_id = ?");
     $stmt->execute([$book_id]);
     $book = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$book || $book['status'] !== 'available') {
         return ['success' => false, 'message' => 'Book is not available for borrowing.'];
     }
-    // Borrow book (7 days)
+    
     $borrow_date = date('Y-m-d');
     $due_date = date('Y-m-d', strtotime('+7 days'));
     $stmt = $pdo->prepare("INSERT INTO borrowings (book_id, user_id, borrow_date, due_date) VALUES (?, ?, ?, ?)");
@@ -36,22 +34,20 @@ function borrow_book($book_id, $user_id, $pdo) {
     return ['success' => $success];
 }
 
-// --- RETURN BOOK ---
+// Process book returns
 function return_book($book_id, $user_id, $pdo) {
-    // Find active borrowing
     $stmt = $pdo->prepare("SELECT * FROM borrowings WHERE book_id = ? AND user_id = ? AND return_date IS NULL");
     $stmt->execute([$book_id, $user_id]);
     $borrowing = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$borrowing) {
         return ['success' => false, 'message' => 'No active borrowing found.'];
     }
+    
     $return_date = date('Y-m-d');
-    // Update borrowing record
     $stmt = $pdo->prepare("UPDATE borrowings SET return_date = ? WHERE borrowing_id = ?");
     $success = $stmt->execute([$return_date, $borrowing['borrowing_id']]);
     if ($success) {
         $pdo->prepare("UPDATE books SET status = 'available' WHERE book_id = ?")->execute([$book_id]);
-        // Check for overdue and apply fine
         $due_date = $borrowing['due_date'];
         if ($return_date > $due_date) {
             $days_overdue = (strtotime($return_date) - strtotime($due_date)) / (60*60*24);
@@ -62,7 +58,7 @@ function return_book($book_id, $user_id, $pdo) {
     return ['success' => $success];
 }
 
-// --- HANDLE FORM SUBMISSIONS ---
+// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['issue_book'])) {
         $book_id = trim($_POST['book_id']);
@@ -103,18 +99,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// --- FETCH DATA ---
-// Get all users (students)
+// Fetch data for display
 $stmt = $pdo->prepare("SELECT user_id, username, email FROM users WHERE role = 'student' ORDER BY username");
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get available books
 $stmt = $pdo->prepare("SELECT book_id, title, author, category, book_cover FROM books WHERE status = 'available' AND is_deleted = 0 ORDER BY title");
 $stmt->execute();
 $available_books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get active borrowings
 $stmt = $pdo->prepare("
     SELECT b.borrowing_id, b.book_id, b.user_id, b.borrow_date, b.due_date, 
            books.title, books.author, books.book_cover, u.username, u.email
@@ -275,17 +268,7 @@ $active_borrowings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<script>
-function returnBook(bookId, userId, title) {
-    if (confirm('Are you sure you want to return "' + title + '"?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.innerHTML = '<input type="hidden" name="book_id" value="' + bookId + '"><input type="hidden" name="user_id" value="' + userId + '"><input type="hidden" name="return_book" value="1">';
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
-</script>
+<script src="../assets/js/issue-returns.js"></script>
 
 <?php
 include_once '../includes/librarian_footer.php';

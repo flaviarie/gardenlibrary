@@ -54,6 +54,18 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                         'dark': '#333333',
                         'primary-dark': '#3d6b2d',
                         'primary-light': '#6ba84f',
+                        'garden': {
+                            '50': '#f0f9f4',
+                            '100': '#dcf2e4',
+                            '200': '#bce5cd',
+                            '300': '#8dd1a8',
+                            '400': '#57b57d',
+                            '500': '#339959',
+                            '600': '#267d46',
+                            '700': '#20643a',
+                            '800': '#1d5030',
+                            '900': '#1a4229',
+                        },
                     },
                     animation: {
                         'slide-up': 'slideUp 0.6s ease-out',
@@ -99,7 +111,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         }
         
         .btn-gradient:hover {
-            background: linear-gradient(135deg, #6ba84f 0%, #E1AA74 100%);
+            background: linear-gradient(135deg, #E1AA74 0%, #E1AA74 100%);
         }
     </style>
 </head>
@@ -112,7 +124,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         </div>
         
        
-        <div class="absolute inset-0 bg-gradient-to-br from-dark/60 via-primary/30 to-secondary/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-garden-900/60 via-garden-800/50 to-garden-900/70"></div>
         
        
         <div class="absolute inset-0 opacity-10" 

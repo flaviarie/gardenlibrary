@@ -29,6 +29,12 @@ session_start();
                         'raleway': ['Raleway', 'sans-serif'],
                     },
                     colors: {
+                        'primary': '#53933D',
+                        'secondary': '#E1AA74',
+                        'light': '#F5FBF3',
+                        'dark': '#333333',
+                        'primary-dark': '#3d6b2d',
+                        'primary-light': '#6ba84f',
                         'garden': {
                             '50': '#f0f9f4',
                             '100': '#dcf2e4',
@@ -128,16 +134,16 @@ session_start();
                 
                 <!-- Submit Button -->
                 <button type="submit" 
-                        class="w-full bg-gradient-to-r from-garden-500 to-garden-600 text-white py-3 px-4 rounded-lg font-medium hover:from-garden-600 hover:to-garden-700 focus:outline-none focus:ring-2 focus:ring-garden-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
+                        class="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
                     Create Account
                 </button>
             </form>
             
             <!-- Login Link -->
             <div class="mt-6 text-center">
-                <p class="text-garden-700">
+                <p class="text-dark/70">
                     Already have an account? 
-                    <a href="../login/index.php" class="text-garden-600 hover:text-garden-800 font-medium hover:underline transition-colors duration-200">
+                    <a href="../login/index.php" class="text-primary hover:text-secondary font-medium hover:underline transition-colors duration-200">
                         Sign in here
                     </a>
                 </p>
@@ -145,7 +151,7 @@ session_start();
             
             <!-- Back to Home -->
             <div class="mt-4 text-center">
-                <a href="../../index.php" class="text-garden-500 hover:text-garden-700 text-sm hover:underline transition-colors duration-200">
+                <a href="../../index.php" class="text-secondary hover:text-primary text-sm hover:underline transition-colors duration-200">
                     ← Back to Home
                 </a>
             </div>

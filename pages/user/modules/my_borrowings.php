@@ -333,13 +333,10 @@ $category_names = [
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 w-12 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center mr-4">
-                                                <?php if ($borrowing['book_cover'] && $borrowing['book_cover'] !== 'default_book_cover.svg'): ?>
-                                                    <img src="../../../assets/img/book_covers/<?php echo htmlspecialchars($borrowing['book_cover']); ?>" 
-                                                         alt="<?php echo htmlspecialchars($borrowing['title']); ?>"
-                                                         class="w-full h-full object-cover rounded-lg">
-                                                <?php else: ?>
-                                                    <i class="fas fa-book text-gray-500"></i>
-                                                <?php endif; ?>
+                                                <img src="../../librarian/assets/img/<?php echo htmlspecialchars($borrowing['book_cover'] ?? 'default_book_cover.svg'); ?>" 
+                                                     alt="<?php echo htmlspecialchars($borrowing['title']); ?>"
+                                                     class="w-full h-full object-cover rounded-lg"
+                                                     onerror="this.src='../../librarian/assets/img/default_book_cover.svg'">
                                             </div>
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($borrowing['title']); ?></div>

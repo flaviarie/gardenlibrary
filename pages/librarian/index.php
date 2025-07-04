@@ -1,33 +1,30 @@
 <?php
-// Show errors on test
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $page_title = 'Dashboard';
 include_once 'includes/librarian_header.php';
-
-// Connect to DB
 include_once '../../includes/db_connection.php';
 
-// Get dashboard stats
+// Dashboard stats
 try {
-    // Count book inventory
+    // Book inventory
     $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE is_deleted = FALSE");
     $total_books = $stmt->fetchColumn();
     
-    // Active loans count
+    // Active loans
     $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL");
     $books_borrowed = $stmt->fetchColumn();
     
-    // Late returns count
+    // Overdue count
     $stmt = $pdo->query("SELECT COUNT(*) FROM borrowings WHERE return_date IS NULL AND due_date < CURDATE()");
     $overdue_books = $stmt->fetchColumn();
     
-    // Holds count
+    // Reservations count
     $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE status = 'reserved' AND is_deleted = FALSE");
     $reserved_books = $stmt->fetchColumn();
     
-    // Recent activity list
+    // Recent activity
     $stmt = $pdo->prepare("
         SELECT b.*, 
                CASE 
@@ -60,8 +57,9 @@ try {
 }
 ?>
 
-<!-- Statistics Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">    <!-- Total Books -->
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
+    <!-- Total Books -->
     <a href="modules/manage_books.php" class="block">
         <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-red-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div class="flex items-center justify-between">
@@ -78,7 +76,9 @@ try {
                 <span class="text-xs font-medium">View all books</span>
             </div>
         </div>
-    </a>    <!-- Books Borrowed -->
+    </a>
+    
+    <!-- Books Borrowed -->
     <a href="modules/issue_returns.php" class="block">
         <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-green-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div class="flex items-center justify-between">
@@ -95,7 +95,9 @@ try {
                 <span class="text-xs font-medium">Active borrowings</span>
             </div>
         </div>
-    </a>    <!-- Overdue Books -->
+    </a>
+    
+    <!-- Overdue Books -->
     <a href="modules/reports.php" class="block">
         <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-yellow-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div class="flex items-center justify-between">
@@ -112,7 +114,9 @@ try {
                 <span class="text-xs font-medium">Needs attention</span>
             </div>
         </div>
-    </a>    <!-- Reserved Books -->
+    </a>
+    
+    <!-- Reserved Books -->
     <a href="modules/reservation.php" class="block">
         <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-purple-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div class="flex items-center justify-between">
@@ -132,8 +136,9 @@ try {
     </a>
 </div>
 
-<!-- Manage Books Section -->
-<div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden font-raleway">    <div class="bg-gradient-to-r from-green-600 to-green-700 p-4 sm:p-6 lg:p-8">
+<!-- Books Management -->
+<div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden font-raleway">
+    <div class="bg-gradient-to-r from-green-600 to-green-700 p-4 sm:p-6 lg:p-8">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 font-raleway">Manage Books</h2>
@@ -144,10 +149,12 @@ try {
                 <span>Add New Book</span>
             </a>
         </div>
-    </div>      <div class="p-4 sm:p-6 lg:p-8">
-        <!-- Table Container with proper mobile responsiveness -->
+    </div>
+    
+    <div class="p-4 sm:p-6 lg:p-8">
+        <!-- Table Container -->
         <div class="overflow-x-auto rounded-xl border border-gray-200">
-            <!-- Mobile Cards View (visible on small screens) -->
+            <!-- Mobile Cards -->
             <div class="block sm:hidden space-y-4">
                 <?php if (!empty($recent_books)): ?>
                     <?php foreach ($recent_books as $book): ?>

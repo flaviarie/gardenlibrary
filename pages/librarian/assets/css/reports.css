@@ -1,0 +1,5 @@
+/* Reports Styles */
+
+.report-tab.active {
+    border-bottom: 2px solid #3b82f6;
+}

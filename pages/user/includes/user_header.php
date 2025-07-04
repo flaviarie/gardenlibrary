@@ -1,4 +1,9 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Set default page title if not provided
 if (!isset($page_title)) {
     $page_title = 'Dashboard';
@@ -19,6 +24,15 @@ if ($current_dir == 'modules') {
     $assets_path = '../../';
 }
 
+// Get user's name for display
+$user_name = 'User'; // Default fallback
+if (isset($_SESSION['username'])) {
+    $user_name = $_SESSION['username'];
+} elseif (isset($_SESSION['first_name'])) {
+    $user_name = $_SESSION['first_name'];
+} elseif (isset($_SESSION['full_name'])) {
+    $user_name = $_SESSION['full_name'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -119,51 +133,69 @@ if ($current_dir == 'modules') {
             }, 500);
         });
 
-        // Mobile menu functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const sidebar = document.getElementById('sidebar');
+        // Mobile sidebar functionality
+        function openSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
             const overlay = document.getElementById('mobile-menu-overlay');
-            const closeSidebar = document.getElementById('close-sidebar');
+            const hamburger = document.getElementById('hamburger-btn');
+            
+            sidebar.classList.remove('sidebar-hidden');
+            sidebar.classList.add('translate-x-0');
+            overlay.classList.remove('hidden');
+            if (hamburger) hamburger.classList.add('hamburger-active');
+            document.body.classList.add('overflow-hidden');
+        }
 
-            function toggleSidebar() {
-                sidebar.classList.toggle('-translate-x-full');
-                overlay.classList.toggle('hidden');
-                document.body.classList.toggle('overflow-hidden');
+        function closeSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const hamburger = document.getElementById('hamburger-btn');
+            
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('sidebar-hidden');
+            overlay.classList.add('hidden');
+            if (hamburger) hamburger.classList.remove('hamburger-active');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu button
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            if (hamburgerBtn) {
+                hamburgerBtn.addEventListener('click', openSidebar);
             }
 
-            function closeSidebarMenu() {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
+            // Close sidebar button
+            const closeSidebarBtn = document.getElementById('close-sidebar');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', closeSidebar);
             }
 
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', toggleSidebar);
-            }
-
-            if (closeSidebar) {
-                closeSidebar.addEventListener('click', closeSidebarMenu);
-            }
-
+            // Overlay click to close
+            const overlay = document.getElementById('mobile-menu-overlay');
             if (overlay) {
-                overlay.addEventListener('click', closeSidebarMenu);
+                overlay.addEventListener('click', closeSidebar);
             }
 
-            // Close sidebar when clicking navigation links on mobile
-            const navLinks = sidebar.querySelectorAll('a');
+            // Navigation links close sidebar
+            const navLinks = document.querySelectorAll('#mobile-sidebar nav a');
             navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth < 1024) {
-                        closeSidebarMenu();
-                    }
+                link.addEventListener('click', function() {
+                    setTimeout(closeSidebar, 100);
                 });
             });
 
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth >= 1024) {
-                    closeSidebarMenu();
+            // Logout button (only in sidebar)
+            const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.addEventListener('click', confirmLogout);
+            }
+
+            // Escape key to close sidebar
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSidebar();
                 }
             });
         });
@@ -175,55 +207,150 @@ if ($current_dir == 'modules') {
             }
         }
     </script>
-      <div class="flex min-h-screen">
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden"></div>
+
+    <style>
+        /* Simple hamburger menu animation */
+        .hamburger-menu {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            cursor: pointer;
+        }
         
-        <!-- Sidebar Navigation -->
-        <aside id="sidebar" class="bg-gradient-to-b from-white to-gray-50 w-72 min-h-screen border-r border-gray-200 shadow-xl fixed lg:static transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-50">
-            <div class="p-4 sm:p-6">                 <!-- Logo Section with Close Button -->
-                <div class="flex items-center justify-between mb-8 lg:mb-10 p-3 sm:p-4 bg-gradient-to-r from-green-100 to-blue-100 rounded-2xl">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
-                            <img src="<?php echo $assets_path; ?>assets/img/LogoCat.png" alt="eLibrary Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain">
-                        </div>
-                        <span class="font-bold text-lg sm:text-xl text-gray-800">eLibrary</span>
+        .hamburger-line {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: currentColor;
+            border-radius: 1px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: all 0.25s ease-in-out;
+        }
+        
+        .hamburger-line:nth-child(1) {
+            top: 0px;
+        }
+        
+        .hamburger-line:nth-child(2) {
+            top: 8px;
+        }
+        
+        .hamburger-line:nth-child(3) {
+            top: 16px;
+        }
+        
+        .hamburger-active .hamburger-line:nth-child(1) {
+            top: 8px;
+            transform: rotate(135deg);
+        }
+        
+        .hamburger-active .hamburger-line:nth-child(2) {
+            opacity: 0;
+            left: -60px;
+        }
+        
+        .hamburger-active .hamburger-line:nth-child(3) {
+            top: 8px;
+            transform: rotate(-135deg);
+        }
+
+        /* Prevent sidebar flash on load */
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+    </style>
+
+      <div class="min-h-screen bg-gray-50">
+      <div class="min-h-screen bg-gray-50">
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        
+        <!-- Mobile Sidebar -->
+        <div id="mobile-sidebar" class="fixed top-0 left-0 w-80 h-full bg-white shadow-xl sidebar-hidden transition-transform duration-300 ease-in-out z-50">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-6 bg-gradient-to-r from-primary to-green-600 text-white">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <img src="<?php echo $assets_path; ?>assets/img/LogoCat.png" alt="eLibrary Logo" class="w-8 h-8 object-contain">
                     </div>
-                    <!-- Mobile Close Button -->
-                    <button id="close-sidebar" class="lg:hidden p-2 text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>                  <!-- Navigation Links -->
-                <nav class="space-y-2 sm:space-y-3">
-                    <a href="<?php echo $base_path; ?>../user/index.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'index' && $current_dir == 'user') ? 'bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200 text-blue-800' : 'hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 border-transparent hover:border-blue-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-chart-pie <?php echo ($current_page == 'index' && $current_dir == 'user') ? 'text-blue-800' : 'text-blue-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-blue-800 text-sm sm:text-base">Dashboard</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>../user/modules/browse_books.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'browse_books') ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200 text-green-800' : 'hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 border-transparent hover:border-green-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-book <?php echo ($current_page == 'browse_books') ? 'text-green-800' : 'text-green-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-green-800 text-sm sm:text-base">Browse Books</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>../user/modules/my_borrowings.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'my_borrowings') ? 'bg-gradient-to-r from-purple-100 to-violet-100 border-purple-200 text-purple-800' : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-violet-100 border-transparent hover:border-purple-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-exchange-alt <?php echo ($current_page == 'my_borrowings') ? 'text-purple-800' : 'text-purple-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-purple-800 text-sm sm:text-base">My Borrowings</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>../user/modules/reservations.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'reservations') ? 'bg-gradient-to-r from-orange-100 to-amber-100 border-orange-200 text-orange-800' : 'hover:bg-gradient-to-r hover:from-orange-100 hover:to-amber-100 border-transparent hover:border-orange-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-calendar-alt <?php echo ($current_page == 'reservations') ? 'text-orange-800' : 'text-orange-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-orange-800 text-sm sm:text-base">Reservations</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>../user/modules/my_account.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'my_account') ? 'bg-gradient-to-r from-teal-100 to-cyan-100 border-teal-200 text-teal-800' : 'hover:bg-gradient-to-r hover:from-teal-100 hover:to-cyan-100 border-transparent hover:border-teal-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
-                        <i class="fas fa-user <?php echo ($current_page == 'my_account') ? 'text-teal-800' : 'text-teal-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-teal-800 text-sm sm:text-base">My Account</span>
-                    </a>
-                </nav>
+                    <div>
+                        <h2 class="font-bold text-lg">eLibrary</h2>
+                        <p class="text-sm text-green-100">User Portal</p>
+                    </div>
+                </div>
+                <button id="close-sidebar" class="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
-        </aside>        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col lg:ml-0">            
-            <!-- Top Header -->            <header class="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 flex justify-between items-center shadow-lg">
+
+            <!-- Navigation Menu -->
+            <nav class="p-4 space-y-2">
+                <!-- Dashboard -->
+                <a href="<?php echo $base_path; ?>index.php" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-primary hover:text-white transition-colors duration-200 <?php echo ($current_page == 'index' && $current_dir == 'user') ? 'bg-primary text-white' : ''; ?>">
+                    <i class="fas fa-chart-pie w-5"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                
+                <!-- Browse Books -->
+                <a href="<?php echo $base_path; ?>modules/browse_books.php" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-primary hover:text-white transition-colors duration-200 <?php echo ($current_page == 'browse_books') ? 'bg-primary text-white' : ''; ?>">
+                    <i class="fas fa-book w-5"></i>
+                    <span class="font-medium">Browse Books</span>
+                </a>
+
+                <!-- My Borrowings -->
+                <a href="<?php echo $base_path; ?>modules/my_borrowings.php" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-primary hover:text-white transition-colors duration-200 <?php echo ($current_page == 'my_borrowings') ? 'bg-primary text-white' : ''; ?>">
+                    <i class="fas fa-exchange-alt w-5"></i>
+                    <span class="font-medium">My Borrowings</span>
+                </a>
+
+                <!-- Reservations -->
+                <a href="<?php echo $base_path; ?>modules/reservations.php" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-primary hover:text-white transition-colors duration-200 <?php echo ($current_page == 'reservations') ? 'bg-primary text-white' : ''; ?>">
+                    <i class="fas fa-calendar-alt w-5"></i>
+                    <span class="font-medium">Reservations</span>
+                </a>
+
+                <!-- My Account -->
+                <a href="<?php echo $base_path; ?>modules/my_account.php" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-primary hover:text-white transition-colors duration-200 <?php echo ($current_page == 'my_account') ? 'bg-primary text-white' : ''; ?>">
+                    <i class="fas fa-user w-5"></i>
+                    <span class="font-medium">My Account</span>
+                </a>
+            </nav>
+
+            <!-- User Section -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800"><?php echo htmlspecialchars($user_name); ?></p>
+                        <p class="text-sm text-gray-500">User</p>
+                    </div>
+                </div>
+                <button id="mobile-logout-btn" class="w-full flex items-center justify-center space-x-2 py-2 px-4 bg-primary hover:bg-green-600 text-white rounded-lg transition-colors duration-200">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="w-full">
+            <!-- Top Header with Hamburger -->
+            <header class="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 flex justify-between items-center shadow-lg sticky top-0 z-30">
                 <div class="flex items-center space-x-4 sm:space-x-6">
-                    <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-bars text-xl"></i>
+                    <!-- Hamburger Menu Button -->
+                    <button id="hamburger-btn" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all duration-200">
+                        <div class="hamburger-menu">
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                            <span class="hamburger-line"></span>
+                        </div>
                     </button>
                     
                     <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg p-1">                        
@@ -231,18 +358,18 @@ if ($current_dir == 'modules') {
                     </div>
                     <h1 class="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent"><?php echo htmlspecialchars($page_title); ?></h1>
                 </div>
+                
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <div class="hidden sm:block text-gray-600 text-sm">Logged in as</div>
-                    <div class="px-2 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 font-medium rounded-full border border-blue-200 flex items-center space-x-1 sm:space-x-2">
-                        <i class="fas fa-user text-xs sm:text-sm"></i>
-                        <span class="text-xs sm:text-sm">User</span>
+                    <!-- Welcome Message -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-gray-600 text-sm">Welcome,</span>
+                        <div class="px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 font-semibold rounded-full border border-green-200">
+                            <i class="fas fa-user text-xs mr-1"></i>
+                            <?php echo htmlspecialchars($user_name); ?>
+                        </div>
                     </div>
-                    <!-- Quick Logout Button -->
-                    <button onclick="confirmLogout()" class="px-2 sm:px-3 py-1 sm:py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 hover:text-red-700 transition-all duration-300 flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="hidden sm:inline">Logout</span>
-                    </button>
                 </div>            
             </header>            
+            
             <!-- Dashboard Content -->
             <div class="flex-1 p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
