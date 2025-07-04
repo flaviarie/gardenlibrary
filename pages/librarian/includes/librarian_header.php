@@ -119,6 +119,7 @@ if ($current_dir == 'modules') {
     </div>
     
     <script>
+        
         // Hide loading overlay once page is ready
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -184,7 +185,7 @@ if ($current_dir == 'modules') {
         // Logout confirmation function
         function confirmLogout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '../login/index.php';
+                window.location.href = '../../login/index.php';
             }
         }
     </script>
@@ -208,25 +209,24 @@ if ($current_dir == 'modules') {
                     </button>
                 </div>                  <!-- Navigation Links -->
                 <nav class="space-y-2 sm:space-y-3">
-                    <a href="<?php echo $base_path; ?>../librarian/index.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'index' && $current_dir == 'librarian') ? 'bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200 text-blue-800' : 'hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 border-transparent hover:border-blue-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                    <a href="<?php echo $base_path; ?>index.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'index' && $current_dir == 'librarian') ? 'bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200 text-blue-800' : 'hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 border-transparent hover:border-blue-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-chart-pie <?php echo ($current_page == 'index' && $current_dir == 'librarian') ? 'text-blue-800' : 'text-blue-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-blue-800 text-sm sm:text-base">Dashboard</span>
                     </a>
-                    <a href="<?php echo $base_path; ?>../librarian/modules/manage_books.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'manage_books') ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200 text-green-800' : 'hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 border-transparent hover:border-green-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                    <a href="<?php echo $base_path; ?>modules/manage_books.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'manage_books') ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200 text-green-800' : 'hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 border-transparent hover:border-green-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-book <?php echo ($current_page == 'manage_books') ? 'text-green-800' : 'text-green-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-green-800 text-sm sm:text-base">Manage Books</span>
                     </a>
-                    <a href="<?php echo $base_path; ?>../librarian/modules/issue_returns.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'issue_returns') ? 'bg-gradient-to-r from-purple-100 to-violet-100 border-purple-200 text-purple-800' : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-violet-100 border-transparent hover:border-purple-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                    <a href="<?php echo $base_path; ?>modules/issue_returns.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'issue_returns') ? 'bg-gradient-to-r from-purple-100 to-violet-100 border-purple-200 text-purple-800' : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-violet-100 border-transparent hover:border-purple-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-exchange-alt <?php echo ($current_page == 'issue_returns') ? 'text-purple-800' : 'text-purple-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-purple-800 text-sm sm:text-base">Issue & Returns</span>
                     </a>
-
-                    <a href="<?php echo $base_path; ?>../librarian/modules/reports.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'reports') ? 'bg-gradient-to-r from-teal-100 to-cyan-100 border-teal-200 text-teal-800' : 'hover:bg-gradient-to-r hover:from-teal-100 hover:to-cyan-100 border-transparent hover:border-teal-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                    <a href="<?php echo $base_path; ?>modules/reports.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'reports') ? 'bg-gradient-to-r from-teal-100 to-cyan-100 border-teal-200 text-teal-800' : 'hover:bg-gradient-to-r hover:from-teal-100 hover:to-cyan-100 border-transparent hover:border-teal-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-chart-bar <?php echo ($current_page == 'reports') ? 'text-teal-800' : 'text-teal-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-teal-800 text-sm sm:text-base">Reports</span>
                     </a>
-                    <a href="<?php echo $base_path; ?>../librarian/modules/reservation.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-100 hover:to-blue-100 rounded-xl transition-all duration-300 group hover:shadow-md border border-transparent hover:border-indigo-200">
-                        <i class="fas fa-calendar-alt text-indigo-600 text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                    <a href="<?php echo $base_path; ?>modules/reservation.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'reservation') ? 'bg-gradient-to-r from-indigo-100 to-blue-100 border-indigo-200 text-indigo-800' : 'hover:bg-gradient-to-r hover:from-indigo-100 hover:to-blue-100 border-transparent hover:border-indigo-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
+                        <i class="fas fa-calendar-alt <?php echo ($current_page == 'reservation') ? 'text-indigo-800' : 'text-indigo-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-indigo-800 text-sm sm:text-base">Reservations</span>
                     </a>
 
@@ -257,6 +257,7 @@ if ($current_dir == 'modules') {
                         <i class="fas fa-sign-out-alt"></i>
                         <span class="hidden sm:inline">Logout</span>
                     </button>
-                </div>            </header>            
+                </div>            
+            </header>            
             <!-- Dashboard Content -->
             <div class="flex-1 p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">

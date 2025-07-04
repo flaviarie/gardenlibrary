@@ -19,26 +19,51 @@ $debug_mode = false; // toggle for tests
 
 if ($debug_mode) {
     echo "<!-- Debug: User page loaded at " . date('Y-m-d H:i:s') . " -->";
+    echo "<!-- Debug: User ID: " . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'NOT SET') . " -->";
 }
 
 // Get active user
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
+if ($debug_mode) {
+    echo "<!-- Debug: Final User ID: " . $user_id . " -->";
+}
+
+// Check if account is suspended
+$is_suspended = isAccountSuspended($user_id);
+$suspension_reason = $is_suspended ? getSuspensionReason($user_id) : null;
+
 try {
     // Count all books
     $stmt = $pdo->query("SELECT COUNT(*) FROM books WHERE is_deleted = FALSE");
-    $total_books = $stmt->fetchColumn();    // User's active loans
+    $total_books = $stmt->fetchColumn();
+    
+    // User's active loans
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = ? AND return_date IS NULL");
     $stmt->execute([$user_id]);
     $my_borrowings = $stmt->fetchColumn();
     
-    // Active book holds
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE user_id = ? AND status = 'active'");
-    $stmt->execute([$user_id]);
-    $my_reservations = $stmt->fetchColumn();    // User review count
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM reviews WHERE user_id = ?");
-    $stmt->execute([$user_id]);
-    $my_reviews = $stmt->fetchColumn();
+    // Active book holds - check if reservations table exists first
+    $my_reservations = 0;
+    try {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM reservations WHERE user_id = ? AND status = 'pending'");
+        $stmt->execute([$user_id]);
+        $my_reservations = $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        // Reservations table doesn't exist, set to 0
+        $my_reservations = 0;
+    }
+    
+    // User review count - check if reviews table exists first
+    $my_reviews = 0;
+    try {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM reviews WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $my_reviews = $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        // Reviews table doesn't exist, set to 0
+        $my_reviews = 0;
+    }
     
     // Last 5 checkouts
     $stmt = $pdo->prepare("
@@ -60,8 +85,46 @@ try {
     $my_reviews = 0;
     $recent_borrowings = [];
     $error_message = "Database error: " . $e->getMessage();
+    
+    // Log the error for debugging
+    error_log("Dashboard DB Error: " . $e->getMessage());
 }
 ?>
+
+<?php // Display any error messages ?>
+<?php if (isset($error_message)): ?>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <span><?php echo htmlspecialchars($error_message); ?></span>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php // Display account suspension notification ?>
+<?php if ($is_suspended): ?>
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-lg shadow-md">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <i class="fas fa-ban text-red-400 text-xl"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-lg font-medium text-red-800 mb-2">Account Suspended</h3>
+                <p class="text-sm text-red-700 mb-3">
+                    Your account has been temporarily suspended. You cannot borrow or reserve books at this time.
+                </p>
+                <div class="bg-red-100 p-3 rounded-md">
+                    <p class="text-sm text-red-800"><strong>Reason:</strong> <?php echo htmlspecialchars($suspension_reason); ?></p>
+                </div>
+                <div class="mt-3">
+                    <p class="text-sm text-red-700">
+                        Please contact the library administration to resolve this issue or return any overdue books.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
 <?php // --- DASHBOARD UI STARTS HERE --- ?>
 <?php // --- STATS SECTION --- ?>
@@ -69,23 +132,44 @@ try {
 <!-- User Statistics Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
     <!-- Total Books -->
-    <a href="modules/browse_books.php" class="block">
-        <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-green-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs sm:text-sm font-medium text-green-600 mb-2 uppercase tracking-wide">Books Available</p>
-                    <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 group-hover:text-green-900"><?php echo number_format($total_books); ?></p>
+    <?php if ($is_suspended): ?>
+        <div class="block opacity-60 cursor-not-allowed">
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs sm:text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">Books Available</p>
+                        <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800"><?php echo number_format($total_books); ?></p>
+                    </div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-400 rounded-2xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-book text-white text-lg sm:text-xl lg:text-2xl"></i>
+                    </div>
                 </div>
-                <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-green-600 transition-colors duration-300">
-                    <i class="fas fa-book text-white text-lg sm:text-xl lg:text-2xl"></i>
+                <div class="mt-3 lg:mt-4 flex items-center text-gray-500">
+                    <i class="fas fa-ban text-xs mr-2"></i>
+                    <span class="text-xs font-medium">Access suspended</span>
                 </div>
-            </div>
-            <div class="mt-3 lg:mt-4 flex items-center text-green-600">
-                <i class="fas fa-arrow-right text-xs mr-2"></i>
-                <span class="text-xs font-medium">Browse books</span>
             </div>
         </div>
-    </a>
+    <?php else: ?>
+        <a href="modules/browse_books.php" class="block">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-green-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs sm:text-sm font-medium text-green-600 mb-2 uppercase tracking-wide">Books Available</p>
+                        <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 group-hover:text-green-900"><?php echo number_format($total_books); ?></p>
+                    </div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-green-600 transition-colors duration-300">
+                        <i class="fas fa-book text-white text-lg sm:text-xl lg:text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 lg:mt-4 flex items-center text-green-600">
+                    <i class="fas fa-arrow-right text-xs mr-2"></i>
+                    <span class="text-xs font-medium">Browse books</span>
+                </div>
+            </div>
+        </a>
+    <?php endif; ?>
+    
     <!-- My Borrowings -->
     <a href="modules/my_borrowings.php" class="block">
         <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
@@ -104,24 +188,46 @@ try {
             </div>
         </div>
     </a>
+    
     <!-- My Reservations -->
-    <a href="modules/reservations.php" class="block">
-        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-orange-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs sm:text-sm font-medium text-orange-600 mb-2 uppercase tracking-wide">My Reservations</p>
-                    <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-800 group-hover:text-orange-900"><?php echo number_format($my_reservations); ?></p>
+    <?php if ($is_suspended): ?>
+        <div class="block opacity-60 cursor-not-allowed">
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs sm:text-sm font-medium text-gray-600 mb-2 uppercase tracking-wide">My Reservations</p>
+                        <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800"><?php echo number_format($my_reservations); ?></p>
+                    </div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-400 rounded-2xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-calendar-alt text-white text-lg sm:text-xl lg:text-2xl"></i>
+                    </div>
                 </div>
-                <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-orange-600 transition-colors duration-300">
-                    <i class="fas fa-calendar-alt text-white text-lg sm:text-xl lg:text-2xl"></i>
+                <div class="mt-3 lg:mt-4 flex items-center text-gray-500">
+                    <i class="fas fa-ban text-xs mr-2"></i>
+                    <span class="text-xs font-medium">Access suspended</span>
                 </div>
-            </div>
-            <div class="mt-3 lg:mt-4 flex items-center text-orange-600">
-                <i class="fas fa-arrow-right text-xs mr-2"></i>
-                <span class="text-xs font-medium">View reservations</span>
             </div>
         </div>
-    </a>
+    <?php else: ?>
+        <a href="modules/reservations.php" class="block">
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-orange-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs sm:text-sm font-medium text-orange-600 mb-2 uppercase tracking-wide">My Reservations</p>
+                        <p class="text-2xl sm:text-3xl lg:text-4xl font-bold text-orange-800 group-hover:text-orange-900"><?php echo number_format($my_reservations); ?></p>
+                    </div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-orange-600 transition-colors duration-300">
+                        <i class="fas fa-calendar-alt text-white text-lg sm:text-xl lg:text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-3 lg:mt-4 flex items-center text-orange-600">
+                    <i class="fas fa-arrow-right text-xs mr-2"></i>
+                    <span class="text-xs font-medium">View reservations</span>
+                </div>
+            </div>
+        </a>
+    <?php endif; ?>
+    
     <!-- My Reviews -->
     <a href="modules/reviews.php" class="block">
         <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg border border-indigo-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group">
@@ -213,7 +319,5 @@ try {
 
 <?php // --- END OF DASHBOARD CONTENT --- ?>
 
-<?php
-include_once 'includes/user_footer.php';
-?>
+
 

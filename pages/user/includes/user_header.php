@@ -171,7 +171,7 @@ if ($current_dir == 'modules') {
         // Logout confirmation function
         function confirmLogout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '../login/index.php';
+                window.location.href = '<?php echo $base_path; ?>../../includes/logout.php';
             }
         }
     </script>
@@ -214,10 +214,6 @@ if ($current_dir == 'modules') {
                     <a href="<?php echo $base_path; ?>../user/modules/my_account.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 <?php echo ($current_page == 'my_account') ? 'bg-gradient-to-r from-teal-100 to-cyan-100 border-teal-200 text-teal-800' : 'hover:bg-gradient-to-r hover:from-teal-100 hover:to-cyan-100 border-transparent hover:border-teal-200'; ?> rounded-xl transition-all duration-300 group hover:shadow-md border">
                         <i class="fas fa-user <?php echo ($current_page == 'my_account') ? 'text-teal-800' : 'text-teal-600'; ?> text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
                         <span class="font-medium group-hover:text-teal-800 text-sm sm:text-base">My Account</span>
-                    </a>
-                    <a href="<?php echo $base_path; ?>../user/modules/reviews.php" class="flex items-center space-x-3 sm:space-x-4 py-3 sm:py-4 px-4 sm:px-6 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-100 hover:to-blue-100 rounded-xl transition-all duration-300 group hover:shadow-md border border-transparent hover:border-indigo-200">
-                        <i class="fas fa-star text-indigo-600 text-base sm:text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="font-medium group-hover:text-indigo-800 text-sm sm:text-base">Reviews</span>
                     </a>
                 </nav>
             </div>

@@ -41,7 +41,7 @@ try {
         FROM books b 
         LEFT JOIN borrowings br ON b.book_id = br.book_id AND br.return_date IS NULL
         LEFT JOIN users u ON br.user_id = u.user_id
-        LEFT JOIN reservations r ON b.book_id = r.book_id AND r.status = 'active'
+        LEFT JOIN reservations r ON b.book_id = r.book_id AND r.status = 'pending'
         LEFT JOIN users ru ON r.user_id = ru.user_id
         WHERE b.is_deleted = FALSE 
         ORDER BY b.added_date DESC 

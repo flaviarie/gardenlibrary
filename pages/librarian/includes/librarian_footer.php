@@ -5,14 +5,14 @@
     <script>
         function confirmLogout() {
             if (confirm('Are you sure you want to logout?')) {
-                // Determine the correct path based on current directory
+                // Use the proper logout script that handles session destruction
                 const currentPath = window.location.pathname;
                 let logoutPath;
                 
                 if (currentPath.includes('/modules/')) {
-                    logoutPath = '../../../pages/login/index.php';
+                    logoutPath = '../../../../includes/logout.php';
                 } else {
-                    logoutPath = '../../pages/login/index.php';
+                    logoutPath = '../../../includes/logout.php';
                 }
                 
                 window.location.href = logoutPath;

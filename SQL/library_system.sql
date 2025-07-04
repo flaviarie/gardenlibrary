@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2025 at 01:24 PM
+-- Generation Time: Jul 04, 2025 at 04:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,15 +45,16 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`book_id`, `title`, `author`, `publish_date`, `category`, `book_cover`, `added_date`, `status`, `is_deleted`) VALUES
 ('ABAPR101988-SCI00009', 'A Brief History of Time', 'Stephen Hawking', '1988-04-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('ANJUN112025-SCI00026', 'Anthony langgam', 'Unknown Author', '2025-06-20', 'SCI', 'default_book_cover.svg', '2025-06-11', 'reserved', 0),
+('ANJUN112025-SCI00026', 'Anthony langgam', 'Unknown Author', '2025-06-20', 'SCI', 'default_book_cover.svg', '2025-06-11', 'reserved', 1),
 ('APJAN101980-HIS00016', 'A People\'s History of the United States', 'Howard Zinn', '1980-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
 ('BUJAN032015-FIC00025', 'buhay ng Aso', 'Unknown Author', '2015-01-31', 'FIC', 'default_book_cover.svg', '2025-06-03', 'available', 0),
 ('CLAUG102008-TEC00018', 'Clean Code', 'Robert C. Martin', '2008-08-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
 ('COSEP101980-SCI00011', 'Cosmos', 'Carl Sagan', '1980-09-28', 'SCI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
 ('DEOCT101994-TEC00020', 'Design Patterns', 'Gang of Four', '1994-10-21', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('GOJUL032025-SCI00026', '1 gorilla vs 100 men', 'Gelton B', '2025-07-03', 'SCI', 'book_1_gorilla_vs_100_men_1751548866.png', '2025-07-03', 'reserved', 0),
 ('HAJUN101997-FIC00008', 'Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', '1997-06-26', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
 ('INJAN101990-TEC00021', 'Introduction to Algorithms', 'Thomas H. Cormen', '1990-01-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('JUN101949-FIC00002', '1984', 'George Orwell', '1949-06-08', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('JUN101949-FIC00002', '1984', 'George Orwell', '1949-06-08', 'FIC', 'book_1984_1751547081.jpg', '2022-02-10', 'borrowed', 0),
 ('LOSEP101954-FIC00006', 'Lord of the Flies', 'William Golding', '1954-09-17', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
 ('MEJAN10180-PHI00023', 'Meditations', 'Marcus Aurelius', '0180-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
 ('PRJAN101813-FIC00003', 'Pride and Prejudice', 'Jane Austen', '1813-01-28', 'FIC', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
@@ -144,7 +145,8 @@ INSERT INTO `borrowings` (`borrowing_id`, `book_id`, `user_id`, `borrow_date`, `
 (14, 'THNOV101859-SCI00010', 9, '2024-10-05', '2024-10-19', '2024-10-25'),
 (15, 'THJAN101962-HIS00015', 10, '2024-10-10', '2024-10-24', '2024-10-30'),
 (16, 'LOSEP101954-FIC00006', 11, '2024-11-01', '2024-11-15', NULL),
-(17, 'THJAN101976-SCI00012', 12, '2024-11-05', '2024-11-19', NULL);
+(17, 'THJAN101976-SCI00012', 12, '2024-11-05', '2024-11-19', NULL),
+(18, 'BUJAN032015-FIC00025', 11, '2025-07-03', '2025-07-10', '2025-07-03');
 
 -- --------------------------------------------------------
 
@@ -175,6 +177,46 @@ INSERT INTO `fines` (`fine_id`, `borrowing_id`, `amount`, `status`, `created_at`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reservations`
+--
+
+CREATE TABLE `reservations` (
+  `reservation_id` int(11) NOT NULL,
+  `book_id` varchar(25) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` enum('pending','notified','fulfilled','cancelled') DEFAULT 'pending',
+  `reserved_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `notified_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`reservation_id`, `book_id`, `user_id`, `status`, `reserved_at`, `notified_at`, `expires_at`) VALUES
+(1, 'CLAUG102008-TEC00018', 11, 'cancelled', '2025-07-03 12:04:27', NULL, NULL),
+(2, 'GOJUL032025-SCI00026', 11, 'pending', '2025-07-03 13:21:54', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `review_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `book_id` varchar(25) NOT NULL,
+  `rating` int(1) NOT NULL CHECK (`rating` >= 1 and `rating` <= 5),
+  `review_text` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -184,26 +226,34 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` enum('admin','student') NOT NULL,
   `email` varchar(100) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `phone` varchar(20) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `role`, `email`, `created_at`) VALUES
-(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'admin@gardenlibrary.com', '2025-06-20 08:35:19'),
-(2, 'librarian1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'librarian@gardenlibrary.com', '2025-06-20 08:35:19'),
-(3, 'john_doe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'john.doe@student.edu', '2025-06-20 08:35:19'),
-(4, 'jane_smith', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'jane.smith@student.edu', '2025-06-20 08:35:19'),
-(5, 'mike_johnson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'mike.johnson@student.edu', '2025-06-20 08:35:19'),
-(6, 'sarah_wilson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'sarah.wilson@student.edu', '2025-06-20 08:35:19'),
-(7, 'david_brown', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'david.brown@student.edu', '2025-06-20 08:35:19'),
-(8, 'lisa_garcia', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'lisa.garcia@student.edu', '2025-06-20 08:35:19'),
-(9, 'tom_davis', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'tom.davis@student.edu', '2025-06-20 08:35:19'),
-(10, 'emma_miller', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'emma.miller@student.edu', '2025-06-20 08:35:19'),
-(11, 'alex_taylor', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'alex.taylor@student.edu', '2025-06-20 08:35:19'),
-(12, 'maria_rodriguez', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'maria.rodriguez@student.edu', '2025-06-20 08:35:19');
+INSERT INTO `users` (`user_id`, `username`, `password`, `role`, `email`, `created_at`, `phone`, `address`, `updated_at`) VALUES
+(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'admin@gardenlibrary.com', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(2, 'librarian1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'librarian@gardenlibrary.com', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(3, 'john_doe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'john.doe@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(4, 'jane_smith', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'jane.smith@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(5, 'mike_johnson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'mike.johnson@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(6, 'sarah_wilson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'sarah.wilson@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(7, 'david_brown', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'david.brown@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(8, 'lisa_garcia', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'lisa.garcia@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(9, 'tom_davis', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'tom.davis@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(10, 'emma_miller', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'emma.miller@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(11, 'alex_taylor', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'alex.taylor@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(12, 'maria_rodriguez', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'student', 'maria.rodriguez@student.edu', '2025-06-20 08:35:19', NULL, NULL, '2025-07-04 01:57:52'),
+(14, 'gelton', '$2y$10$wcC8m4R/h5k7BRMwFdoQlew/Y9slZsIpUD62iUWrehjuyow..jkYi', 'admin', '202310839@fit.edu.ph', '2025-07-03 14:48:21', NULL, NULL, '2025-07-04 01:57:52'),
+(15, 'testuser', '$2y$10$uRiQl9wpvRNk/lDMSXbxue3EePBa86Gk77kq3AbSIzrkP.RskUIJm', 'student', 'test@test.com', '2025-07-03 15:08:34', NULL, NULL, '2025-07-04 01:57:52'),
+(16, 'testuser124', '$2y$10$KZqG16iqUhbAyB0cGyx9O.tEVqqEZHmi2GAcatzrm9RD.0DGmQaVC', 'student', 'test823@test.com', '2025-07-03 15:09:59', NULL, NULL, '2025-07-04 01:57:52'),
+(17, 'hahahaha', '$2y$10$sDZ1h0QylYRgzsB.m679o..4Nm59Y6cOB0GNVZ2x84n7zmB/E1feq', 'student', 'hahahaha@hehe.com', '2025-07-03 15:17:03', NULL, NULL, '2025-07-04 01:57:52'),
+(18, 'pogi123', '$2y$10$XRK0FQu0xvlKfL/JoeuCQuIYQBvFqrsooZghht0.H2YYBp.yTOC9i', 'student', 'pogi123@gmail.com', '2025-07-04 01:50:49', NULL, NULL, '2025-07-04 01:57:52');
 
 --
 -- Indexes for dumped tables
@@ -231,6 +281,23 @@ ALTER TABLE `fines`
   ADD KEY `borrowing_id` (`borrowing_id`);
 
 --
+-- Indexes for table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`reservation_id`),
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD UNIQUE KEY `unique_user_book_review` (`user_id`,`book_id`),
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `rating` (`rating`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -246,7 +313,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `borrowings`
 --
 ALTER TABLE `borrowings`
-  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `fines`
@@ -255,10 +322,22 @@ ALTER TABLE `fines`
   MODIFY `fine_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -276,6 +355,20 @@ ALTER TABLE `borrowings`
 --
 ALTER TABLE `fines`
   ADD CONSTRAINT `fines_ibfk_1` FOREIGN KEY (`borrowing_id`) REFERENCES `borrowings` (`borrowing_id`);
+
+--
+-- Constraints for table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
