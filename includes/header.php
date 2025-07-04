@@ -37,10 +37,12 @@
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/button-effects.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/sticky-footer.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/cta-section.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/main-layout.css?v=<?php echo time(); ?>">
     <script src="<?php echo $site_url; ?>assets/js/particles.min.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/script.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/hero-animation.js"></script>
     <script src="<?php echo $site_url; ?>assets/js/visibility-fix.js"></script>
+    <script src="<?php echo $site_url; ?>assets/js/main-interaction.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="font-raleway bg-white">

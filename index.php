@@ -61,14 +61,14 @@ include($include_path . 'includes/header.php');
                                                     </div>
                                                     <p class="text-gray-700 text-sm pl-7">Discover worlds of imagination</p>                                                </div>
                                                 
-                                                <div class="bg-white/90 rounded-xl p-4 mb-2 shadow-lg transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-500 hover:z-10 relative z-[2] animate-tilt" style="animation-delay: 1s;">
+                                                <div class="bg-white/90 rounded-xl p-4 mb-2 shadow-lg transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-500 hover:z-10 relative z-[2] animate-tilt animation-delay-1s">
                                                     <div class="flex items-center mb-1">
                                                         <span class="text-primary text-lg mr-2">🎓</span>
                                                         <p class="text-gray-800 font-bold">Academic Resources</p>
                                                     </div>
                                                     <p class="text-gray-700 text-sm pl-7">Support for your studies</p>                                                </div>
                                                 
-                                                <div class="bg-white/90 rounded-xl p-4 shadow-lg transform rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-500 hover:z-10 relative z-[1] animate-tilt" style="animation-delay: 2s;">
+                                                <div class="bg-white/90 rounded-xl p-4 shadow-lg transform rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-500 hover:z-10 relative z-[1] animate-tilt animation-delay-2s">
                                                     <div class="flex items-center mb-1">
                                                         <span class="text-secondary text-lg mr-2">🌐</span>
                                                         <p class="text-gray-800 font-bold">Digital Collection</p>
@@ -100,15 +100,15 @@ include($include_path . 'includes/header.php');
                                             </a>                                        </div>
                                         
                                         <div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-white/60 rounded-tl-xl animate-float"></div>
-                                        <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-white/60 rounded-tr-xl animate-float" style="animation-delay: 0.5s"></div>
-                                        <div class="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-white/60 rounded-bl-xl animate-float" style="animation-delay: 1s"></div>
-                                        <div class="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-white/60 rounded-br-xl animate-float" style="animation-delay: 1.5s"></div>                                    </div>
+                                        <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-white/60 rounded-tr-xl animate-float animation-delay-0-5s"></div>
+                                        <div class="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-white/60 rounded-bl-xl animate-float animation-delay-1s"></div>
+                                        <div class="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-white/60 rounded-br-xl animate-float animation-delay-1-5s"></div>                                    </div>
                                     
                                     <div class="hidden lg:block absolute -bottom-6 -left-6 w-16 h-16 rounded-full bg-primary z-20 animate-bounce shadow-lg"></div>
                                     <div class="hidden lg:block absolute -top-6 right-1/4 w-12 h-12 rounded-full bg-secondary z-20 animate-pulse shadow-lg"></div>                                    <div class="hidden lg:block absolute top-1/2 -right-4 w-8 h-8 rounded-full bg-white/80 z-20 animate-pulse delay-700 shadow-lg"></div>
                                     
-                                    <div class="hidden lg:block absolute -left-10 top-1/3 w-6 h-6 rounded-full bg-yellow-300/70 blur-sm animate-ping" style="animation-duration: 3s"></div>
-                                    <div class="hidden lg:block absolute -right-10 bottom-1/3 w-4 h-4 rounded-full bg-yellow-500/60 blur-sm animate-ping" style="animation-duration: 4s"></div>
+                                    <div class="hidden lg:block absolute -left-10 top-1/3 w-6 h-6 rounded-full bg-yellow-300/70 blur-sm animate-ping animation-duration-3s"></div>
+                                    <div class="hidden lg:block absolute -right-10 bottom-1/3 w-4 h-4 rounded-full bg-yellow-500/60 blur-sm animate-ping animation-duration-4s"></div>
                                 </div>
                             </div>                        </div>
                     </div>
@@ -124,7 +124,7 @@ include($include_path . 'includes/header.php');
                 <div class="container mx-auto px-4">
                         <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 relative">
                             <span class="relative z-10">Why <span class= "choose-word relative">Choose</span> eLibrary?</span>
-                            <span class="absolute bottom-0 w-24 h-1 bg-secondary rounded-full" style="left: calc(47% - 40px);"></span>                        </h2>
+                            <span class="absolute bottom-0 w-24 h-1 bg-secondary rounded-full section-title-underline"></span>                        </h2>
                         <div class="grid grid-cols-12 gap-6 md:gap-8">                            
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
@@ -215,12 +215,12 @@ include($include_path . 'includes/header.php');
         <div class="row">
             <div class="col-12">
                 <section class="py-16 md:py-20 bg-white relative overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2353933D" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+                    <div class="absolute inset-0 team-section-pattern"></div>
                     
                     <div class="container mx-auto px-4 relative z-10">
                         <!-- Section Header -->
                         <div class="text-center mb-16">
-                            <span class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4 text-sm font-medium">Meet Our Team</span>
+  
                             <h2 class="font-raleway font-bold text-3xl md:text-4xl lg:text-5xl text-dark mb-6">
                                 Meet Our <span class="text-primary">Team</span>
                             </h2>
@@ -238,7 +238,7 @@ include($include_path . 'includes/header.php');
                                 <div class="flex-shrink-0">
                                     <img src="./assets/img/team/Picture.png" 
                                          alt="Gelton A. Blanca" 
-                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Gelton A. Blanca</h3>
@@ -255,7 +255,7 @@ include($include_path . 'includes/header.php');
                                 <div class="flex-shrink-0">
                                     <img src="./assets/img/team/angel.jpg" 
                                          alt="Angel Gaebrielle Flaviano" 
-                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Angel Gaebrielle Flaviano</h3>
@@ -272,7 +272,7 @@ include($include_path . 'includes/header.php');
                                 <div class="flex-shrink-0">
                                     <img src="./assets/img/team/symon.png" 
                                          alt="Symon Herrera" 
-                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Symon Herrera</h3>
@@ -289,7 +289,7 @@ include($include_path . 'includes/header.php');
                                 <div class="flex-shrink-0">
                                     <img src="./assets/img/team/ace.png" 
                                          alt="Ace Castro" 
-                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg">
+                                         class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Ace Castro</h3>
@@ -449,7 +449,7 @@ include($include_path . 'includes/header.php');
                         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
                             Sign up and get <span class="relative inline-block text-primary">
                                 INSTANT
-                                <span class="absolute -bottom-1 left-0 w-full h-2 bg-secondary via-secondary to-primary rounded-full"></span>
+                                <span class="cta-text-underline"></span>
                             </span> access to your library.
                         </h2>
                         

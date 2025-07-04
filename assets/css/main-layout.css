@@ -1,0 +1,186 @@
+/* 
+* Main Layout CSS - External styles extracted from index.php
+* This file contains all the inline styles that were previously in the index.php file
+*/
+
+/* Team Section Pattern Background */
+.team-section-pattern {
+    background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2353933D" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+    opacity: 0.3;
+}
+
+/* Team Member Image Hover Effect */
+.team-member-img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* CTA Section Underline */
+.cta-text-underline {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary), var(--color-primary));
+    border-radius: 9999px;
+}
+
+/* Hero Section Animation Styles */
+.animate-tilt {
+    animation: tilt 5s infinite alternate ease-in-out;
+}
+
+@keyframes tilt {
+    0% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(3deg);
+    }
+}
+
+.animate-float {
+    animation: float 4s infinite alternate ease-in-out;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(0, -10px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* Features Section */
+.choose-word::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-secondary);
+    border-radius: 4px;
+}
+
+/* Timeline Section */
+.timeline-bg-pattern {
+    background-image: linear-gradient(to bottom, rgba(245, 251, 243, 0.8), rgba(255, 255, 255, 0.9));
+}
+
+.timeline-glow {
+    animation: glow 4s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.timeline-progress-marker {
+    animation: pulse 2s infinite;
+}
+
+/* Section-specific styles */
+.section-title-underline {
+    left: calc(47% - 40px);
+}
+
+/* Animation delay classes */
+.delay-700 {
+    animation-delay: 700ms;
+}
+
+/* Animation duration overrides */
+.animation-duration-3s {
+    animation-duration: 3s;
+}
+
+.animation-duration-4s {
+    animation-duration: 4s;
+}
+
+.animation-delay-0-5s {
+    animation-delay: 0.5s;
+}
+
+.animation-delay-1s {
+    animation-delay: 1s;
+}
+
+.animation-delay-1-5s {
+    animation-delay: 1.5s;
+}
+
+.animation-delay-2s {
+    animation-delay: 2s;
+}
+
+/* Button hover effect */
+.btn-hover-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+    z-index: 1;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.btn-cta:hover .btn-hover-effect {
+    transform: translateX(100%);
+}
+
+/* Radial gradient bg */
+.bg-radial-gradient {
+    background: radial-gradient(circle at bottom right, rgba(225,170,116,0.1) 0%, rgba(83,147,61,0.05) 50%, rgba(0,0,0,0) 70%);
+}
+
+/* Glass effect */
+.glass-effect {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Hero library background */
+.hero-library-bg {
+    background-image: url('../img/hero/new-library-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Book showcase animation */
+@keyframes book-showcase-glow {
+    0% {
+        box-shadow: 0 0 10px rgba(83,147,61,0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(225,170,116,0.4);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(83,147,61,0.2);
+    }
+}
+
+#book-showcase {
+    animation: book-showcase-glow 4s infinite alternate;
+}
