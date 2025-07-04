@@ -80,7 +80,7 @@ function upload_book_cover($file, $book_title) {
 }
 
 // --- ADD BOOK (with validation) ---
-function add_book($title, $author, $publish_date, $category, $added_date, $pdo, $cover_file = null) {
+function add_book($title, $author, $description, $publish_date, $category, $added_date, $pdo, $cover_file = null) {
     if (!is_valid_category($category)) {
         return ['success' => false, 'message' => 'Invalid category.'];
     }
@@ -99,8 +99,8 @@ function add_book($title, $author, $publish_date, $category, $added_date, $pdo, 
     
     $book_cover = $upload_result['filename'];
     
-    $stmt = $pdo->prepare("INSERT INTO books (book_id, title, author, publish_date, category, book_cover, added_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'available')");
-    $success = $stmt->execute([$book_id, $title, $author, $publish_date, strtoupper($category), $book_cover, $added_date]);
+    $stmt = $pdo->prepare("INSERT INTO books (book_id, title, author, description, publish_date, category, book_cover, added_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'available')");
+    $success = $stmt->execute([$book_id, $title, $author, $description, $publish_date, strtoupper($category), $book_cover, $added_date]);
     return ['success' => $success, 'book_id' => $book_id];
 }
 
@@ -146,14 +146,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_book'])) {
         $title = trim($_POST['title']);
         $author = trim($_POST['author']);
+        $description = trim($_POST['description']);
         $publish_date = $_POST['publish_date'];
         $category = $_POST['category'];
         $added_date = date('Y-m-d');
         $cover_file = isset($_FILES['book_cover']) ? $_FILES['book_cover'] : null;
         
         // Validate all required fields
-        if (empty($title) || empty($author) || empty($publish_date) || empty($category)) {
-            $message = 'All fields (Title, Author, Publish Date, and Category) are required.';
+        if (empty($title) || empty($author) || empty($description) || empty($publish_date) || empty($category)) {
+            $message = 'All fields (Title, Author, Description, Publish Date, and Category) are required.';
             $message_type = 'error';
         } 
         // Validate publish date is not in the future
@@ -182,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message_type = 'error';
         }
         else {
-            $result = add_book($title, $author, $publish_date, $category, $added_date, $pdo, $cover_file);
+            $result = add_book($title, $author, $description, $publish_date, $category, $added_date, $pdo, $cover_file);
             if ($result['success']) {
                 $message = 'Book added successfully! Book ID: ' . $result['book_id'];
                 $message_type = 'success';
@@ -195,16 +196,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (isset($_POST['update_book'])) {
         $book_id = $_POST['book_id'];
-        $title = trim($_POST['title']);
-        $author = trim($_POST['author']);
-        $publish_date = $_POST['publish_date'];
-        $category = $_POST['category'];
+        $title = trim($_POST['title'] ?? '');
+        $author = trim($_POST['author'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $publish_date = $_POST['publish_date'] ?? '';
+        $category = $_POST['category'] ?? '';
         $cover_file = isset($_FILES['edit_book_cover']) ? $_FILES['edit_book_cover'] : null;
         
         // Validate all required fields
-        if (empty($title) || empty($author) || empty($publish_date) || empty($category)) {
-            $message = 'All fields (Title, Author, Publish Date, and Category) are required.';
+        if (empty($title) || empty($author) || empty($description) || empty($publish_date) || empty($category)) {
+            $message = 'All fields (Title, Author, Description, Publish Date, and Category) are required.';
             $message_type = 'error';
+            error_log("Edit book validation failed for book_id: $book_id. Missing fields: title=" . (empty($title) ? 'empty' : 'ok') . 
+                     ", author=" . (empty($author) ? 'empty' : 'ok') . 
+                     ", description=" . (empty($description) ? 'empty' : 'ok') . 
+                     ", publish_date=" . (empty($publish_date) ? 'empty' : 'ok') . 
+                     ", category=" . (empty($category) ? 'empty' : 'ok'));
         } 
         // Validate publish date is not in the future
         elseif (strtotime($publish_date) > time()) {
@@ -248,8 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if ($message_type !== 'error') {
-                $stmt = $pdo->prepare("UPDATE books SET title = ?, author = ?, publish_date = ?, category = ?, book_cover = ? WHERE book_id = ?");
-                $success = $stmt->execute([$title, $author, $publish_date, strtoupper($category), $book_cover, $book_id]);
+                $stmt = $pdo->prepare("UPDATE books SET title = ?, author = ?, description = ?, publish_date = ?, category = ?, book_cover = ? WHERE book_id = ?");
+                $success = $stmt->execute([$title, $author, $description, $publish_date, strtoupper($category), $book_cover, $book_id]);
                 
                 if ($success) {
                     $message = 'Book updated successfully!';
@@ -286,7 +293,8 @@ $where_conditions = ['is_deleted = 0'];
 $params = [];
 
 if (!empty($search)) {
-    $where_conditions[] = "(title LIKE ? OR author LIKE ? OR book_id LIKE ?)";
+    $where_conditions[] = "(title LIKE ? OR author LIKE ? OR description LIKE ? OR book_id LIKE ?)";
+    $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -359,6 +367,11 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </select>
                 </div>
                 <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description <span class="text-red-500">*</span></label>
+                    <textarea name="description" rows="3" required placeholder="Enter a brief description of the book..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Required: Provide a brief summary or description of the book to help users understand its content.</p>
+                </div>
+                <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Book Cover <span class="text-red-500">*</span></label>
                     <input type="file" name="book_cover" accept="image/*,.svg" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <p class="text-xs text-gray-500 mt-1">Upload a cover image (JPEG, PNG, GIF, SVG). Max size: 5MB. This field is required.</p>
@@ -428,11 +441,23 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <?php echo ucfirst($book['status']); ?>
                             </span>
                         </div>
-                        <p class="text-xs text-gray-500 mb-3">ID: <?php echo htmlspecialchars($book['book_id']); ?></p>
+                        <p class="text-xs text-gray-500 mb-2">ID: <?php echo htmlspecialchars($book['book_id']); ?></p>
+                        
+                        <!-- Description -->
+                        <?php if (!empty($book['description'])): ?>
+                            <div class="mb-3">
+                                <p class="text-xs text-gray-600 line-clamp-3 book-description">
+                                    <?php 
+                                    $description = htmlspecialchars($book['description']);
+                                    echo strlen($description) > 100 ? substr($description, 0, 100) . '...' : $description;
+                                    ?>
+                                </p>
+                            </div>
+                        <?php endif; ?>
                         
                         <!-- Action Buttons -->
                         <div class="flex gap-2">
-                            <button onclick="editBook('<?php echo htmlspecialchars($book['book_id']); ?>', '<?php echo htmlspecialchars($book['title']); ?>', '<?php echo htmlspecialchars($book['author']); ?>', '<?php echo $book['publish_date']; ?>', '<?php echo $book['category']; ?>')" 
+                            <button onclick="editBook('<?php echo htmlspecialchars($book['book_id']); ?>', '<?php echo htmlspecialchars($book['title']); ?>', '<?php echo htmlspecialchars($book['author']); ?>', <?php echo json_encode($book['description'] ?? ''); ?>, '<?php echo $book['publish_date']; ?>', '<?php echo $book['category']; ?>')" 
                                     class="flex-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
                                 Edit
                             </button>
@@ -490,6 +515,10 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </select>
                     </div>
                     <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description <span class="text-red-500">*</span></label>
+                        <textarea id="edit_description" name="description" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"></textarea>
+                    </div>
+                    <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Book Cover (Optional for Updates)</label>
                         <input type="file" name="edit_book_cover" accept="image/*,.svg" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <p class="text-xs text-gray-500 mt-1">Upload a new cover to replace the current one. Leave empty to keep existing cover.</p>
@@ -508,14 +537,48 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
+<style>
+/* Line clamp for descriptions */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    max-height: 4.2em; /* 3 lines * 1.4 line-height */
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Ensure descriptions are visible */
+.book-description {
+    color: #6b7280 !important;
+    font-size: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+}
+</style>
+
 <script>
-function editBook(bookId, title, author, publishDate, category) {
-    document.getElementById('edit_book_id').value = bookId;
-    document.getElementById('edit_title').value = title;
-    document.getElementById('edit_author').value = author;
-    document.getElementById('edit_publish_date').value = publishDate;
-    document.getElementById('edit_category').value = category;
-    document.getElementById('editModal').classList.remove('hidden');
+function editBook(bookId, title, author, description, publishDate, category) {
+    try {
+        console.log('Edit book called:', {bookId, title, author, description, publishDate, category});
+        
+        document.getElementById('edit_book_id').value = bookId;
+        document.getElementById('edit_title').value = title;
+        document.getElementById('edit_author').value = author;
+        document.getElementById('edit_description').value = description || '';
+        document.getElementById('edit_publish_date').value = publishDate;
+        document.getElementById('edit_category').value = category;
+        document.getElementById('editModal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Error in editBook function:', error);
+        alert('Error opening edit modal. Please check the console for details.');
+    }
 }
 
 function closeEditModal() {
@@ -541,6 +604,13 @@ document.getElementById('editModal').addEventListener('click', function(e) {
 
 // Form validation
 document.addEventListener('DOMContentLoaded', function() {
+    // Add error handling for edit buttons
+    window.addEventListener('error', function(e) {
+        console.error('JavaScript Error:', e.error);
+        console.error('Error message:', e.message);
+        console.error('Source:', e.filename, 'Line:', e.lineno);
+    });
+    
     // Add form validation
     const forms = document.querySelectorAll('form[method="POST"]');
     

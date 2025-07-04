@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 04:02 AM
+-- Generation Time: Jul 04, 2025 at 07:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,6 +31,7 @@ CREATE TABLE `books` (
   `book_id` varchar(25) NOT NULL,
   `title` varchar(255) NOT NULL,
   `author` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
   `publish_date` date DEFAULT NULL,
   `category` varchar(3) NOT NULL,
   `book_cover` varchar(255) DEFAULT NULL,
@@ -43,34 +44,35 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_id`, `title`, `author`, `publish_date`, `category`, `book_cover`, `added_date`, `status`, `is_deleted`) VALUES
-('ABAPR101988-SCI00009', 'A Brief History of Time', 'Stephen Hawking', '1988-04-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('ANJUN112025-SCI00026', 'Anthony langgam', 'Unknown Author', '2025-06-20', 'SCI', 'default_book_cover.svg', '2025-06-11', 'reserved', 1),
-('APJAN101980-HIS00016', 'A People\'s History of the United States', 'Howard Zinn', '1980-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('BUJAN032015-FIC00025', 'buhay ng Aso', 'Unknown Author', '2015-01-31', 'FIC', 'default_book_cover.svg', '2025-06-03', 'available', 0),
-('CLAUG102008-TEC00018', 'Clean Code', 'Robert C. Martin', '2008-08-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('COSEP101980-SCI00011', 'Cosmos', 'Carl Sagan', '1980-09-28', 'SCI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('DEOCT101994-TEC00020', 'Design Patterns', 'Gang of Four', '1994-10-21', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('GOJUL032025-SCI00026', '1 gorilla vs 100 men', 'Gelton B', '2025-07-03', 'SCI', 'book_1_gorilla_vs_100_men_1751548866.png', '2025-07-03', 'reserved', 0),
-('HAJUN101997-FIC00008', 'Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', '1997-06-26', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('INJAN101990-TEC00021', 'Introduction to Algorithms', 'Thomas H. Cormen', '1990-01-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('JUN101949-FIC00002', '1984', 'George Orwell', '1949-06-08', 'FIC', 'book_1984_1751547081.jpg', '2022-02-10', 'borrowed', 0),
-('LOSEP101954-FIC00006', 'Lord of the Flies', 'William Golding', '1954-09-17', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('MEJAN10180-PHI00023', 'Meditations', 'Marcus Aurelius', '0180-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('PRJAN101813-FIC00003', 'Pride and Prejudice', 'Jane Austen', '1813-01-28', 'FIC', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
-('SAJAN102011-HIS00014', 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', '2011-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('SISEP101962-SCI00013', 'Silent Spring', 'Rachel Carson', '1962-09-27', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THAPR101925-FIC00004', 'The Great Gatsby', 'F. Scott Fitzgerald', '1925-04-10', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THJAN101962-HIS00015', 'The Guns of August', 'Barbara Tuchman', '1962-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THJAN101976-SCI00012', 'The Selfish Gene', 'Richard Dawkins', '1976-01-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THJAN10380-PHI00022', 'The Republic', 'Plato', '0380-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THJAN10500-PHI00024', 'The Art of War', 'Sun Tzu', '0500-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('THJUL101951-FIC00005', 'The Catcher in the Rye', 'J.D. Salinger', '1951-07-16', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('THJUN101947-HIS00017', 'The Diary of a Young Girl', 'Anne Frank', '1947-06-25', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THNOV101859-SCI00010', 'The Origin of Species', 'Charles Darwin', '1859-11-24', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('THOCT101999-TEC00019', 'The Pragmatic Programmer', 'David Thomas', '1999-10-20', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
-('THSEP101937-FIC00007', 'The Hobbit', 'J.R.R. Tolkien', '1937-09-21', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
-('TOJUL101960-FIC00001', 'To Kill a Mockingbird', 'Harper Lee', '1960-07-11', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0);
+INSERT INTO `books` (`book_id`, `title`, `author`, `description`, `publish_date`, `category`, `book_cover`, `added_date`, `status`, `is_deleted`) VALUES
+('ABAPR101988-SCI00009', 'A Brief History of Time', 'Stephen Hawking', NULL, '1988-04-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
+('ANJUN112025-SCI00026', 'Anthony langgam', 'Unknown Author', NULL, '2025-06-20', 'SCI', 'default_book_cover.svg', '2025-06-11', 'reserved', 1),
+('APJAN101980-HIS00016', 'A People\'s History of the United States', 'Howard Zinn', NULL, '1980-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('BUJAN032015-FIC00025', 'buhay ng Aso', 'Unknown Author', NULL, '2015-01-31', 'FIC', 'default_book_cover.svg', '2025-06-03', 'available', 0),
+('CLAUG102008-TEC00018', 'Clean Code', 'Robert C. Martin', NULL, '2008-08-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('COSEP101980-SCI00011', 'Cosmos', 'Carl Sagan', NULL, '1980-09-28', 'SCI', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
+('DEOCT101994-TEC00020', 'Design Patterns', 'Gang of Four', NULL, '1994-10-21', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('GOJUL032025-SCI00026', '1 gorilla vs 100 men', 'Gelton B', NULL, '2025-07-03', 'SCI', 'book_1_gorilla_vs_100_men_1751548866.png', '2025-07-03', 'borrowed', 0),
+('HAJUN101997-FIC00008', 'Harry Potter and the Philosopher\'s Stone', 'J.K. Rowling', NULL, '1997-06-26', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('INJAN101990-TEC00021', 'Introduction to Algorithms', 'Thomas H. Cormen', NULL, '1990-01-01', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('JUN101949-FIC00002', '1984', 'George Orwell', NULL, '1949-06-08', 'FIC', 'book_1984_1751547081.jpg', '2022-02-10', 'reserved', 0),
+('LOSEP101954-FIC00006', 'Lord of the Flies', 'William Golding', NULL, '1954-09-17', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('MEJAN10180-PHI00023', 'Meditations', 'Marcus Aurelius', NULL, '0180-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('PRJAN101813-FIC00003', 'Pride and Prejudice', 'Jane Austen', NULL, '1813-01-28', 'FIC', 'default_book_cover.svg', '2022-02-10', 'reserved', 0),
+('SAJAN102011-HIS00014', 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', NULL, '2011-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('SISEP101962-SCI00013', 'Silent Spring', 'Rachel Carson', NULL, '1962-09-27', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('SQJUL042025-OTH00027', 'Squid Game', 'Gelton Blanca', NULL, '2025-07-04', 'OTH', 'book_Squid_Game_1751601876.jfif', '2025-07-04', 'available', 0),
+('THAPR101925-FIC00004', 'The Great Gatsby', 'F. Scott Fitzgerald', NULL, '1925-04-10', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN101962-HIS00015', 'The Guns of August', 'Barbara Tuchman', NULL, '1962-01-01', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN101976-SCI00012', 'The Selfish Gene', 'Richard Dawkins', NULL, '1976-01-01', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN10380-PHI00022', 'The Republic', 'Plato', NULL, '0380-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THJAN10500-PHI00024', 'The Art of War', 'Sun Tzu', NULL, '0500-01-01', 'PHI', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THJUL101951-FIC00005', 'The Catcher in the Rye', 'J.D. Salinger', NULL, '1951-07-16', 'FIC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THJUN101947-HIS00017', 'The Diary of a Young Girl', 'Anne Frank', NULL, '1947-06-25', 'HIS', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THNOV101859-SCI00010', 'The Origin of Species', 'Charles Darwin', NULL, '1859-11-24', 'SCI', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('THOCT101999-TEC00019', 'The Pragmatic Programmer', 'David Thomas', NULL, '1999-10-20', 'TEC', 'default_book_cover.svg', '2022-02-10', 'borrowed', 0),
+('THSEP101937-FIC00007', 'The Hobbit', 'J.R.R. Tolkien', NULL, '1937-09-21', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0),
+('TOJUL101960-FIC00001', 'To Kill a Mockingbird', 'Harper Lee', NULL, '1960-07-11', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0);
 
 --
 -- Triggers `books`
@@ -146,7 +148,16 @@ INSERT INTO `borrowings` (`borrowing_id`, `book_id`, `user_id`, `borrow_date`, `
 (15, 'THJAN101962-HIS00015', 10, '2024-10-10', '2024-10-24', '2024-10-30'),
 (16, 'LOSEP101954-FIC00006', 11, '2024-11-01', '2024-11-15', NULL),
 (17, 'THJAN101976-SCI00012', 12, '2024-11-05', '2024-11-19', NULL),
-(18, 'BUJAN032015-FIC00025', 11, '2025-07-03', '2025-07-10', '2025-07-03');
+(18, 'BUJAN032015-FIC00025', 11, '2025-07-03', '2025-07-10', '2025-07-03'),
+(19, 'ABAPR101988-SCI00009', 18, '2025-07-04', '2025-07-18', '2025-07-04'),
+(20, 'DEOCT101994-TEC00020', 18, '2025-07-04', '2025-07-18', NULL),
+(21, 'TOJUL101960-FIC00001', 18, '2025-07-04', '2025-07-18', '2025-07-04'),
+(22, 'ABAPR101988-SCI00009', 18, '2025-07-04', '2025-07-18', NULL),
+(23, 'INJAN101990-TEC00021', 4, '2025-07-04', '2025-07-18', '2025-07-04'),
+(24, 'CLAUG102008-TEC00018', 18, '2025-07-04', '2025-07-18', NULL),
+(25, 'GOJUL032025-SCI00026', 18, '2025-07-04', '2025-07-11', NULL),
+(26, 'INJAN101990-TEC00021', 2, '2025-07-04', '2025-07-18', NULL),
+(27, 'GOJUL032025-SCI00026', 18, '2025-07-04', '2025-07-11', NULL);
 
 -- --------------------------------------------------------
 
@@ -196,7 +207,17 @@ CREATE TABLE `reservations` (
 
 INSERT INTO `reservations` (`reservation_id`, `book_id`, `user_id`, `status`, `reserved_at`, `notified_at`, `expires_at`) VALUES
 (1, 'CLAUG102008-TEC00018', 11, 'cancelled', '2025-07-03 12:04:27', NULL, NULL),
-(2, 'GOJUL032025-SCI00026', 11, 'pending', '2025-07-03 13:21:54', NULL, NULL);
+(2, 'GOJUL032025-SCI00026', 11, 'pending', '2025-07-03 13:21:54', NULL, NULL),
+(3, 'COSEP101980-SCI00011', 11, 'pending', '2025-07-04 02:36:23', NULL, NULL),
+(4, 'BUJAN032015-FIC00025', 18, 'cancelled', '2025-07-04 02:47:03', NULL, NULL),
+(5, 'BUJAN032015-FIC00025', 18, 'cancelled', '2025-07-04 02:47:07', NULL, NULL),
+(6, 'GOJUL032025-SCI00026', 18, 'cancelled', '2025-07-04 02:51:45', NULL, NULL),
+(7, 'JUN101949-FIC00002', 18, 'cancelled', '2025-07-04 02:52:03', NULL, NULL),
+(8, 'APJAN101980-HIS00016', 18, 'cancelled', '2025-07-04 02:55:53', NULL, NULL),
+(9, 'GOJUL032025-SCI00026', 18, 'fulfilled', '2025-07-04 03:25:50', NULL, NULL),
+(10, 'GOJUL032025-SCI00026', 4, 'cancelled', '2025-07-04 03:32:16', NULL, NULL),
+(11, 'ABAPR101988-SCI00009', 2, 'pending', '2025-07-04 05:51:12', NULL, NULL),
+(12, 'JUN101949-FIC00002', 18, 'pending', '2025-07-04 05:52:08', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -313,7 +334,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `borrowings`
 --
 ALTER TABLE `borrowings`
-  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `fines`
@@ -325,7 +346,7 @@ ALTER TABLE `fines`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `reviews`

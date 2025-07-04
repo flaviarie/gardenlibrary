@@ -199,7 +199,8 @@ $where_conditions = ["is_deleted = FALSE"];
 $params = [];
 
 if (!empty($search_query)) {
-    $where_conditions[] = "(title LIKE ? OR author LIKE ?)";
+    $where_conditions[] = "(title LIKE ? OR author LIKE ? OR description LIKE ?)";
+    $params[] = "%$search_query%";
     $params[] = "%$search_query%";
     $params[] = "%$search_query%";
 }
@@ -225,7 +226,7 @@ if (!in_array($sort_by, $valid_sort_columns)) {
 $sort_order = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
 
 // Get books with pagination - exclude books that user has already borrowed (but not reserved ones)
-$sql = "SELECT b.book_id, b.title, b.author, b.publish_date, b.category, b.book_cover, b.added_date, b.status,
+$sql = "SELECT b.book_id, b.title, b.author, b.description, b.publish_date, b.category, b.book_cover, b.added_date, b.status,
                CASE WHEN br.book_id IS NOT NULL THEN 1 ELSE 0 END as user_borrowed,
                CASE WHEN r.book_id IS NOT NULL THEN 1 ELSE 0 END as user_reserved
         FROM books b
@@ -337,7 +338,7 @@ $category_names = [
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Search Books</label>
                         <input type="text" name="search" value="<?php echo htmlspecialchars($search_query); ?>" 
-                               placeholder="Search by title or author..." 
+                               placeholder="Search by title, author, or description..." 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     </div>
 
@@ -412,9 +413,20 @@ $category_names = [
                                     <?php echo htmlspecialchars($book['title']); ?>
                                 </h3>
                                 <p class="text-sm text-gray-600 mb-1">by <?php echo htmlspecialchars($book['author']); ?></p>
-                                <p class="text-xs text-gray-500">
+                                <p class="text-xs text-gray-500 mb-2">
                                     <?php echo isset($category_names[$book['category']]) ? $category_names[$book['category']] : $book['category']; ?>
                                 </p>
+                                
+                                <!-- Book Description -->
+                                <?php if (!empty($book['description'])): ?>
+                                    <div class="text-xs text-gray-600 leading-relaxed">
+                                        <?php 
+                                        $description = htmlspecialchars($book['description']);
+                                        $short_description = strlen($description) > 120 ? substr($description, 0, 120) . '...' : $description;
+                                        echo $short_description;
+                                        ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <!-- Status Badge -->
