@@ -415,60 +415,79 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </form>
         </div>
 
-        <!-- Books Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <?php foreach ($books as $book): ?>
-                <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    <!-- Book Cover -->
-                    <div class="h-48 bg-gray-100 flex items-center justify-center">
-                        <img src="../assets/img/<?php echo htmlspecialchars($book['book_cover']); ?>" 
-                             alt="<?php echo htmlspecialchars($book['title']); ?>" 
-                             class="h-full w-auto object-contain"
-                             onerror="this.src='../assets/img/default_book_cover.svg'">
-                    </div>
-                    
-                    <!-- Book Info -->
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 text-gray-800 line-clamp-2"><?php echo htmlspecialchars($book['title']); ?></h3>
-                        <p class="text-gray-600 text-sm mb-2">by <?php echo htmlspecialchars($book['author']); ?></p>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded"><?php echo htmlspecialchars($book['category']); ?></span>
-                            <span class="text-xs px-2 py-1 rounded <?php 
-                                echo $book['status'] === 'available' ? 'bg-green-100 text-green-800' : 
-                                    ($book['status'] === 'borrowed' ? 'bg-red-100 text-red-800' : 
-                                    ($book['status'] === 'reserved' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'));
-                            ?>">
-                                <?php echo ucfirst($book['status']); ?>
-                            </span>
-                        </div>
-                        <p class="text-xs text-gray-500 mb-2">ID: <?php echo htmlspecialchars($book['book_id']); ?></p>
-                        
-                        <!-- Description -->
-                        <?php if (!empty($book['description'])): ?>
-                            <div class="mb-3">
-                                <p class="text-xs text-gray-600 line-clamp-3 book-description">
-                                    <?php 
-                                    $description = htmlspecialchars($book['description']);
-                                    echo strlen($description) > 100 ? substr($description, 0, 100) . '...' : $description;
-                                    ?>
-                                </p>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <!-- Action Buttons -->
-                        <div class="flex gap-2">
-                            <button onclick="editBook('<?php echo htmlspecialchars($book['book_id']); ?>', '<?php echo htmlspecialchars($book['title']); ?>', '<?php echo htmlspecialchars($book['author']); ?>', <?php echo json_encode($book['description'] ?? ''); ?>, '<?php echo $book['publish_date']; ?>', '<?php echo $book['category']; ?>')" 
-                                    class="flex-1 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
-                                Edit
-                            </button>
-                            <button onclick="deleteBook('<?php echo htmlspecialchars($book['book_id']); ?>', '<?php echo htmlspecialchars($book['title']); ?>')" 
-                                    class="flex-1 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+        <!-- Books Table -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($books as $book): ?>
+                            <tr class="hover:bg-gray-50 cursor-pointer book-row" onclick="showBookDetails(<?php echo htmlspecialchars(json_encode($book)); ?>)">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-16 w-12">
+                                            <img class="h-16 w-12 object-cover rounded book-cover" 
+                                                 src="../assets/img/<?php echo htmlspecialchars($book['book_cover']); ?>" 
+                                                 alt="<?php echo htmlspecialchars($book['title']); ?>"
+                                                 onerror="this.src='../assets/img/default_book_cover.svg'">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900 line-clamp-1">
+                                                <?php echo htmlspecialchars($book['title']); ?>
+                                            </div>
+                                            <?php if (!empty($book['description'])): ?>
+                                                <div class="text-xs text-gray-500 line-clamp-2 mt-1 max-w-xs">
+                                                    <?php echo htmlspecialchars(substr($book['description'], 0, 80) . (strlen($book['description']) > 80 ? '...' : '')); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <?php echo htmlspecialchars($book['author']); ?>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold bg-gray-100 text-gray-800 rounded-full">
+                                        <?php echo htmlspecialchars($book['category']); ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full <?php 
+                                        echo $book['status'] === 'available' ? 'bg-green-100 text-green-800' : 
+                                            ($book['status'] === 'borrowed' ? 'bg-red-100 text-red-800' : 
+                                            ($book['status'] === 'reserved' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'));
+                                    ?>">
+                                        <?php echo ucfirst($book['status']); ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <?php echo htmlspecialchars($book['book_id']); ?>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" onclick="event.stopPropagation()">
+                                    <button onclick="editBook(<?php echo htmlspecialchars(json_encode($book['book_id'])); ?>, <?php echo htmlspecialchars(json_encode($book['title'])); ?>, <?php echo htmlspecialchars(json_encode($book['author'])); ?>, <?php echo htmlspecialchars(json_encode($book['description'] ?? '')); ?>, <?php echo htmlspecialchars(json_encode($book['publish_date'])); ?>, <?php echo htmlspecialchars(json_encode($book['category'])); ?>)" 
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                        Edit
+                                    </button>
+                                    <button onclick="deleteBook(<?php echo htmlspecialchars(json_encode($book['book_id'])); ?>, <?php echo htmlspecialchars(json_encode($book['title'])); ?>)" 
+                                            class="text-red-600 hover:text-red-900">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         </div>
         
         <?php if (empty($books)): ?>
@@ -479,10 +498,83 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
+<!-- Book Details Modal -->
+<div id="bookDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4 modal-container">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-gray-800">Book Details</h3>
+                    <button onclick="closeBookDetailsModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Book Cover -->
+                    <div class="flex-shrink-0">
+                        <div class="w-48 h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <img id="details_book_cover" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- Book Information -->
+                    <div class="flex-1">
+                        <h4 id="details_title" class="text-xl font-bold text-gray-800 mb-2"></h4>
+                        <p class="text-gray-600 mb-3">by <span id="details_author" class="font-medium"></span></p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Book ID:</span>
+                                <p id="details_book_id" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Category:</span>
+                                <p id="details_category" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Publish Date:</span>
+                                <p id="details_publish_date" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Status:</span>
+                                <span id="details_status" class="text-sm px-2 py-1 rounded"></span>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Added Date:</span>
+                                <p id="details_added_date" class="text-sm text-gray-800"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-500">Description:</span>
+                            <p id="details_description" class="text-sm text-gray-700 mt-1 leading-relaxed"></p>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex gap-3 mt-6">
+                            <button id="details_edit_btn" onclick="" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                Edit Book
+                            </button>
+                            <button id="details_delete_btn" onclick="" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Delete Book
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Edit Book Modal -->
 <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
-    <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+    <div class="flex items-center justify-center min-h-screen p-4 modal-container">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Edit Book</h3>
                 <form id="editForm" method="POST" enctype="multipart/form-data">
@@ -555,55 +647,299 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     overflow: hidden;
 }
 
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* Ensure descriptions are visible */
 .book-description {
     color: #6b7280 !important;
     font-size: 0.75rem !important;
     margin-bottom: 0.75rem !important;
 }
+
+/* Table row hover effects */
+.book-row {
+    transition: all 0.2s ease;
+}
+
+.book-row:hover {
+    background-color: #f9fafb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.book-row:hover .book-cover {
+    transform: scale(1.05);
+}
+
+.book-cover {
+    transition: transform 0.3s ease;
+}
+
+/* Modal positioning and animations */
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+#bookDetailsModal, #editModal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#bookDetailsModal .bg-white, #editModal .bg-white {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Status badge styles */
+.status-available {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.status-borrowed {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.status-reserved {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status-archived {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* Table responsiveness */
+@media (max-width: 768px) {
+    .overflow-x-auto {
+        overflow-x: scroll;
+    }
+    
+    table {
+        min-width: 800px;
+    }
+}
 </style>
 
 <script>
+// Show book details modal
+function showBookDetails(book) {
+    try {
+        console.log('Showing book details:', book);
+        
+        // Populate book details
+        document.getElementById('details_title').textContent = book.title;
+        document.getElementById('details_author').textContent = book.author;
+        document.getElementById('details_book_id').textContent = book.book_id;
+        document.getElementById('details_category').textContent = getCategoryName(book.category);
+        document.getElementById('details_publish_date').textContent = formatDate(book.publish_date);
+        document.getElementById('details_added_date').textContent = formatDate(book.added_date);
+        document.getElementById('details_description').textContent = book.description || 'No description available.';
+        
+        // Set book cover
+        const coverImg = document.getElementById('details_book_cover');
+        coverImg.src = '../assets/img/' + (book.book_cover || 'default_book_cover.svg');
+        coverImg.alt = book.title;
+        coverImg.onerror = function() {
+            this.src = '../assets/img/default_book_cover.svg';
+        };
+        
+        // Set status with appropriate styling
+        const statusElement = document.getElementById('details_status');
+        statusElement.textContent = book.status.charAt(0).toUpperCase() + book.status.slice(1);
+        statusElement.className = 'text-sm px-2 py-1 rounded status-' + book.status;
+        
+        // Set up action buttons
+        document.getElementById('details_edit_btn').onclick = function() {
+            closeBookDetailsModal();
+            editBook(book.book_id, book.title, book.author, book.description, book.publish_date, book.category);
+        };
+        
+        document.getElementById('details_delete_btn').onclick = function() {
+            closeBookDetailsModal();
+            deleteBook(book.book_id, book.title);
+        };
+        
+        // Show modal with proper positioning
+        const modal = document.getElementById('bookDetailsModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Force center positioning
+        setTimeout(() => {
+            const modalContainer = modal.querySelector('.modal-container');
+            if (modalContainer) {
+                modalContainer.style.position = 'fixed';
+                modalContainer.style.top = '0';
+                modalContainer.style.left = '0';
+                modalContainer.style.width = '100%';
+                modalContainer.style.height = '100%';
+                modalContainer.style.transform = 'none';
+            }
+        }, 10);
+        
+    } catch (error) {
+        console.error('Error showing book details:', error);
+        alert('Error displaying book details. Please try again.');
+    }
+}
+
+// Close book details modal
+function closeBookDetailsModal() {
+    document.getElementById('bookDetailsModal').classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+// Edit book function - fixed with proper parameter handling
 function editBook(bookId, title, author, description, publishDate, category) {
     try {
         console.log('Edit book called:', {bookId, title, author, description, publishDate, category});
         
-        document.getElementById('edit_book_id').value = bookId;
-        document.getElementById('edit_title').value = title;
-        document.getElementById('edit_author').value = author;
+        // Close book details modal if open
+        closeBookDetailsModal();
+        
+        // Populate edit form
+        document.getElementById('edit_book_id').value = bookId || '';
+        document.getElementById('edit_title').value = title || '';
+        document.getElementById('edit_author').value = author || '';
         document.getElementById('edit_description').value = description || '';
-        document.getElementById('edit_publish_date').value = publishDate;
-        document.getElementById('edit_category').value = category;
-        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('edit_publish_date').value = publishDate || '';
+        document.getElementById('edit_category').value = category || '';
+        
+        // Show edit modal with proper positioning
+        const modal = document.getElementById('editModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Force center positioning
+        setTimeout(() => {
+            const modalContainer = modal.querySelector('.modal-container');
+            if (modalContainer) {
+                modalContainer.style.position = 'fixed';
+                modalContainer.style.top = '0';
+                modalContainer.style.left = '0';
+                modalContainer.style.width = '100%';
+                modalContainer.style.height = '100%';
+                modalContainer.style.transform = 'none';
+            }
+        }, 10);
+        
     } catch (error) {
         console.error('Error in editBook function:', error);
-        alert('Error opening edit modal. Please check the console for details.');
+        alert('Error opening edit form. Please check the console for details.');
     }
 }
 
+// Close edit modal
 function closeEditModal() {
     document.getElementById('editModal').classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Restore scrolling
 }
 
+// Delete book function - fixed with proper parameter handling
 function deleteBook(bookId, title) {
-    if (confirm('Are you sure you want to delete "' + title + '"?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.innerHTML = '<input type="hidden" name="book_id" value="' + bookId + '"><input type="hidden" name="delete_book" value="1">';
-        document.body.appendChild(form);
-        form.submit();
+    try {
+        if (confirm('Are you sure you want to delete "' + title + '"?\n\nThis action cannot be undone.')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.innerHTML = '<input type="hidden" name="book_id" value="' + encodeURIComponent(bookId) + '"><input type="hidden" name="delete_book" value="1">';
+            document.body.appendChild(form);
+            form.submit();
+        }
+    } catch (error) {
+        console.error('Error in deleteBook function:', error);
+        alert('Error deleting book. Please try again.');
     }
 }
 
-// Close modal when clicking outside
-document.getElementById('editModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeEditModal();
-    }
-});
+// Helper functions
+function getCategoryName(category) {
+    const categories = {
+        'FIC': 'Fiction',
+        'SCI': 'Science',
+        'HIS': 'History',
+        'TEC': 'Technology',
+        'PHI': 'Philosophy',
+        'BIO': 'Biography',
+        'ART': 'Art',
+        'REF': 'Reference',
+        'KID': 'Kids',
+        'OTH': 'Other'
+    };
+    return categories[category] || category;
+}
 
-// Form validation
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch (error) {
+        return dateString;
+    }
+}
+
+// Event listeners
 document.addEventListener('DOMContentLoaded', function() {
+    // Close modals when clicking outside
+    document.getElementById('editModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeEditModal();
+        }
+    });
+    
+    document.getElementById('bookDetailsModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeBookDetailsModal();
+        }
+    });
+    
+    // Escape key to close modals
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeEditModal();
+            closeBookDetailsModal();
+        }
+    });
+    
     // Add error handling for edit buttons
     window.addEventListener('error', function(e) {
         console.error('JavaScript Error:', e.error);

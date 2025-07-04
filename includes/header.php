@@ -61,7 +61,7 @@
                         <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Begin Journey</a>
                         
                     </nav>
-                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">SIGN UP NOW
+                    <a href="<?php echo $site_url; ?>pages/login/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">LOGIN NOW</a>
 
                     </a>
                     

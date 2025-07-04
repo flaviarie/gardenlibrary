@@ -55,6 +55,16 @@ if (isset($_POST['action'])) {
             echo json_encode($result);
             exit;
             
+        case 'suspend_user':
+            $result = suspendUser($pdo, $_POST['user_id']);
+            echo json_encode($result);
+            exit;
+            
+        case 'activate_user':
+            $result = activateUser($pdo, $_POST['user_id']);
+            echo json_encode($result);
+            exit;
+            
         case 'get_user':
             $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
             $stmt->execute([$_POST['user_id']]);
@@ -76,10 +86,11 @@ requireAdminAccess();
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $role_filter = isset($_GET['role']) ? $_GET['role'] : '';
+$status_filter = isset($_GET['status']) ? $_GET['status'] : '';
 $per_page = 10;
 
 // Get users data
-$users_data = getAllUsers($pdo, $page, $per_page, $search, $role_filter);
+$users_data = getAllUsers($pdo, $page, $per_page, $search, $role_filter, $status_filter);
 $users = $users_data['users'];
 $total_users = $users_data['total'];
 $total_pages = $users_data['pages'];
@@ -119,6 +130,13 @@ $current_page = $users_data['current_page'];
                         <option value="user" <?php echo $role_filter === 'user' ? 'selected' : ''; ?>>User</option>
                     </select>
                 </div>
+                <div class="lg:w-48">
+                    <select id="statusFilter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">All Status</option>
+                        <option value="active" <?php echo isset($_GET['status']) && $_GET['status'] === 'active' ? 'selected' : ''; ?>>Active</option>
+                        <option value="suspended" <?php echo isset($_GET['status']) && $_GET['status'] === 'suspended' ? 'selected' : ''; ?>>Suspended</option>
+                    </select>
+                </div>
                 <button onclick="applyFilters()" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition-all duration-300 flex items-center gap-2">
                     <i class="fas fa-search"></i>
                     Search
@@ -143,6 +161,7 @@ $current_page = $users_data['current_page'];
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Username</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Email</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Active Borrowings</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Created</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Actions</th>
@@ -172,6 +191,26 @@ $current_page = $users_data['current_page'];
                                             ?>
                                         </span>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <?php 
+                                        $status = $user['effective_status'];
+                                        $statusClass = $status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                                        $statusIcon = $status === 'active' ? 'check-circle' : 'times-circle';
+                                        $suspensionReason = $user['suspension_reason'];
+                                        ?>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full <?php echo $statusClass; ?>"
+                                              <?php if ($status === 'suspended' && $suspensionReason): ?>
+                                              title="<?php echo htmlspecialchars($suspensionReason); ?>"
+                                              <?php endif; ?>>
+                                            <i class="fas fa-<?php echo $statusIcon; ?> mr-1"></i>
+                                            <?php echo ucfirst($status); ?>
+                                        </span>
+                                        <?php if ($status === 'suspended' && $suspensionReason): ?>
+                                            <div class="text-xs text-gray-500 mt-1 max-w-32 truncate">
+                                                <?php echo htmlspecialchars($suspensionReason); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                         <?php echo $user['active_borrowings']; ?>
                                     </td>
@@ -181,13 +220,44 @@ $current_page = $users_data['current_page'];
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <div class="flex gap-2">
                                             <button onclick="editUser(<?php echo $user['user_id']; ?>)" 
-                                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200">
+                                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                    title="Edit User">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" 
-                                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            
+                                            <?php if ($user['username'] !== 'admin'): ?>
+                                                <?php 
+                                                $manualStatus = isset($user['status']) ? $user['status'] : 'active';
+                                                $effectiveStatus = $user['effective_status'];
+                                                $isAutoSuspended = ($effectiveStatus === 'suspended' && $manualStatus === 'active');
+                                                ?>
+                                                
+                                                <?php if ($manualStatus === 'active' && !$isAutoSuspended): ?>
+                                                    <button onclick="suspendUser(<?php echo $user['user_id']; ?>)" 
+                                                            class="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                            title="Manually Suspend User">
+                                                        <i class="fas fa-user-slash"></i>
+                                                    </button>
+                                                <?php elseif ($manualStatus === 'suspended'): ?>
+                                                    <button onclick="activateUser(<?php echo $user['user_id']; ?>)" 
+                                                            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                            title="Remove Manual Suspension">
+                                                        <i class="fas fa-user-check"></i>
+                                                    </button>
+                                                <?php elseif ($isAutoSuspended): ?>
+                                                    <button class="bg-gray-400 text-white px-3 py-1 rounded text-xs font-semibold cursor-not-allowed"
+                                                            title="User automatically suspended: <?php echo htmlspecialchars($user['suspension_reason']); ?>"
+                                                            disabled>
+                                                        <i class="fas fa-exclamation-triangle"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                                
+                                                <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" 
+                                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                        title="Delete User">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
@@ -199,6 +269,14 @@ $current_page = $users_data['current_page'];
                 <!-- Mobile Cards -->
                 <div class="lg:hidden p-4 space-y-4">
                     <?php foreach ($users as $user): ?>
+                        <?php 
+                        $status = $user['effective_status'];
+                        $statusClass = $status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                        $statusIcon = $status === 'active' ? 'check-circle' : 'times-circle';
+                        $suspensionReason = $user['suspension_reason'];
+                        $manualStatus = isset($user['status']) ? $user['status'] : 'active';
+                        $isAutoSuspended = ($status === 'suspended' && $manualStatus === 'active');
+                        ?>
                         <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
                             <div class="flex justify-between items-start mb-3">
                                 <div>
@@ -211,33 +289,72 @@ $current_page = $users_data['current_page'];
                                 <div>
                                     <p class="text-xs text-gray-500">Role</p>
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                        <?php echo $user['role'] === 'admin' ? 'bg-red-100 text-red-800' : 
-                                                 ($user['role'] === 'librarian' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                        <?php echo $user['role'] === 'admin' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'; ?>">
                                         <?php 
                                         if ($user['role'] === 'admin') {
                                             echo ($user['username'] === 'admin') ? 'Administrator' : 'Librarian';
                                         } else {
-                                            echo ucfirst(htmlspecialchars($user['role']));
+                                            echo 'Student';
                                         }
                                         ?>
                                     </span>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500">Active Borrowings</p>
-                                    <p class="text-sm font-semibold text-gray-900"><?php echo $user['active_borrowings']; ?></p>
+                                    <p class="text-xs text-gray-500">Status</p>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $statusClass; ?>"
+                                          <?php if ($status === 'suspended' && $suspensionReason): ?>
+                                          title="<?php echo htmlspecialchars($suspensionReason); ?>"
+                                          <?php endif; ?>>
+                                        <i class="fas fa-<?php echo $statusIcon; ?> mr-1"></i>
+                                        <?php echo ucfirst($status); ?>
+                                    </span>
+                                    <?php if ($status === 'suspended' && $suspensionReason): ?>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <?php echo htmlspecialchars($suspensionReason); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-xs text-gray-500">Active Borrowings</p>
+                                <p class="text-sm font-semibold text-gray-900"><?php echo $user['active_borrowings']; ?></p>
                             </div>
                             <div class="flex justify-between items-center">
                                 <p class="text-xs text-gray-500">Created: <?php echo date('M j, Y', strtotime($user['created_at'])); ?></p>
                                 <div class="flex gap-2">
                                     <button onclick="editUser(<?php echo $user['user_id']; ?>)" 
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200">
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                            title="Edit User">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    
+                                    <?php if ($user['username'] !== 'admin'): ?>
+                                        <?php if ($manualStatus === 'active' && !$isAutoSuspended): ?>
+                                            <button onclick="suspendUser(<?php echo $user['user_id']; ?>)" 
+                                                    class="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                    title="Manually Suspend User">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                        <?php elseif ($manualStatus === 'suspended'): ?>
+                                            <button onclick="activateUser(<?php echo $user['user_id']; ?>)" 
+                                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                    title="Remove Manual Suspension">
+                                                <i class="fas fa-user-check"></i>
+                                            </button>
+                                        <?php elseif ($isAutoSuspended): ?>
+                                            <button class="bg-gray-400 text-white px-3 py-1 rounded text-xs font-semibold cursor-not-allowed"
+                                                    title="User automatically suspended: <?php echo htmlspecialchars($suspensionReason); ?>"
+                                                    disabled>
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </button>
+                                        <?php endif; ?>
+                                        
+                                        <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" 
+                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold transition-all duration-200"
+                                                title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -262,21 +379,21 @@ $current_page = $users_data['current_page'];
             <div class="flex justify-center mt-8">
                 <div class="flex gap-2">
                     <?php if ($current_page > 1): ?>
-                        <a href="?page=<?php echo $current_page - 1; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>" 
+                        <a href="?page=<?php echo $current_page - 1; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>&status=<?php echo urlencode($status_filter); ?>" 
                            class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all duration-200">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     <?php endif; ?>
                     
                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>" 
+                        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>&status=<?php echo urlencode($status_filter); ?>" 
                            class="px-4 py-2 <?php echo $i === $current_page ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'; ?> rounded-lg transition-all duration-200">
                             <?php echo $i; ?>
                         </a>
                     <?php endfor; ?>
                     
                     <?php if ($current_page < $total_pages): ?>
-                        <a href="?page=<?php echo $current_page + 1; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>" 
+                        <a href="?page=<?php echo $current_page + 1; ?>&search=<?php echo urlencode($search); ?>&role=<?php echo urlencode($role_filter); ?>&status=<?php echo urlencode($status_filter); ?>" 
                            class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all duration-200">
                             <i class="fas fa-chevron-right"></i>
                         </a>
@@ -413,12 +530,62 @@ function deleteUser(userId) {
     }
 }
 
+function suspendUser(userId) {
+    if (confirm('Are you sure you want to suspend this user account?')) {
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=suspend_user&user_id=${userId}`
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showAlert(result.message, 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showAlert(result.message, 'error');
+            }
+        })
+        .catch(error => {
+            showAlert('Error suspending user', 'error');
+        });
+    }
+}
+
+function activateUser(userId) {
+    if (confirm('Are you sure you want to activate this user account?')) {
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=activate_user&user_id=${userId}`
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showAlert(result.message, 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showAlert(result.message, 'error');
+            }
+        })
+        .catch(error => {
+            showAlert('Error activating user', 'error');
+        });
+    }
+}
+
 function applyFilters() {
     const search = document.getElementById('searchInput').value;
     const role = document.getElementById('roleFilter').value;
+    const status = document.getElementById('statusFilter').value;
     const url = new URL(window.location.href);
     url.searchParams.set('search', search);
     url.searchParams.set('role', role);
+    url.searchParams.set('status', status);
     url.searchParams.set('page', '1');
     window.location.href = url.toString();
 }

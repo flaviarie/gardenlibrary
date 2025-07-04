@@ -18,8 +18,15 @@ include($include_path . 'includes/header.php');
                                     Discover New Worlds <br> Through <span class="text-secondary drop-shadow-lg animate-pulse font-extrabold">Literature</span>
                                 </h1>
                                 <div class="mt-4">
-                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-2">Where books bloom and ideas flourish. Our digital library connects you to a <br> world of resources.</p>
-                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider">From ancient classics to modern bestsellers, academic journals to leisure reading <br>all in one beautiful interface.</p>
+                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-6">
+                                        Where books bloom and ideas flourish. Our digital library connects you
+                                    </p>
+                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-6">
+                                        to a world of resources.  From ancient classics to modern bestsellers, 
+                                    </p>
+                                    <p class="font-raleway text-base md:text-lg text-gray-200 leading-relaxed tracking-wider mb-6">
+                                        academic journals to leisurereading all in one beautiful interface.
+                                    </p>
                                 </div>
                                 <div class="flex items-center mt-6 space-x-2">
                                     <div class="flex -space-x-2">
@@ -213,9 +220,9 @@ include($include_path . 'includes/header.php');
                     <div class="container mx-auto px-4 relative z-10">
                         <!-- Section Header -->
                         <div class="text-center mb-16">
-                            <span class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4 text-sm font-medium">Meet Our Leadership</span>
+                            <span class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full mb-4 text-sm font-medium">Meet Our Team</span>
                             <h2 class="font-raleway font-bold text-3xl md:text-4xl lg:text-5xl text-dark mb-6">
-                                Meet Our <span class="text-primary">Leadership</span>
+                                Meet Our <span class="text-primary">Team</span>
                             </h2>
                             <p class="font-raleway text-lg text-dark/70 max-w-3xl mx-auto leading-relaxed">
                                 We're a dynamic group of individuals who are passionate about what we do<br>
@@ -229,13 +236,13 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 1 - Top Left -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=300&fit=crop&crop=face" 
-                                         alt="Leonard Krasner" 
+                                    <img src="./assets/img/team/Picture.png" 
+                                         alt="Gelton A. Blanca" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg">
                                 </div>
                                 <div class="flex-1">
-                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Leonard Krasner</h3>
-                                    <p class="text-primary font-semibold mb-4 text-lg">Senior Designer</p>
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Gelton A. Blanca</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Front End Designer</p>
                                     <p class="text-dark/70 leading-relaxed text-base">
                                         Leading innovative design solutions that enhance the digital library experience. 
                                         Passionate about creating intuitive interfaces that connect readers with knowledge effectively.
@@ -246,16 +253,16 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 2 - Top Right -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=200&h=300&fit=crop&crop=face" 
-                                         alt="Floyd Miles" 
+                                    <img src="./assets/img/team/angel.jpg" 
+                                         alt="Angel Gaebrielle Flaviano" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg">
                                 </div>
                                 <div class="flex-1">
-                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Floyd Miles</h3>
-                                    <p class="text-primary font-semibold mb-4 text-lg">Principal Designer</p>
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Angel Gaebrielle Flaviano</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Quality Assurance & Documentation Specialist</p>
                                     <p class="text-dark/70 leading-relaxed text-base">
-                                        Architect of our visual identity and user experience strategy. 
-                                        Dedicated to making literature accessible and engaging for all community members worldwide.
+                                        Expert in documentation and knowledge management.
+                                        Ensures our resources are clear, accessible, and helpful for every library user.
                                     </p>
                                 </div>
                             </div>
@@ -263,16 +270,16 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 3 - Bottom Left -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=300&fit=crop&crop=face" 
-                                         alt="Emily Selman" 
+                                    <img src="./assets/img/team/symon.png" 
+                                         alt="Symon Herrera" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg">
                                 </div>
                                 <div class="flex-1">
-                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Emily Selman</h3>
-                                    <p class="text-primary font-semibold mb-4 text-lg">VP, User Experience</p>
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Symon Herrera</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Lead Backend Developer</p>
                                     <p class="text-dark/70 leading-relaxed text-base">
-                                        Champion of user-centered design principles. 
-                                        Ensures our platform delivers seamless experiences that inspire learning and discovery for everyone.
+                                        Architect of robust and scalable backend systems.
+                                        Dedicated to building secure, efficient, and reliable solutions that power the library’s digital experience.
                                     </p>
                                 </div>
                             </div>
@@ -280,16 +287,16 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 4 - Bottom Right -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=300&fit=crop&crop=face" 
-                                         alt="Kristin Watson" 
+                                    <img src="./assets/img/team/ace.png" 
+                                         alt="Ace Castro" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg">
                                 </div>
                                 <div class="flex-1">
-                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Kristin Watson</h3>
-                                    <p class="text-primary font-semibold mb-4 text-lg">VP, Human Resources</p>
+                                    <h3 class="font-raleway font-bold text-2xl text-dark mb-2">Ace Castro</h3>
+                                    <p class="text-primary font-semibold mb-4 text-lg">Lead SQL Developer</p>
                                     <p class="text-dark/70 leading-relaxed text-base">
-                                        Building and nurturing our talented team culture. 
-                                        Committed to fostering an environment where innovation and collaboration thrive daily.
+                                        Expert in SQL development and database management.
+                                        Ensures our data is secure, organized, and accessible for a seamless library experience.
                                     </p>
                                 </div>
                             </div>

@@ -91,7 +91,7 @@ function requireAdminAccess() {
 }
 
 // Function to get all users with pagination
-function getAllUsers($pdo, $page = 1, $per_page = 10, $search = '', $role_filter = '') {
+function getAllUsers($pdo, $page = 1, $per_page = 10, $search = '', $role_filter = '', $status_filter = '') {
     $offset = ($page - 1) * $per_page;
     
     $where_conditions = ["1=1"];
@@ -125,10 +125,12 @@ function getAllUsers($pdo, $page = 1, $per_page = 10, $search = '', $role_filter
     $stmt->execute($params);
     $total_users = $stmt->fetchColumn();
     
-    // Get users - use string concatenation for LIMIT and OFFSET to avoid parameter binding issues
+    // Get users with comprehensive status calculation
     $sql = "SELECT u.*, 
                    DATE_FORMAT(u.created_at, '%M %d, %Y at %h:%i %p') as formatted_date,
-                   (SELECT COUNT(*) FROM borrowings b WHERE b.user_id = u.user_id AND b.return_date IS NULL) as active_borrowings
+                   (SELECT COUNT(*) FROM borrowings b WHERE b.user_id = u.user_id AND b.return_date IS NULL) as active_borrowings,
+                   (SELECT COUNT(*) FROM borrowings b WHERE b.user_id = u.user_id AND b.return_date IS NULL AND b.due_date < CURDATE() - INTERVAL 30 DAY) as severely_overdue,
+                   (SELECT COALESCE(SUM(f.amount), 0) FROM borrowings b LEFT JOIN fines f ON b.borrowing_id = f.borrowing_id WHERE b.user_id = u.user_id AND f.status = 'unpaid') as unpaid_fines
             FROM users u 
             WHERE {$where_clause}
             ORDER BY u.created_at DESC 
@@ -138,12 +140,62 @@ function getAllUsers($pdo, $page = 1, $per_page = 10, $search = '', $role_filter
     $stmt->execute($params);
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    // Calculate effective status for each user
+    foreach ($users as &$user) {
+        $user['effective_status'] = calculateUserEffectiveStatus($user);
+        $user['suspension_reason'] = calculateSuspensionReason($user);
+    }
+    
+    // Apply status filter after calculating effective status
+    if (!empty($status_filter)) {
+        $users = array_filter($users, function($user) use ($status_filter) {
+            return $user['effective_status'] === $status_filter;
+        });
+        $total_users = count($users);
+    }
+    
     return [
         'users' => $users,
         'total' => $total_users,
         'pages' => ceil($total_users / $per_page),
         'current_page' => $page
     ];
+}
+
+// Calculate the effective status of a user considering all factors
+function calculateUserEffectiveStatus($user) {
+    // Check if manually suspended first
+    if (isset($user['status']) && $user['status'] === 'suspended') {
+        return 'suspended';
+    }
+    
+    // Check for automatic suspension conditions
+    if ($user['severely_overdue'] > 0) {
+        return 'suspended'; // Automatically suspended due to severely overdue books
+    }
+    
+    if ($user['unpaid_fines'] > 50) { // Suspend if fines exceed ₱50
+        return 'suspended'; // Automatically suspended due to excessive fines
+    }
+    
+    return 'active';
+}
+
+// Calculate suspension reason
+function calculateSuspensionReason($user) {
+    if (isset($user['status']) && $user['status'] === 'suspended') {
+        return 'Manually suspended by administrator';
+    }
+    
+    if ($user['severely_overdue'] > 0) {
+        return 'Books overdue for more than 30 days';
+    }
+    
+    if ($user['unpaid_fines'] > 50) {
+        return 'Unpaid fines exceed ₱50.00';
+    }
+    
+    return '';
 }
 
 // Function to create new user
@@ -163,8 +215,8 @@ function createUser($pdo, $username, $email, $password, $role = 'user', $full_na
         // Hash password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
-        // Insert user (no full_name field in current schema)
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
+        // Insert user with default active status
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role, status, created_at) VALUES (?, ?, ?, ?, 'active', NOW())");
         $stmt->execute([$username, $email, $hashed_password, $db_role]);
         
         return ['success' => true, 'message' => 'User created successfully'];
@@ -187,7 +239,7 @@ function updateUser($pdo, $user_id, $username, $email, $role, $full_name = '', $
             return ['success' => false, 'message' => 'Username or email already exists'];
         }
         
-        // Update user (no full_name field in current schema)
+        // Update user
         if (!empty($password)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE user_id = ?");
@@ -203,9 +255,59 @@ function updateUser($pdo, $user_id, $username, $email, $role, $full_name = '', $
     }
 }
 
+// Function to suspend user account
+function suspendUser($pdo, $user_id) {
+    try {
+        // Cannot suspend the main admin
+        $stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && $user['username'] === 'admin') {
+            return ['success' => false, 'message' => 'Cannot suspend the main administrator account'];
+        }
+        
+        // Update user status to suspended
+        $stmt = $pdo->prepare("UPDATE users SET status = 'suspended' WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        
+        // Log the action
+        logAdminAction($pdo, 'User Suspended', "User ID: {$user_id}");
+        
+        return ['success' => true, 'message' => 'User account suspended successfully'];
+    } catch (PDOException $e) {
+        return ['success' => false, 'message' => 'Error suspending user: ' . $e->getMessage()];
+    }
+}
+
+// Function to activate user account
+function activateUser($pdo, $user_id) {
+    try {
+        // Update user status to active
+        $stmt = $pdo->prepare("UPDATE users SET status = 'active' WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        
+        // Log the action
+        logAdminAction($pdo, 'User Activated', "User ID: {$user_id}");
+        
+        return ['success' => true, 'message' => 'User account activated successfully'];
+    } catch (PDOException $e) {
+        return ['success' => false, 'message' => 'Error activating user: ' . $e->getMessage()];
+    }
+}
+
 // Function to delete user (hard delete since no is_deleted field)
 function deleteUser($pdo, $user_id) {
     try {
+        // Cannot delete the main admin
+        $stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && $user['username'] === 'admin') {
+            return ['success' => false, 'message' => 'Cannot delete the main administrator account'];
+        }
+        
         // Check if user has active borrowings
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM borrowings WHERE user_id = ? AND return_date IS NULL");
         $stmt->execute([$user_id]);
@@ -217,6 +319,9 @@ function deleteUser($pdo, $user_id) {
         // Delete user
         $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = ?");
         $stmt->execute([$user_id]);
+        
+        // Log the action
+        logAdminAction($pdo, 'User Deleted', "User ID: {$user_id}");
         
         return ['success' => true, 'message' => 'User deleted successfully'];
     } catch (PDOException $e) {

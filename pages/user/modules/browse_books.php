@@ -188,8 +188,8 @@ if (isset($_SESSION['success_message'])) {
 $search_query = isset($_GET['search']) ? sanitizeInput($_GET['search']) : '';
 $category_filter = isset($_GET['category']) ? sanitizeInput($_GET['category']) : '';
 $status_filter = isset($_GET['status']) ? sanitizeInput($_GET['status']) : '';
-$sort_by = isset($_GET['sort']) ? sanitizeInput($_GET['sort']) : 'title';
-$sort_order = isset($_GET['order']) ? sanitizeInput($_GET['order']) : 'ASC';
+$sort_by = isset($_GET['sort']) ? sanitizeInput($_GET['sort']) : 'added_date';
+$sort_order = isset($_GET['order']) ? sanitizeInput($_GET['order']) : 'DESC';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 12;
 $offset = ($page - 1) * $per_page;
@@ -366,6 +366,21 @@ $category_names = [
                         </select>
                     </div>
                 </div>
+                
+                <!-- Sort By Row -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+                        <select name="sort" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="added_date" <?php echo $sort_by === 'added_date' ? 'selected' : ''; ?>>Newest Added</option>
+                            <option value="title" <?php echo $sort_by === 'title' ? 'selected' : ''; ?>>Title (A-Z)</option>
+                            <option value="author" <?php echo $sort_by === 'author' ? 'selected' : ''; ?>>Author (A-Z)</option>
+                            <option value="publish_date" <?php echo $sort_by === 'publish_date' ? 'selected' : ''; ?>>Publish Date</option>
+                            <option value="category" <?php echo $sort_by === 'category' ? 'selected' : ''; ?>>Category</option>
+                        </select>
+                        <input type="hidden" name="order" value="<?php echo $sort_order; ?>">
+                    </div>
+                </div>
 
                 <div class="flex flex-wrap gap-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
@@ -442,6 +457,12 @@ $category_names = [
                             
                             <!-- Action Buttons -->
                             <div class="flex flex-col gap-2">
+                                <!-- View Details Button -->
+                                <button onclick="showBookDetails(<?php echo htmlspecialchars(json_encode($book)); ?>)" 
+                                        class="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                    <i class="fas fa-info-circle mr-2"></i>View Details
+                                </button>
+                                
                                 <?php if ($is_suspended): ?>
                                     <!-- Account suspended -->
                                     <button disabled class="w-full px-4 py-2 bg-red-200 text-red-600 rounded-lg cursor-not-allowed" 
@@ -534,6 +555,68 @@ $category_names = [
     </div>
 </div>
 
+<!-- Book Details Modal -->
+<div id="bookDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4 modal-container">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-gray-800">Book Details</h3>
+                    <button onclick="closeBookDetailsModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Book Cover -->
+                    <div class="flex-shrink-0">
+                        <div class="w-48 h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <img id="details_book_cover" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- Book Information -->
+                    <div class="flex-1">
+                        <h4 id="details_title" class="text-xl font-bold text-gray-800 mb-2"></h4>
+                        <p class="text-gray-600 mb-3">by <span id="details_author" class="font-medium"></span></p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Book ID:</span>
+                                <p id="details_book_id" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Category:</span>
+                                <p id="details_category" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Publish Date:</span>
+                                <p id="details_publish_date" class="text-sm text-gray-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Status:</span>
+                                <span id="details_status" class="text-sm px-2 py-1 rounded"></span>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Added Date:</span>
+                                <p id="details_added_date" class="text-sm text-gray-800"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-500">Description:</span>
+                            <p id="details_description" class="text-sm text-gray-700 mt-1 leading-relaxed"></p>
+                        </div>
+                        
+                        <!-- Action Buttons for Users -->
+                        <div id="user_action_buttons" class="flex gap-3 mt-6">
+                            <!-- Buttons will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Custom Styles -->
 <style>
 /* Line clamp for book titles */
@@ -591,6 +674,89 @@ $category_names = [
         opacity: 1;
     }
 }
+
+/* Cursor pointer for clickable cards */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.book-card {
+    transition: all 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Styles */
+#bookDetailsModal {
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+#bookDetailsModal .modal-container {
+    animation: slideIn 0.3s ease-out;
+}
+
+#bookDetailsModal.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.9) translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Ensure modal is centered and responsive */
+.modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+/* Modal content styling */
+#bookDetailsModal .bg-white {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Smooth scrolling for modal content */
+#bookDetailsModal .bg-white::-webkit-scrollbar {
+    width: 8px;
+}
+
+#bookDetailsModal .bg-white::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#bookDetailsModal .bg-white::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#bookDetailsModal .bg-white::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
 </style>
 
 <script>
@@ -630,6 +796,184 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('btn-loading');
             button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
         });
+    });
+});
+
+// Modal Functions
+function showBookDetails(book) {
+    // Populate book details in modal
+    document.getElementById('details_book_id').textContent = book.book_id;
+    document.getElementById('details_title').textContent = book.title;
+    document.getElementById('details_author').textContent = book.author;
+    document.getElementById('details_category').textContent = book.category;
+    document.getElementById('details_publish_date').textContent = book.publish_date;
+    document.getElementById('details_added_date').textContent = new Date(book.added_date).toLocaleDateString();
+    document.getElementById('details_description').textContent = book.description || 'No description available.';
+    
+    // Set book cover with correct path
+    const coverImg = document.getElementById('details_book_cover');
+    if (book.book_cover && book.book_cover !== 'default_book_cover.svg') {
+        coverImg.src = '../../librarian/assets/img/' + book.book_cover;
+    } else {
+        coverImg.src = '../../../assets/img/default_book_cover.svg';
+    }
+    coverImg.alt = book.title + ' cover';
+    
+    // Handle image load error
+    coverImg.onerror = function() {
+        this.onerror = null;
+        this.src = '../../../assets/img/default_book_cover.svg';
+    };
+    
+    // Set status with appropriate styling
+    const statusElement = document.getElementById('details_status');
+    statusElement.textContent = book.status.charAt(0).toUpperCase() + book.status.slice(1);
+    statusElement.className = 'text-sm px-2 py-1 rounded ';
+    
+    if (book.status === 'available') {
+        statusElement.className += 'bg-green-100 text-green-800';
+    } else if (book.status === 'borrowed') {
+        statusElement.className += 'bg-red-100 text-red-800';
+    } else if (book.status === 'reserved') {
+        statusElement.className += 'bg-yellow-100 text-yellow-800';
+    } else {
+        statusElement.className += 'bg-gray-100 text-gray-800';
+    }
+    
+    // Generate action buttons
+    generateUserActionButtons(book);
+    
+    // Show modal
+    document.getElementById('bookDetailsModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeBookDetailsModal() {
+    document.getElementById('bookDetailsModal').classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+}
+
+function generateUserActionButtons(book) {
+    const buttonContainer = document.getElementById('user_action_buttons');
+    buttonContainer.innerHTML = '';
+    
+    // Check if user already borrowed this book
+    const userBorrowedBook = <?php echo json_encode($user_borrowed_books ?? []); ?>;
+    const userReservedBook = <?php echo json_encode($user_reserved_books ?? []); ?>;
+    
+    if (userBorrowedBook.includes(parseInt(book.book_id))) {
+        // User already borrowed this book
+        buttonContainer.innerHTML = `
+            <button disabled class="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed">
+                <i class="fas fa-check-circle mr-2"></i>Already Borrowed
+            </button>
+        `;
+    } else if (userReservedBook.includes(parseInt(book.book_id))) {
+        // User already reserved this book
+        buttonContainer.innerHTML = `
+            <button disabled class="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed">
+                <i class="fas fa-clock mr-2"></i>Already Reserved
+            </button>
+        `;
+    } else if (book.status === 'available') {
+        // Available for borrowing
+        buttonContainer.innerHTML = `
+            <form method="POST" class="inline borrow-form-modal">
+                <input type="hidden" name="book_id" value="${book.book_id}">
+                <input type="hidden" name="action" value="borrow">
+                <button type="submit" 
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 borrow-btn-modal">
+                    <i class="fas fa-download mr-2"></i>Borrow Book
+                </button>
+            </form>
+            <button onclick="closeBookDetailsModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                Close
+            </button>
+        `;
+    } else if (book.status === 'borrowed' || book.status === 'reserved') {
+        // Available for reservation
+        buttonContainer.innerHTML = `
+            <form method="POST" class="inline reserve-form-modal">
+                <input type="hidden" name="book_id" value="${book.book_id}">
+                <input type="hidden" name="action" value="reserve">
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 reserve-btn-modal">
+                    <i class="fas fa-clock mr-2"></i>Reserve Book
+                </button>
+            </form>
+            <button onclick="closeBookDetailsModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                Close
+            </button>
+        `;
+    } else {
+        buttonContainer.innerHTML = `
+            <button disabled class="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed">
+                Not Available
+            </button>
+            <button onclick="closeBookDetailsModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200">
+                Close
+            </button>
+        `;
+    }
+    
+    // Add event listeners to the new forms
+    setTimeout(() => {
+        addModalFormListeners();
+    }, 100);
+}
+
+function addModalFormListeners() {
+    // Handle borrow forms in modal
+    document.querySelectorAll('.borrow-form-modal').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const button = form.querySelector('.borrow-btn-modal');
+            const bookTitle = document.getElementById('details_title').textContent;
+            
+            if (!confirm(`Are you sure you want to borrow "${bookTitle}"?\n\nThis book will be due in 14 days.`)) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Show loading state
+            button.disabled = true;
+            button.classList.add('btn-loading');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        });
+    });
+
+    // Handle reserve forms in modal
+    document.querySelectorAll('.reserve-form-modal').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const button = form.querySelector('.reserve-btn-modal');
+            const bookTitle = document.getElementById('details_title').textContent;
+            
+            if (!confirm(`Are you sure you want to reserve "${bookTitle}"?\n\nYou will be notified when it becomes available.`)) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Show loading state
+            button.disabled = true;
+            button.classList.add('btn-loading');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        });
+    });
+}
+
+// Close modal when clicking outside of it
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('bookDetailsModal');
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeBookDetailsModal();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeBookDetailsModal();
+        }
     });
 });
 
