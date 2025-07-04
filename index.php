@@ -36,14 +36,14 @@ include($include_path . 'includes/header.php');
                                     </div>                                    <span class="text-sm text-white/80">Join <span class="text-white font-medium">5,000+ students</span> already using Garden Library</span>
                                 </div>
                                 <div class="mt-6">
-                                    <a href="./pages/login/index.php" class="btn-cta relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 z-10">
+                                    <a href="./pages/login/index.php" class="btn-cta relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 hover:bg-secondary z-10">
                                         <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Begin Your Journey</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 relative z-10 transform group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
                                     </a>
-                                    <a href="./pages/signup/index.php" class="btn-cta relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-white/20 transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
+                                    <a href="./pages/signup/index.php" class="btn-cta relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-secondary transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
                                         <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Discover More</span>
                                     </a>
