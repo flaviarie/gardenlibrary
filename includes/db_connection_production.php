@@ -1,7 +1,7 @@
 <?php
 // Production-ready database connection
-$host = 'sql308.infinityfree.com'; // Update this for your hosting provider
-$dbname = 'if0_39394988_XXX'; // Update this for your hosting provider
+$host = 'sql308.infinityfree.com	'; // Update this for your hosting provider
+$dbname = 'if0_39394988_purringpage'; // Updated to use purringpage database name
 $username = 'if0_39394988'; // Update this for your hosting provider
 $password = 'JQ6nZouzo9kh7nN'; // Update this for your hosting provider
 

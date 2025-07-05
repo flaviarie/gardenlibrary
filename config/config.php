@@ -27,7 +27,7 @@ function asset_url($path) {
 $db_host = 'localhost';
 $db_user = 'root'; // Change in production
 $db_pass = ''; // Change in production
-$db_name = 'garden_library';
+$db_name = 'purringpage';
 
 // Other global settings
 $site_name = 'Garden Library';

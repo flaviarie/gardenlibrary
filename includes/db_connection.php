@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'library_system';
+$dbname = 'purringpage';
 $username = 'root'; // Default XAMPP username
 $password = ''; // Default XAMPP password
 
@@ -11,7 +11,7 @@ try {
     // Debug for testing by listing all tables.
     $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
     if (empty($tables)) {
-        die("Error: Database is empty. Did you import library_system.sql?");
+        die("Error: Database is empty. Did you import purringpage.sql?");
     }
  
     
