@@ -31,7 +31,7 @@ if ($current_dir == 'modules') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Garden Library</title>    
+    <title><?php echo $page_title; ?> - Admin Dashboard - Purring Pages</title>    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->

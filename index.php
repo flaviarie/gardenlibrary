@@ -1,4 +1,5 @@
 <?php
+$page_title = 'Home';
 require_once('./config/config.php');
 include($include_path . 'includes/header.php');
 ?>
@@ -14,7 +15,8 @@ include($include_path . 'includes/header.php');
                     <div class="container mx-auto px-4 relative z-10">                        
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">                            
                             <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                                <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full mb-3 text-sm border border-white/20">Welcome to the Garden Library</span>                            <h1 class="font-raleway font-bold text-4xl md:text-5xl lg:text-6xl tracking-normal text-white">
+                                <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full mb-3 text-sm border border-white/20">Welcome to the Purring Pages</span>
+                                <h1 class="font-raleway font-bold text-4xl md:text-5xl lg:text-6xl tracking-normal text-white">
                                     Discover New Worlds <br> Through <span class="text-secondary drop-shadow-lg animate-pulse font-extrabold">Literature</span>
                                 </h1>
                                 <div class="mt-4">

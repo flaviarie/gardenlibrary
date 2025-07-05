@@ -1,9 +1,9 @@
 <?php
 // Production-ready database connection
-$host = 'localhost'; // Update this for your hosting provider
-$dbname = 'library_system'; // Update this for your hosting provider
-$username = 'root'; // Update this for your hosting provider
-$password = ''; // Update this for your hosting provider
+$host = 'sql308.infinityfree.com'; // Update this for your hosting provider
+$dbname = 'if0_39394988_XXX'; // Update this for your hosting provider
+$username = 'if0_39394988'; // Update this for your hosting provider
+$password = 'JQ6nZouzo9kh7nN'; // Update this for your hosting provider
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
