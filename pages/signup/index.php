@@ -9,7 +9,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Garden Library</title>
+    <title>Sign Up - Purring Page</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?php echo asset_url('assets/img/LogoCat.png'); ?>">
@@ -66,15 +66,15 @@ session_start();
     </script>
 </head>
 <body class="font-raleway min-h-screen bg-gradient-to-br from-garden-50 via-warm-50 to-garden-100 flex items-center justify-center p-4"
-      style="background-image: url('../../assets/img/library-background-2.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
+      style="background-image: url('<?php echo $site_url; ?>assets/img/library-background-2.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
     
     <!-- Overlay for better text readability -->
     <div class="absolute inset-0 bg-gradient-to-br from-garden-900/60 via-garden-800/50 to-garden-900/70"></div>
       <div class="relative z-10 w-full max-w-md">        
         <!-- Logo and Title -->
         <div class="flex items-center justify-center mb-8 space-x-3">
-            <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Garden Library Logo" class="w-16 h-16 drop-shadow-lg">
-            <h1 class="text-2xl font-bold text-white drop-shadow-lg">ELibrary</h1>
+            <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Purring Page Logo" class="w-16 h-16 drop-shadow-lg">
+            <h1 class="text-2xl font-bold text-white drop-shadow-lg">Purring Page</h1>
         </div>
         
         <!-- Signup Form -->

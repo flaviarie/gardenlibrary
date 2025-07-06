@@ -429,15 +429,9 @@ body {
 }
 
 /* Hero section with responsive library background and animations */
-@keyframes bgFade {
-    0%, 33% { background-image: url('../img/hero/new-library-hero.jpg'); }
-    33.01%, 66% { background-image: url('../img/library-background-alt.jpg'); }
-    66.01%, 100% { background-image: url('../img/library-background-2.jpg'); }
-}
-
 .hero-library-bg {
     position: relative;
-    background-image: url('../img/library-background.jpg');
+    /* Background images will be set via PHP for proper path handling */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -446,14 +440,11 @@ body {
     display: flex;
     align-items: center;
     z-index: 0;
-    animation: bgFade 30s ease-in-out infinite;
-    animation-delay: 5s;
 }
 
 /* Different background image for mobile devices */
 @media (max-width: 768px) {
     .hero-library-bg {
-        background-image: url('../img/library-background-alt.jpg');
         background-position: center center;
         min-height: 100vh;
     }

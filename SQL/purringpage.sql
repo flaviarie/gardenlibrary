@@ -79,41 +79,7 @@ INSERT INTO `books` (`book_id`, `title`, `author`, `description`, `publish_date`
 ('TOJUL101960-FIC00001', 'To Kill a Mockingbird', 'Harper Lee', 'A powerful novel about racial injustice in the American South, told through the eyes of Scout Finch as her father defends a black man falsely accused of rape.', '1960-07-11', 'FIC', 'default_book_cover.svg', '2022-02-10', 'available', 0);
 
 --
--- Triggers `books`
---
-DELIMITER $$
-CREATE TRIGGER `generate_book_id` BEFORE INSERT ON `books` FOR EACH ROW BEGIN
-    DECLARE title_prefix VARCHAR(2);
-    DECLARE publish_month VARCHAR(3);
-    DECLARE added_day VARCHAR(2);
-    DECLARE publish_year VARCHAR(4);
-    DECLARE book_count INT;
-    DECLARE formatted_count VARCHAR(5);
-    
-    -- 1. Get first 2 letters from title (letters only, uppercase)
-    SET title_prefix = UPPER(LEFT(REGEXP_REPLACE(NEW.title, '[^A-Za-z]', ''), 2));
-    
-    -- 2. Get month from publish date (3 letters, uppercase)
-    SET publish_month = UPPER(DATE_FORMAT(NEW.publish_date, '%b'));
-    
-    -- 3. Get day when added to system 
-    SET added_day = LPAD(DAY(NEW.added_date), 2, '0');
-    
-    -- 4. Get year from publish date
-    SET publish_year = YEAR(NEW.publish_date);
-    
-    -- 5. Get count of existing books + 1
-    SELECT COUNT(*) + 1 INTO book_count FROM books WHERE is_deleted = FALSE;
-    
-    -- 6. Format count as 5-digit number
-    SET formatted_count = LPAD(book_count, 5, '0');
-    
-    -- 7. Generate the Book ID: THFEB102022-FIC00001
-    SET NEW.book_id = CONCAT(title_prefix, publish_month, added_day, publish_year, '-', UPPER(NEW.category), formatted_count);
-    
-END
-$$
-DELIMITER ;
+-- Trigger removed due to lack of privileges on shared hosting. Book ID must be generated in application code.
 
 -- --------------------------------------------------------
 

@@ -4,7 +4,7 @@
     position: relative;
 }
 
-/* Ensure background images appear correctly with a pseudo-element as backup */
+/* Remove hardcoded background image paths - will be set via PHP */
 .hero-library-bg::before {
     content: '';
     position: absolute;
@@ -12,7 +12,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../img/hero/new-library-hero.jpg');
+    /* Background image will be set via PHP */
     background-size: cover;
     background-position: center;
     z-index: -2;
@@ -25,14 +25,14 @@
     100% { opacity: 1; }
 }
 
-/* Preload background images */
+/* Remove preload background images with hardcoded paths */
 body::after {
     position: absolute;
     width: 0;
     height: 0;
     overflow: hidden;
     z-index: -10;
-    content: url('../img/hero/new-library-hero.jpg') url('../img/library-background-alt.jpg') url('../img/library-background-2.jpg');
+    content: '';
 }
 
 /* Enhanced glow for headings */

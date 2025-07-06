@@ -4,7 +4,7 @@ $page_title = 'My Account';
 
 include_once '../includes/user_header.php';
 include_once '../includes/user_functions.php';
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 
 // Check if user is logged in
 requireUserAccess();

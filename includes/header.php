@@ -29,6 +29,7 @@
         }    
         </script>    
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/dynamic-paths.php?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/hero-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/visibility-fixes.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="<?php echo $site_url; ?>assets/css/about-section-enhancements.css?v=<?php echo time(); ?>">
@@ -57,16 +58,20 @@
                 </div>
                 <div class="flex items-center space-x-6">                      
                     <nav class="hidden md:flex items-center space-x-6">
+                        <?php 
+                        // Detect if we're on the homepage
+                        $current_page = basename($_SERVER['PHP_SELF']);
+                        $is_homepage = ($current_page === 'index.php' && strpos($_SERVER['REQUEST_URI'], '/pages/') === false);
+                        $nav_prefix = $is_homepage ? '' : $site_url;
+                        $nav_suffix = $is_homepage ? '' : 'index.php';
+                        ?>
                         <a href="<?php echo $site_url; ?>index.php" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Home</a>
-                        <a href="<?php echo $site_url; ?>index.php#features" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Explore Library</a>
-                        <a href="<?php echo $site_url; ?>index.php#about-us" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Our Vision</a>
-                        <a href="<?php echo $site_url; ?>index.php#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Begin Journey</a>
+                        <a href="<?php echo $nav_prefix . $nav_suffix; ?>#features" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Explore Library</a>
+                        <a href="<?php echo $nav_prefix . $nav_suffix; ?>#about-us" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Our Vision</a>
+                        <a href="<?php echo $nav_prefix . $nav_suffix; ?>#how-it-works" class="text-gray-800 hover:text-primary transition-colors font-semibold text-lg">Begin Journey</a>
                         
                     </nav>
                     <a href="<?php echo $site_url; ?>pages/login/index.php" class="bg-primary hover:bg-secondary text-white px-5 py-2 rounded-lg font-semibold transition-all duration-300">LOGIN NOW</a>
-
-                    </a>
-                    
                     
                     <button class="md:hidden text-gray-800 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Connect to DB first (before any output)
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 include_once '../includes/user_functions.php';
 
 // Check if user is logged in (this might redirect, so do it early)

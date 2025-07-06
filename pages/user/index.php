@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../../includes/session_check.php';
 // Show errors on test
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -12,7 +13,7 @@ include_once 'includes/user_functions.php';
 requireUserAccess();
 
 // Connect to DB
-include_once '../../includes/db_connection.php';
+include_once '../../includes/db.php';
 
 // Debug only when needed
 $debug_mode = false; // toggle for tests

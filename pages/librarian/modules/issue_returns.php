@@ -2,7 +2,7 @@
 $page_title = 'Issue & Returns';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 
 // Message handling
 $message = '';

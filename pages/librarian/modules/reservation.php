@@ -2,7 +2,7 @@
 $page_title = 'Reservations';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 
 // Create reservations table if needed
 try {

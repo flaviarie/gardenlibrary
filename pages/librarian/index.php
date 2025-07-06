@@ -1,4 +1,5 @@
 <?php
+require_once '../../includes/session_check.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -163,10 +164,16 @@ try {
                                 <div class="flex items-start space-x-3 mb-2">
                                     <!-- Book Cover Image -->
                                     <div class="flex-shrink-0">
-                                        <img src="assets/img/<?php echo htmlspecialchars($book['book_cover'] ?? 'default_book_cover.svg'); ?>" 
-                                             alt="<?php echo htmlspecialchars($book['title']); ?>" 
-                                             class="w-20 h-24 object-cover rounded-lg shadow-md border border-gray-200"
-                                             onerror="this.src='assets/img/default_book_cover.svg'">
+                                        <?php if (!empty($book['book_cover']) && $book['book_cover'] !== 'default_book_cover.svg'): ?>
+                                            <img src="../../assets/img/<?php echo htmlspecialchars($book['book_cover']); ?>"
+                                                 alt="<?php echo htmlspecialchars($book['title']); ?>"
+                                                 class="w-20 h-24 object-cover rounded-lg shadow-md border border-gray-200"
+                                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-24 flex items-center justify-center bg-gray-200 rounded-lg\'><i class=\'fas fa-book text-4xl text-gray-400\'></i></div>';">
+                                        <?php else: ?>
+                                            <div class="w-20 h-24 flex items-center justify-center bg-gray-200 rounded-lg">
+                                                <i class="fas fa-book text-4xl text-gray-400"></i>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <!-- Book Info -->
                                     <div class="flex-1 min-w-0">
@@ -265,13 +272,20 @@ try {
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     <?php if (!empty($recent_books)): ?>                        
-                        <?php foreach ($recent_books as $book): ?>                            <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 group">
+                        <?php foreach ($recent_books as $book): ?>                            
+                            <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 group">
                                 <!-- Book Cover Image -->
                                 <td class="px-4 lg:px-8 py-4 sm:py-6">
-                                    <img src="assets/img/<?php echo htmlspecialchars($book['book_cover'] ?? 'default_book_cover.svg'); ?>" 
-                                         alt="<?php echo htmlspecialchars($book['title']); ?>" 
-                                         class="w-24 h-25 object-cover rounded-lg shadow-md border border-gray-200 group-hover:shadow-lg transition-shadow"
-                                         onerror="this.src='assets/img/default_book_cover.svg'">
+                                    <?php if (!empty($book['book_cover']) && $book['book_cover'] !== 'default_book_cover.svg'): ?>
+                                        <img src="assets/img/<?php echo htmlspecialchars($book['book_cover']); ?>"
+                                             alt="<?php echo htmlspecialchars($book['title']); ?>"
+                                             class="w-24 h-25 object-cover rounded-lg shadow-md border border-gray-200 group-hover:shadow-lg transition-shadow"
+                                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-24 h-25 flex items-center justify-center bg-gray-200 rounded-lg\'><i class=\'fas fa-book text-4xl text-gray-400\'></i></div>';">
+                                    <?php else: ?>
+                                        <div class="w-24 h-25 flex items-center justify-center bg-gray-200 rounded-lg">
+                                            <i class="fas fa-book text-4xl text-gray-400"></i>
+                                        </div>
+                                    <?php endif; ?>
                                 </td>
                                 <!-- Clean Book ID Display -->
                                 <td class="px-4 lg:px-8 py-4 sm:py-6 text-xs font-mono text-gray-600 group-hover:text-blue-800 font-raleway min-w-0">
@@ -360,6 +374,7 @@ try {
         </div>    
     </div>
 </div>
+
 
 <?php
 include_once 'includes/librarian_footer.php';

@@ -7,7 +7,7 @@ echo "<h2>Login Debug Test</h2>";
 
 // Test database connection
 try {
-    include_once '../../includes/db_connection.php';
+    include_once '../../includes/db.php';
     echo "<p>✅ Database connection successful</p>";
     
     // Test users table
@@ -37,7 +37,7 @@ try {
 // Test file paths
 echo "<h3>File Path Tests:</h3>";
 $files_to_check = [
-    '../../includes/db_connection.php',
+    '../../includes/db.php',
     '../admin/index.php',
     '../user/index.php',
     'login_process.php'

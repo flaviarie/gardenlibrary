@@ -11,7 +11,7 @@ if (isset($_POST['action'])) {
     }
     
     include_once '../includes/admin_functions.php';
-    include_once '../../../includes/db_connection.php';
+    include_once '../../../includes/db.php';
     
     // Access check
     if (!isAdmin()) {
@@ -74,7 +74,7 @@ if (isset($_POST['action'])) {
 // Include header and functions for regular page load
 include_once '../includes/admin_header.php';
 include_once '../includes/admin_functions.php';
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 
 // Check admin access
 requireAdminAccess();

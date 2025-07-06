@@ -28,7 +28,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <title>Login - Garden Library</title>
+    <title>Login - Purring Page</title>
     <!-- Google Fonts - Raleway -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,7 +120,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     <div class="min-h-screen relative overflow-hidden">
         
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style="background-image: url('assets/img/modern-library.jpg');">
+             style="background-image: url('<?php echo $site_url; ?>assets/img/library-background-2.jpg');">
         </div>
         
        
@@ -147,7 +147,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                 <div class="mb-8">
                     <h1 class="text-5xl font-extrabold text-primary mb-2 tracking-tight whitespace-nowrap flex items-center justify-center gap-3">
                         <img src="<?php echo asset_url('assets/img/LogoCat.png'); ?>" alt="Library Cat" class="w-12 h-12">
-                        ELibrary
+                        Purring Page
                     </h1>
                     <p class="text-dark/70 text-2xl font-medium">
                         Your modern reading sanctuary

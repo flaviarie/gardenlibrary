@@ -9,7 +9,7 @@ include($include_path . 'includes/header.php');
     <div class="row">
         <div class="col-12">
             <!-- ===== HERO SECTION START ===== -->                
-            <section class="hero-library-bg relative py-16 md:py-20 lg:py-24 overflow-hidden min-h-[60vh]">                    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-0"></div>
+            <section class="hero-library-bg relative py-16 md:py-20 lg:py-24 overflow-hidden min-h-[60vh]" style="background-image: url('<?php echo $site_url; ?>assets/img/hero/new-library-hero.jpg');">                    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-0"></div>
                     <div class="absolute inset-0 bg-radial-gradient z-0"></div>
                     
                     <div class="container mx-auto px-4 relative z-10">                        
@@ -35,17 +35,17 @@ include($include_path . 'includes/header.php');
                                         <div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center text-white text-xs">JD</div>
                                         <div class="w-8 h-8 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-xs">SM</div>
                                         <div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center text-white text-xs">AK</div>
-                                    </div>                                    <span class="text-sm text-white/80">Join <span class="text-white font-medium">5,000+ students</span> already using Garden Library</span>
+                                    </div>                                    <span class="text-sm text-white/80">Join <span class="text-white font-medium">5,000+ students</span> already using Purring Page</span>
                                 </div>
                                 <div class="mt-6">
-                                    <a href="./pages/login/index.php" class="btn-cta relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 hover:bg-secondary z-10">
+                                    <a href="<?php echo $site_url; ?>pages/login/index.php" class="btn-cta relative inline-flex items-center group px-6 py-3 bg-primary text-white font-bold rounded-lg shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 hover:bg-secondary z-10">
                                         <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Begin Your Journey</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 relative z-10 transform group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
                                     </a>
-                                    <a href="./pages/signup/index.php" class="btn-cta relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-secondary transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
+                                    <a href="<?php echo $site_url; ?>pages/signup/index.php" class="btn-cta relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg ml-3 hover:bg-secondary transition-all duration-300 border border-white/20 overflow-hidden group hover:shadow-lg">
                                         <span class="btn-hover-effect"></span>
                                         <span class="relative z-10">Discover More</span>
                                     </a>
@@ -125,13 +125,13 @@ include($include_path . 'includes/header.php');
             <section id="features" class="py-16 md:py-24">                    
                 <div class="container mx-auto px-4">
                         <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 relative">
-                            <span class="relative z-10">Why <span class= "choose-word relative">Choose</span> eLibrary?</span>
+                            <span class="relative z-10">Why <span class= "choose-word relative">Choose</span> Purring Page ?</span>
                             <span class="absolute bottom-0 w-24 h-1 bg-secondary rounded-full section-title-underline"></span>                        </h2>
                         <div class="grid grid-cols-12 gap-6 md:gap-8">                            
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img src="assets/img/find.png" alt="Book Catalog" class="w-10 h-10 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/find.png" alt="Book Catalog" class="w-10 h-10 object-contain">
                                     </div>
                                 </div>
                                 <div class="flex-grow flex flex-col justify-between p-6">
@@ -141,7 +141,7 @@ include($include_path . 'includes/header.php');
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img src="assets/img/books.png" alt="Easy Borrowing" class="w-10 h-10 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/books.png" alt="Easy Borrowing" class="w-10 h-10 object-contain">
                                     </div>
                                 </div>
                                 <div class="flex-grow flex flex-col justify-between p-6">
@@ -152,7 +152,7 @@ include($include_path . 'includes/header.php');
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img src="assets/img/alarm-clock.png" alt="Timely Reminders" class="w-10 h-10 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/alarm-clock.png" alt="Timely Reminders" class="w-10 h-10 object-contain">
                                     </div>
                                 </div>
                                 <div class="flex-grow flex flex-col justify-between p-6">
@@ -166,7 +166,7 @@ include($include_path . 'includes/header.php');
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img src="assets/img/chat.png" alt="Instant Support" class="w-10 h-10 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/chat.png" alt="Instant Support" class="w-10 h-10 object-contain">
                                     </div>
                                 </div>
                                 <div class="flex-grow flex flex-col justify-between p-6">
@@ -177,7 +177,7 @@ include($include_path . 'includes/header.php');
                             <div class="col-span-12 md:col-span-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full">
                                 <div class="flex justify-center pt-8">
                                     <div class="bg-light p-5 rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img src="assets/img/trending-topic.png" alt="Reading History" class="w-10 h-10 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/trending-topic.png" alt="Reading History" class="w-10 h-10 object-contain">
                                     </div>
                                 </div>                                <div class="flex-grow flex flex-col justify-between p-6">
                                     <h3 class="text-xl font-bold mb-3 text-center group-hover:text-primary transition-colors">Reading History Tracker</h3>
@@ -198,14 +198,14 @@ include($include_path . 'includes/header.php');
               <div class="container mx-auto px-4 relative">
                 <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">
                     <div class="lg:col-span-5">                        <div class="relative">
-                            <img src="assets/img/library-background-2.jpg" alt="Library Image" class="w-full h-auto rounded-xl shadow-xl transform hover:scale-[1.02] transition-all duration-500 object-cover max-h-[450px]">
+                            <img src="<?php echo $site_url; ?>assets/img/library-background-2.jpg" alt="Library Image" class="w-full h-auto rounded-xl shadow-xl transform hover:scale-[1.02] transition-all duration-500 object-cover max-h-[450px]">
                             <div class="absolute -bottom-4 -right-4 w-16 h-16 rounded-full border-4 border-primary bg-white/10 z-10 hidden lg:block animate-pulse"></div>
                             <div class="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-secondary z-10 hidden lg:block animate-bounce"></div>
                             <div class="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 z-10 hidden lg:block"></div>                        </div>
                     </div>
                     <div class="lg:col-span-7 space-y-6">
                         <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Your Knowledge Sanctuary</h2>
-                        <p class="text-gray-700 leading-relaxed mb-4 text-lg font-medium">Welcome to the <span class="font-semibold text-primary">Garden Library</span>, your digital gateway to a world of knowledge and imagination. Our library is designed to provide students with easy access to a vast collection of books, journals, and resources that cater to diverse interests and academic needs.</p>
+                        <p class="text-gray-700 leading-relaxed mb-4 text-lg font-medium">Welcome to the <span class="font-semibold text-primary">Purring Page</span>, your digital gateway to a world of knowledge and imagination. Our library is designed to provide students with easy access to a vast collection of books, journals, and resources that cater to diverse interests and academic needs.</p>
                           <p class="text-gray-700 leading-relaxed mb-4 text-lg font-medium">Our mission is to foster a love for reading and learning by providing a user-friendly platform that makes accessing educational materials simple and enjoyable. With our intuitive interface, finding and borrowing books has never been easier.</p>
                         <p class="text-gray-700 leading-relaxed mb-6 text-lg font-medium">We believe that knowledge should bloom freely, just like plants in a garden. That's why we've created this digital space where ideas can flourish and minds can grow.</p>
                     </div>
@@ -238,7 +238,7 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 1 - Top Left -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="./assets/img/team/Picture.png" 
+                                    <img src="<?php echo $site_url; ?>assets/img/team/Picture.png" 
                                          alt="Gelton A. Blanca" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
@@ -255,7 +255,7 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 2 - Top Right -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="./assets/img/team/angel.jpg" 
+                                    <img src="<?php echo $site_url; ?>assets/img/team/angel.jpg" 
                                          alt="Angel Gaebrielle Flaviano" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
@@ -272,7 +272,7 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 3 - Bottom Left -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="./assets/img/team/symon.png" 
+                                    <img src="<?php echo $site_url; ?>assets/img/team/symon.png" 
                                          alt="Symon Herrera" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
@@ -289,7 +289,7 @@ include($include_path . 'includes/header.php');
                             <!-- Team Member 4 - Bottom Right -->
                             <div class="flex items-start space-x-6">
                                 <div class="flex-shrink-0">
-                                    <img src="./assets/img/team/ace.png" 
+                                    <img src="<?php echo $site_url; ?>assets/img/team/ace.png" 
                                          alt="Ace Castro" 
                                          class="w-32 h-40 object-cover rounded-2xl shadow-lg team-member-img">
                                 </div>
@@ -347,7 +347,7 @@ include($include_path . 'includes/header.php');
                             <div class="md:col-span-5 md:text-right mb-6 md:mb-0 flex md:justify-end">
                                 <div class="timeline-card bg-light rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 w-full md:max-w-xs transform relative overflow-hidden">
                                     <div class="flex justify-center mb-4">
-                                        <img src="assets/img/number-1.png" alt="Sign Up" class="timeline-icon w-16 h-16 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/number-1.png" alt="Sign Up" class="timeline-icon w-16 h-16 object-contain">
                                     </div>
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Sign Up</h3>
                                 </div>                            
@@ -376,7 +376,7 @@ include($include_path . 'includes/header.php');
                             <div class="md:col-span-5 md:col-start-8 flex md:justify-start">
                                 <div class="timeline-card bg-light rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 w-full md:max-w-xs transform relative overflow-hidden">
                                     <div class="flex justify-center mb-4">
-                                        <img src="assets/img/two.png" alt="Browse the Catalog" class="timeline-icon w-16 h-16 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/two.png" alt="Browse the Catalog" class="timeline-icon w-16 h-16 object-contain">
                                     </div>
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Browse the Catalog</h3>
                                 </div>                            </div>
@@ -391,7 +391,7 @@ include($include_path . 'includes/header.php');
                             <div class="md:col-span-5 md:text-right mb-6 md:mb-0 flex md:justify-end">
                                 <div class="timeline-card bg-light rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 w-full md:max-w-xs transform relative overflow-hidden">
                                     <div class="flex justify-center mb-4">
-                                        <img src="assets/img/number-3.png" alt="Borrow Books" class="timeline-icon w-16 h-16 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/number-3.png" alt="Borrow Books" class="timeline-icon w-16 h-16 object-contain">
                                     </div>
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Borrow Books</h3>
                                 </div>                            </div>
@@ -418,7 +418,7 @@ include($include_path . 'includes/header.php');
                             <div class="md:col-span-5 md:col-start-8 flex md:justify-start">
                                 <div class="timeline-card bg-light rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 w-full md:max-w-xs transform relative overflow-hidden">
                                     <div class="flex justify-center mb-4">
-                                        <img src="assets/img/number-4.png" alt="Track & Return" class="timeline-icon w-16 h-16 object-contain">
+                                        <img src="<?php echo $site_url; ?>assets/img/number-4.png" alt="Track & Return" class="timeline-icon w-16 h-16 object-contain">
                                     </div>
                                     <h3 class="text-xl font-bold mb-3 text-center text-primary">Track & Return</h3>
                                 </div>
@@ -458,7 +458,7 @@ include($include_path . 'includes/header.php');
                         <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">Join thousands of students already enjoying our vast collection of books, journals, and educational resources.</p>
                         
                         <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                            <a href="./pages/signup/index.php" class="btn-cta relative overflow-hidden group px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/30">
+                            <a href="<?php echo $site_url; ?>pages/signup/index.php" class="btn-cta relative overflow-hidden group px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/30">
                                 <span class="btn-hover-effect"></span>
                                 <span class="relative z-10 flex items-center">
                                     Sign Up Now
@@ -479,7 +479,7 @@ include($include_path . 'includes/header.php');
                                 <div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center text-white text-xs">AK</div>
                                 <div class="w-8 h-8 rounded-full bg-yellow-500 border-2 border-white flex items-center justify-center text-white text-xs">+</div>
                             </div>
-                            <span class="text-sm text-gray-600">Join <span class="font-medium text-primary">5,000+ students</span> already using Garden Library</span>                        </div>
+                            <span class="text-sm text-gray-600">Join <span class="font-medium text-primary">5,000+ students</span> already using Purring Page</span>                        </div>
                     </div>
                 </div>              </div>
         <!-- ===== CTA SECTION END ===== -->        

@@ -2,7 +2,7 @@
 $page_title = 'Reports';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php';
+include_once '../../../includes/db.php';
 
 // Report generation functions
 function get_borrowed_books_report($pdo) {

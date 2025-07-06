@@ -3,7 +3,7 @@
 $page_title = 'Manage Books';
 
 include_once '../includes/librarian_header.php';
-include_once '../../../includes/db_connection.php'; // Use PDO connection
+include_once '../../../includes/db.php'; // Use environment-aware PDO connection
 
 // --- CATEGORY VALIDATION ---
 function is_valid_category($category) {
